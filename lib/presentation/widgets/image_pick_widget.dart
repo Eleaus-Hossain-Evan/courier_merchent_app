@@ -6,6 +6,7 @@ import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../../../../utils/utils.dart';
 import 'widgets.dart';
@@ -126,7 +127,7 @@ class ImagePickOptionWidget extends StatelessWidget {
           gap24,
           Text(
             "context.local.chooseImageSource",
-            style: context.titleSmall.copyWith(
+            style: context.titleSmall!.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20.sp,
             ),
@@ -145,12 +146,12 @@ class ImagePickOptionWidget extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.camera,
-                        color: context.color.secondary,
+                        color: context.colors.secondary,
                         size: 60.sp,
                       ),
                       Text(
                         "context.local.fromCamera",
-                        style: context.titleSmall.copyWith(
+                        style: context.titleSmall!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -169,12 +170,12 @@ class ImagePickOptionWidget extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.image,
-                        color: context.color.secondary,
+                        color: context.colors.secondary,
                         size: 60.sp,
                       ),
                       Text(
                         "context.local.fromGallery",
-                        style: context.titleSmall.copyWith(
+                        style: context.titleSmall!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),

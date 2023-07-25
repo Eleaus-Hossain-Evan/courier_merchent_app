@@ -17,8 +17,8 @@ class ColorPalate {
   static const Color primary = Color(0xff8dbb4f);
   static const Color primary200 = Color(0xff709e33);
   static const Color primary300 = Color(0xff6b992e);
-  static const Color secondary = Color(0xffFFD700);
-  static const Color secondary200 = Color(0xffB39600);
+  static const Color secondary = Color(0xFFFFBB00);
+  static const Color secondary200 = Color.fromARGB(255, 179, 131, 0);
   static const Color tertiary = Color(0xFFBBEBEC);
 
   static const Color text100 = Color(0xFFFFFFFF);

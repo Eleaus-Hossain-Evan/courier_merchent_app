@@ -52,7 +52,7 @@ class AppStrings {
   static const String updateHub = "Update Hub";
   static const String support = "Support";
 
-  //#----------------  Auth ----------------
+  //#----------------  Notification ----------------
   static const String notifications = "Notifications";
 
   //#----------------  Auth ----------------
@@ -70,4 +70,5 @@ class AppStrings {
   static const String orSignupWith = "or Sign up with";
   static const String signUpPrivacyPolicy =
       "By clicking Sign Up, you agree to our Terms of Use and our Privacy Policy.";
+  static const String reTypePassword = "Re-Type Password";
 }

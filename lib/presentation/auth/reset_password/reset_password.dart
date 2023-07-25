@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
@@ -36,7 +37,7 @@ class ResetPasswordScreen extends HookConsumerWidget {
               padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 40, 0),
               child: Text(
                 "context.local.resetPasswordBelowText",
-                style: context.bodyMedium.copyWith(
+                style: context.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
                   color: ColorPalate.black,
@@ -64,7 +65,7 @@ class ResetPasswordScreen extends HookConsumerWidget {
                     ),
                     gap24,
                     KElevatedButton(
-                      backgroundColor: context.color.secondary,
+                      backgroundColor: context.colors.secondary,
                       onPressed: () {
                         // context.push(EmailSentScreen.route);
                       },

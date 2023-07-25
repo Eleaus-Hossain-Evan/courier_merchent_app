@@ -13,4 +13,6 @@ class Images {
   static const String logo = 'assets/images/logo.png';
   static const String iconFacebook = 'assets/icons/facebook.png';
   static const String iconGoogle = 'assets/icons/google.png';
+  static const String animAnimationLogin =
+      'assets/animations/animation_login.json';
 }

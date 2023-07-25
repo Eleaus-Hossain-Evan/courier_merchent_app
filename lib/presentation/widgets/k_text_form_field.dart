@@ -162,7 +162,7 @@ class KTextFormField2 extends HookConsumerWidget {
     this.textAlign = TextAlign.start,
     this.suffixIcon,
     this.readOnly = false,
-    this.isLabel = false,
+    this.isLabel = true,
     this.onTap,
     this.prefix,
     this.validator,

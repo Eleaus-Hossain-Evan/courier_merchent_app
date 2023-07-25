@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../../application/auth/auth_provider.dart';
 import '../../../domain/auth/login_body.dart';
@@ -43,7 +44,17 @@ class LoginScreen extends HookConsumerWidget {
           child: Column(
             crossAxisAlignment: crossStart,
             children: [
-              Gap(104.h),
+              Gap(80.h),
+              Images.logo.assetImage(width: .6.sw).centered(),
+              "Merchant"
+                  .text
+                  .xl3
+                  .bold
+                  .colorPrimary(context)
+                  .italic
+                  .makeCentered(),
+              divider.w(.3.sw).centered(),
+              gap36,
               Text(
                 AppStrings.login.toTitleCase(),
                 style: CustomTextStyle.textStyle30w700,
@@ -53,13 +64,12 @@ class LoginScreen extends HookConsumerWidget {
                 AppStrings.loginBelowText,
                 style: CustomTextStyle.textStyle16w400HG900,
               ),
-              gap32,
+              gap24,
               KTextFormField2(
                 controller: phoneController,
                 focusNode: phoneFocus,
                 keyboardType: TextInputType.text,
                 hintText: AppStrings.phoneNumberOrEmail,
-                isLabel: true,
               ),
               gap16,
               KTextFormField2(
@@ -67,8 +77,9 @@ class LoginScreen extends HookConsumerWidget {
                 focusNode: passwordFocus,
                 keyboardType: TextInputType.text,
                 hintText: AppStrings.password,
-                isLabel: true,
+                isObscure: true,
               ),
+
               gap24,
               FilledButton(
                 onPressed: () async {

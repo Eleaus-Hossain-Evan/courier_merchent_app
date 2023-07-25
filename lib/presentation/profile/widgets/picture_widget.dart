@@ -1,3 +1,5 @@
+import 'package:velocity_x/velocity_x.dart';
+
 import '../../../utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,7 +51,7 @@ class ProfilePicWidget extends HookConsumerWidget {
                     )
                   : CircleAvatar(
                       radius: 40.w,
-                      backgroundColor: context.color.onPrimaryContainer,
+                      backgroundColor: context.colors.onPrimaryContainer,
                       child: const Icon(
                         Icons.person_outline,
                         size: 80,
