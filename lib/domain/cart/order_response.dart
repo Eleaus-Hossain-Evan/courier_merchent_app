@@ -2,13 +2,11 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import '../auth/model/address_info.dart';
-
 class OrderResponse extends Equatable {
   final Data data;
   final bool success;
   final String message;
-  OrderResponse({
+  const OrderResponse({
     required this.data,
     required this.success,
     required this.message,
@@ -66,7 +64,7 @@ class Data extends Equatable {
   final String customer;
   final List<Order> orders;
   final String orderId;
-  final AddressInfo addressInfo;
+  // final AddressInfo addressInfo;
   final int paymentType;
   final int deliveryCharge;
   final int paymentStatus;
@@ -75,12 +73,11 @@ class Data extends Equatable {
   final String createdAt;
   final String updatedAt;
   final int v;
-  Data({
+  const Data({
     required this.id,
     required this.customer,
     required this.orders,
     required this.orderId,
-    required this.addressInfo,
     required this.paymentType,
     required this.deliveryCharge,
     required this.paymentStatus,
@@ -91,12 +88,11 @@ class Data extends Equatable {
     required this.v,
   });
 
-  factory Data.init() => Data(
+  factory Data.init() => const Data(
         id: '',
         customer: '',
-        orders: const [],
+        orders: [],
         orderId: '',
-        addressInfo: AddressInfo.init(),
         paymentType: 0,
         deliveryCharge: 0,
         paymentStatus: 0,
@@ -112,7 +108,6 @@ class Data extends Equatable {
     String? customer,
     List<Order>? orders,
     String? orderId,
-    AddressInfo? addressInfo,
     int? paymentType,
     int? deliveryCharge,
     int? paymentStatus,
@@ -127,7 +122,6 @@ class Data extends Equatable {
       customer: customer ?? this.customer,
       orders: orders ?? this.orders,
       orderId: orderId ?? this.orderId,
-      addressInfo: addressInfo ?? this.addressInfo,
       paymentType: paymentType ?? this.paymentType,
       deliveryCharge: deliveryCharge ?? this.deliveryCharge,
       paymentStatus: paymentStatus ?? this.paymentStatus,
@@ -141,11 +135,10 @@ class Data extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      '_id': id,
+      'id': id,
       'customer': customer,
       'orders': orders.map((x) => x.toMap()).toList(),
       'orderId': orderId,
-      'addressInfo': addressInfo.toMap(),
       'paymentType': paymentType,
       'deliveryCharge': deliveryCharge,
       'paymentStatus': paymentStatus,
@@ -153,18 +146,17 @@ class Data extends Equatable {
       'totalReceivedBill': totalReceivedBill,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      '__v': v,
+      'v': v,
     };
   }
 
   factory Data.fromMap(Map<String, dynamic> map) {
     return Data(
-      id: map['_id'] ?? '',
+      id: map['id'] ?? '',
       customer: map['customer'] ?? '',
       orders: List<Order>.from(
           map['orders']?.map((x) => Order.fromMap(x)) ?? const []),
       orderId: map['orderId'] ?? '',
-      addressInfo: AddressInfo.fromMap(map['addressInfo']),
       paymentType: map['paymentType']?.toInt() ?? 0,
       deliveryCharge: map['deliveryCharge']?.toInt() ?? 0,
       paymentStatus: map['paymentStatus']?.toInt() ?? 0,
@@ -172,7 +164,7 @@ class Data extends Equatable {
       totalReceivedBill: map['totalReceivedBill']?.toInt() ?? 0,
       createdAt: map['createdAt'] ?? '',
       updatedAt: map['updatedAt'] ?? '',
-      v: map['__v']?.toInt() ?? 0,
+      v: map['v']?.toInt() ?? 0,
     );
   }
 
@@ -182,7 +174,7 @@ class Data extends Equatable {
 
   @override
   String toString() {
-    return 'Data(_id: $id, customer: $customer, orders: $orders, orderId: $orderId, addressInfo: $addressInfo, paymentType: $paymentType, deliveryCharge: $deliveryCharge, paymentStatus: $paymentStatus, totalBill: $totalBill, totalReceivedBill: $totalReceivedBill, createdAt: $createdAt, updatedAt: $updatedAt, __v: $v)';
+    return 'Data(id: $id, customer: $customer, orders: $orders, orderId: $orderId, paymentType: $paymentType, deliveryCharge: $deliveryCharge, paymentStatus: $paymentStatus, totalBill: $totalBill, totalReceivedBill: $totalReceivedBill, createdAt: $createdAt, updatedAt: $updatedAt, v: $v)';
   }
 
   @override
@@ -192,7 +184,6 @@ class Data extends Equatable {
       customer,
       orders,
       orderId,
-      addressInfo,
       paymentType,
       deliveryCharge,
       paymentStatus,
@@ -217,7 +208,7 @@ class Order extends Equatable {
   final String type;
   final int customerBitAmount;
   final bool bidingAcceptByVendor;
-  Order({
+  const Order({
     required this.id,
     required this.vendor,
     required this.parts,

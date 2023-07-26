@@ -30,7 +30,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
     Logger.d("result: $result");
     result.fold(
       (l) {
-        ref.watch(snackBarProvider(l.error));
+        ref.watch(snackBarProvider(l.error.message));
         return state = state.copyWith(failure: l, loading: false);
       },
       (r) => state = state.copyWith(homeData: r.data, loading: false),

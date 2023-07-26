@@ -7,13 +7,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../domain/auth/login_body.dart';
 import '../../domain/auth/model/user_model.dart';
 import '../../domain/auth/profile_update_body.dart';
-import '../../domain/auth/signup_body.dart';
+import '../../domain/auth/signUp_body.dart';
 import '../../infrastructure/auth_repository.dart';
-import '../../presentation/main_nav/main_nav.dart';
 import '../../route/go_router.dart';
 import '../../utils/utils.dart';
 import '../global.dart';
-import '../local_storage/storage_handler.dart';
 import 'auth_state.dart';
 import 'loggedin_provider.dart';
 
@@ -31,121 +29,44 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(user: user);
   }
 
-  void setLanguage(String l) {
-    state = state.copyWith(language: l);
-  }
-
-  void signUp(SignupBody body) async {
+  void signUp(SignUpBody body) async {
     state = state.copyWith(loading: true);
 
-    // final res = await repo.signUp(body);
+    final res = await repo.signUp(body);
 
-    // showNotification(
-    //   title: res.match((l) {
-    //     return l.error;
-    //   }, (r) => r.message),
-    // );
-
-    // state = res.fold(
-    //   (l) {
-    //     // CleanFailureDialogue.show(context, failure: l);
-    //     // showSnackBar(context, l.error);
-    //     return state.copyWith(failure: l, loading: false);
-    //   },
-    //   (r) {
-    //     success = r.success;
-    //     return state.copyWith(user: r.user, loading: false);
-    //   },
-    // );
-    // return success;
-    await Future.delayed(
-      const Duration(seconds: 1),
-      () {
-        return state = state.copyWith(loading: false);
+    state = res.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return state.copyWith(failure: l, loading: false);
+      },
+      (r) {
+        showToast(r.message);
+        ref
+            .read(loggedInProvider.notifier)
+            .updateAuthCache(token: r.data.token, user: r.data);
+        return state.copyWith(user: r.data, loading: false);
       },
     );
-
-    ref.read(routerProvider).replace(MainNav.route);
   }
 
   void login(LoginBody body) async {
     state = state.copyWith(loading: true);
 
-    // final result = await repo.loginGetOtp(body);
-
-    // state = result.fold(
-    //   (l) {
-    //     showToast(l.error);
-    //     return state = state.copyWith(failure: l, loading: false);
-    //   },
-    //   (r) {
-    //     success = r.success;
-    //     showToast(r.message);
-    //     return state.copyWith(loading: false);
-    //   },
-    // );
-
-    await Future.delayed(
-      const Duration(seconds: 1),
-      () {
-        return state = state.copyWith(loading: false);
-      },
-    );
-
-    ref.read(routerProvider).replace(MainNav.route);
-  }
-
-  Future<bool> loginGetOtp(LoginBody body) async {
-    bool success = false;
-    state = state.copyWith(loading: true);
-
-    final result = await repo.loginGetOtp(body);
+    final result = await repo.login(body);
 
     state = result.fold(
       (l) {
-        showToast(l.error);
-        return state = state.copyWith(failure: l, loading: false);
-      },
-      (r) {
-        success = r.success;
-        showToast(r.message);
-        return state.copyWith(loading: false);
-      },
-    );
-    return success;
-  }
-
-  Future<bool> loginCheckOtp(LoginOtpBody body) async {
-    bool success = false;
-    state = state.copyWith(loading: true);
-
-    final result = await repo.loginCheckOtp(body);
-
-    state = result.fold(
-      (l) {
-        BotToast.showText(text: l.error, contentColor: ColorPalate.error);
+        showErrorToast(l.error.message);
         return state = state.copyWith(failure: l, loading: false);
       },
       (r) {
         showToast(r.message);
         ref
             .read(loggedInProvider.notifier)
-            .updateAuthCache(token: r.user.token, user: r.user);
-        // ref.read(loggedInProvider.notifier).isLoggedIn();
-        success = r.success;
-
-        final String deviceToken = ref
-            .read(hiveProvider)
-            .get(AppStrings.firebaseToken, defaultValue: '');
-
-        Logger.d("deviceToken: $deviceToken");
-
-        if (deviceToken.isNotEmpty) repo.setDeviceToken(deviceToken);
-
-        return state.copyWith(user: r.user, loading: false);
+            .updateAuthCache(token: r.data.token, user: r.data);
+        return state = state.copyWith(user: r.data, loading: false);
       },
     );
-    return success;
   }
 
   void logout() {
@@ -164,11 +85,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     state = result.fold(
       (l) {
-        BotToast.showText(text: l.error, contentColor: ColorPalate.error);
+        BotToast.showText(
+            text: l.error.message, contentColor: ColorPalate.error);
         return state = state.copyWith(failure: l, loading: false);
       },
       (r) {
-        return state.copyWith(user: r.user, loading: false);
+        return state.copyWith(user: r.data, loading: false);
       },
     );
   }
@@ -185,12 +107,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     state = result.fold(
       (l) {
-        BotToast.showText(text: l.error, contentColor: ColorPalate.error);
+        BotToast.showText(
+            text: l.error.message, contentColor: ColorPalate.error);
         return state = state.copyWith(failure: l, loading: false);
       },
       (r) {
         ref.read(routerProvider).pop();
-        return state.copyWith(user: r.user, loading: false);
+        return state.copyWith(user: r.data, loading: false);
       },
     );
   }

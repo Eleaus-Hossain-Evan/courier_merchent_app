@@ -20,8 +20,8 @@ class LoginScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey.new);
-    final phoneController = useTextEditingController();
-    final passwordController = useTextEditingController();
+    final emailPhoneController = useTextEditingController(text: "01521334958");
+    final passwordController = useTextEditingController(text: "123456");
     final phoneFocus = useFocusScopeNode();
     final passwordFocus = useFocusScopeNode();
 
@@ -62,11 +62,11 @@ class LoginScreen extends HookConsumerWidget {
               gap8,
               Text(
                 AppStrings.loginBelowText,
-                style: CustomTextStyle.textStyle16w400HG900,
+                style: CustomTextStyle.textStyle16w400Black900,
               ),
               gap24,
               KTextFormField2(
-                controller: phoneController,
+                controller: emailPhoneController,
                 focusNode: phoneFocus,
                 keyboardType: TextInputType.text,
                 hintText: AppStrings.phoneNumberOrEmail,
@@ -83,9 +83,10 @@ class LoginScreen extends HookConsumerWidget {
               gap24,
               FilledButton(
                 onPressed: () async {
-                  ref
-                      .read(authProvider.notifier)
-                      .login(LoginBody(phone: phoneController.text));
+                  ref.read(authProvider.notifier).login(LoginBody(
+                        value: emailPhoneController.text,
+                        password: passwordController.text,
+                      ));
                 },
                 child: const Text(
                   AppStrings.login,
@@ -160,7 +161,7 @@ class LoginScreen extends HookConsumerWidget {
                 alignment: Alignment.center,
                 child: Text(
                   AppStrings.dontHaveAccount,
-                  style: CustomTextStyle.textStyle16w500HG900,
+                  style: CustomTextStyle.textStyle16w500Black900,
                 ),
               ),
               gap16,

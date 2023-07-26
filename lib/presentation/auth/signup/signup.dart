@@ -3,30 +3,30 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../application/auth/auth_provider.dart';
-import '../../../domain/auth/signup_body.dart';
+import '../../../domain/auth/signUp_body.dart';
 import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
 import '../login/login.dart';
 
 class SignupScreen extends HookConsumerWidget {
-  static String route = "/signup";
+  static String route = "/sign-up";
   const SignupScreen({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(authProvider);
-
     final formKey = useMemoized(GlobalKey<FormState>.new);
-    final firstNameController = useTextEditingController();
-    final lastNameController = useTextEditingController();
+    final nameController = useTextEditingController();
     final emailController = useTextEditingController();
     final phoneController = useTextEditingController();
-    final referralController = useTextEditingController();
     final passwordController = useTextEditingController();
+    final rePasswordController = useTextEditingController();
 
     final firstNameFocusNode = useFocusNode();
     final lastNameFocusNode = useFocusNode();
@@ -34,6 +34,7 @@ class SignupScreen extends HookConsumerWidget {
     final phoneFocusNode = useFocusNode();
     final referralFocusNode = useFocusNode();
     final passwordFocusNode = useFocusNode();
+    final rePasswordFocusNode = useFocusNode();
 
     ref.listen(authProvider, (previous, next) {
       if (previous!.loading == false && next.loading) {
@@ -55,11 +56,12 @@ class SignupScreen extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: crossStart,
                 children: [
+                  gap28,
                   Text(
-                    AppStrings.signup.toTitleCase(),
+                    AppStrings.signUp.toTitleCase(),
                     style: CustomTextStyle.textStyle32w600,
                   ),
-                  gap20,
+                  gap6,
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 40, 0),
                     child: Text(
@@ -72,34 +74,16 @@ class SignupScreen extends HookConsumerWidget {
                     ),
                   ),
                   gap36,
-                  Row(
-                    children: [
-                      Flexible(
-                        child: KTextFormField2(
-                          focusNode: firstNameFocusNode,
-                          hintText: AppStrings.firstName,
-                          isLabel: true,
-                          controller: firstNameController,
-                          textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (value) {
-                            lastNameFocusNode.requestFocus();
-                          },
-                        ),
-                      ),
-                      gap16,
-                      Flexible(
-                        child: KTextFormField2(
-                          hintText: AppStrings.lastName,
-                          isLabel: true,
-                          controller: lastNameController,
-                          textInputAction: TextInputAction.next,
-                          focusNode: lastNameFocusNode,
-                          onFieldSubmitted: (value) {
-                            emailFocusNode.requestFocus();
-                          },
-                        ),
-                      ),
-                    ],
+                  KTextFormField2(
+                    focusNode: firstNameFocusNode,
+                    hintText: AppStrings.name,
+                    isLabel: true,
+                    controller: nameController,
+                    textInputAction: TextInputAction.next,
+                    validator: ValidationBuilder().maxLength(15).build(),
+                    onFieldSubmitted: (value) {
+                      lastNameFocusNode.requestFocus();
+                    },
                   ),
                   gap16,
                   KTextFormField2(
@@ -108,6 +92,8 @@ class SignupScreen extends HookConsumerWidget {
                     controller: emailController,
                     focusNode: emailFocusNode,
                     keyboardType: TextInputType.emailAddress,
+                    validator:
+                        ValidationBuilder().maxLength(30).email().build(),
                     onFieldSubmitted: (value) {
                       phoneFocusNode.requestFocus();
                     },
@@ -119,6 +105,11 @@ class SignupScreen extends HookConsumerWidget {
                     controller: phoneController,
                     focusNode: phoneFocusNode,
                     keyboardType: TextInputType.phone,
+                    validator: ValidationBuilder()
+                        .maxLength(11)
+                        .minLength(11)
+                        .phone()
+                        .build(),
                     onFieldSubmitted: (value) {
                       referralFocusNode.requestFocus();
                     },
@@ -127,24 +118,31 @@ class SignupScreen extends HookConsumerWidget {
                   KTextFormField2(
                     hintText: AppStrings.password,
                     isLabel: true,
-                    controller: phoneController,
-                    focusNode: phoneFocusNode,
+                    controller: passwordController,
+                    focusNode: passwordFocusNode,
                     isObscure: true,
-                    keyboardType: TextInputType.phone,
+                    validator: ValidationBuilder().minLength(6).build(),
                     onFieldSubmitted: (value) {
                       referralFocusNode.requestFocus();
                     },
                   ),
                   gap16,
                   KTextFormField2(
-                    controller: passwordController,
-                    focusNode: passwordFocusNode,
-                    keyboardType: TextInputType.text,
+                    controller: rePasswordController,
+                    focusNode: rePasswordFocusNode,
                     hintText: AppStrings.reTypePassword,
                     isObscure: true,
+                    validator: ValidationBuilder().minLength(6).add((value) {
+                      if (value != passwordController.text) {
+                        return "Password doesn't match";
+                      }
+                      return null;
+                    }).build(),
+                    onFieldSubmitted: (value) {
+                      referralFocusNode.requestFocus();
+                    },
                   ),
                   gap24,
-                  gap12,
                   Text(
                     AppStrings.signUpPrivacyPolicy,
                     textAlign: TextAlign.center,
@@ -155,65 +153,65 @@ class SignupScreen extends HookConsumerWidget {
                       color: ColorPalate.black600,
                     ),
                   ),
-                  gap12,
+                  gap8,
                   KFilledButton(
                     onPressed: () async {
                       FocusManager.instance.primaryFocus?.unfocus();
                       ref.read(authProvider.notifier).signUp(
-                            SignupBody(
-                              firstName: firstNameController.text,
-                              lastName: lastNameController.text,
+                            SignUpBody(
+                              name: nameController.text,
                               email: emailController.text,
                               phone: phoneController.text,
-                              usedReferralCode: referralController.text,
-                              language: state.language,
+                              password: passwordController.text,
+                              address: '',
                             ),
                           );
                     },
-                    text: AppStrings.signup,
+                    text: AppStrings.signUp,
                   ),
                   gap24,
                   Center(
-                    child: Text(
-                      AppStrings.orSignupWith,
-                      textAlign: TextAlign.center,
-                      style: context.titleSmall!.copyWith(
-                        color: ColorPalate.black600,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.50,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: mainCenter,
+                      children: [
+                        Text(
+                          AppStrings.orSignUpWith,
+                          textAlign: TextAlign.center,
+                          style: context.titleSmall!.copyWith(
+                            color: ColorPalate.black600,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.50,
+                          ),
+                        ),
+                        gap10,
+                        KInkWell(
+                          onTap: () {},
+                          borderRadius: BorderRadius.circular(100.r),
+                          child: Logo(
+                            Logos.google,
+                            size: 12.sp,
+                          ).p12(),
+                        )
+                            .box
+                            .colorSecondary(context, opacity: .2)
+                            .roundedFull
+                            .make(),
+                        gap10,
+                        KInkWell(
+                          onTap: () {},
+                          borderRadius: BorderRadius.circular(100.r),
+                          child: Logo(
+                            Logos.facebook_f,
+                            size: 12.sp,
+                          ).p12(),
+                        )
+                            .box
+                            .colorSecondary(context, opacity: .2)
+                            .roundedFull
+                            .make(),
+                      ],
                     ),
-                  ),
-                  gap16,
-                  Row(
-                    children: [
-                      Flexible(
-                        child: KElevatedButton(
-                          // backgroundColor: ColorPalate.fbColor,
-                          onPressed: () => context.push(SignupScreen.route),
-                          text: '',
-                          child: Image.asset(
-                            Images.iconFacebook,
-                            height: 40.h,
-                            width: 40.w,
-                          ),
-                        ),
-                      ),
-                      gap16,
-                      Flexible(
-                        child: KElevatedButton(
-                          // backgroundColor: ColorPalate.googleColor,
-                          onPressed: () => context.push(SignupScreen.route),
-                          text: '',
-                          child: Image.asset(
-                            Images.iconGoogle,
-                            height: 20.h,
-                            width: 20.w,
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                   gap28,
                   Align(
@@ -223,7 +221,7 @@ class SignupScreen extends HookConsumerWidget {
                         text: AppStrings.alreadyHaveAccount,
                         style: context.titleSmall!.copyWith(
                           color: ColorPalate.black600,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
                         children: [
@@ -246,13 +244,6 @@ class SignupScreen extends HookConsumerWidget {
                       ),
                     ),
                   ),
-                  // gap16,
-                  // KElevatedButton(
-                  //   onPressed: () {
-                  //     context.go(LoginScreen.route);
-                  //   },
-                  //   text: AppStrings.login,
-                  // ),
                 ],
               ),
             ),

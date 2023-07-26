@@ -20,11 +20,7 @@ class CartRepo {
 
     Logger.v("data: $data");
 
-    return data.fold((l) {
-      final error = jsonDecode(l.error);
-      final failure = l.copyWith(error: error['error']["message"]);
-      return left(failure);
-    }, (r) => right(r));
+    return data;
   }
 
   Future<Either<CleanFailure, SimpleResponse>> bidPart(
@@ -38,10 +34,6 @@ class CartRepo {
 
     Logger.v("data: $data");
 
-    return data.fold((l) {
-      final error = jsonDecode(l.error);
-      final failure = l.copyWith(error: error['error']["message"]);
-      return left(failure);
-    }, (r) => right(r));
+    return data;
   }
 }

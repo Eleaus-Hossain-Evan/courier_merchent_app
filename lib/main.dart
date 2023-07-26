@@ -70,10 +70,8 @@ class MyApp extends HookConsumerWidget {
     final user = ref.watch(loggedInProvider.notifier).user.copyWith(
           name: "name",
           email: "evan@email.com",
-          firstName: "Evan",
-          lastName: "Hossain",
           phone: "01234567890",
-          profilePicture: "https://i.pravatar.cc/300",
+          image: "https://i.pravatar.cc/300",
         );
 
     useEffect(() {

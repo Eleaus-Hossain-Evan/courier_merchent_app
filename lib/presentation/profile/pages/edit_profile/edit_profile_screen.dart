@@ -5,6 +5,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:select2dot1/select2dot1.dart';
+import 'package:velocity_x/velocity_x.dart';
 import '../../../../application/auth/auth_provider.dart';
 import '../../../../application/auth/auth_state.dart';
 import '../../../../domain/auth/profile_update_body.dart';
@@ -26,7 +28,7 @@ class EditProfileScreen extends HookConsumerWidget {
     final imageFile = useState<File?>(null);
     final avatar = useState('');
 
-    final firstNameController = useTextEditingController();
+    final nameController = useTextEditingController();
     final lastNameController = useTextEditingController();
     final emailController = useTextEditingController();
     final phoneController = useTextEditingController();
@@ -46,8 +48,7 @@ class EditProfileScreen extends HookConsumerWidget {
         } else {
           closeLoading();
 
-          firstNameController.text = next.user.firstName;
-          lastNameController.text = next.user.lastName;
+          nameController.text = next.user.name;
           // setDate(next.user.dateOfBirth);
           emailController.text = next.user.email;
           phoneController.text = next.user.phone;
@@ -55,8 +56,7 @@ class EditProfileScreen extends HookConsumerWidget {
       },
     );
 
-    final firstName = useState(firstNameController.text);
-    final lastName = useState(lastNameController.text);
+    final firstName = useState(nameController.text);
     final email = useState(emailController.text);
     final phone = useState(phoneController.text);
 
@@ -64,6 +64,19 @@ class EditProfileScreen extends HookConsumerWidget {
       // Future.microtask(() => ref.read(authProvider.notifier).profileView());
       return null;
     }, []);
+
+    const List<SingleCategoryModel> exampleData3 = [
+      SingleCategoryModel(
+        nameCategory: null,
+        singleItemCategoryList: [
+          SingleItemCategoryModel(nameSingleItem: 'Alabama'),
+          SingleItemCategoryModel(nameSingleItem: 'Arkansas'),
+          SingleItemCategoryModel(nameSingleItem: 'California'),
+          SingleItemCategoryModel(nameSingleItem: 'Illonois'),
+          SingleItemCategoryModel(nameSingleItem: 'Las Vegas'),
+        ],
+      ),
+    ];
 
     return Scaffold(
       appBar: KAppBar(
@@ -76,10 +89,10 @@ class EditProfileScreen extends HookConsumerWidget {
                 ref.read(authProvider.notifier).profileUpdate(
                     ProfileUpdateBody(
                       email: emailController.text.trim(),
-                      firstName: firstNameController.text.trim(),
+                      firstName: nameController.text.trim(),
                       lastName: lastNameController.text.trim(),
                       phone: phoneController.text.trim(),
-                      profilePicture: state.user.profilePicture,
+                      profilePicture: state.user.image,
                     ),
                     imageFile.value);
               },
@@ -95,80 +108,153 @@ class EditProfileScreen extends HookConsumerWidget {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Form(
           key: formKey,
-          child: Container(
-            padding: paddingH16,
-            decoration: BoxDecoration(
-              color: ColorPalate.white,
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            child: Column(
-              crossAxisAlignment: crossStart,
-              children: [
-                gap20,
-                ImagePickWidget(
-                  imageFile: imageFile,
-                  image: state.user.profilePicture,
-                  defaultWidget: Icon(
-                    Icons.person,
-                    size: 68.sp,
-                    color: ColorPalate.secondary,
-                  ),
-                  editIcon: true,
-                  builder: (imageProvider, child) => CircleAvatar(
-                    radius: 48.r,
-                    backgroundColor: ColorPalate.secondary.withOpacity(.2),
-                    backgroundImage: imageProvider,
-                    child: child,
-                  ),
+          child: Column(
+            children: [
+              Container(
+                padding: paddingH16,
+                decoration: BoxDecoration(
+                  color: ColorPalate.white,
+                  borderRadius: BorderRadius.circular(16.r),
                 ),
-                gap36,
-                KTextFormField2(
-                  hintText: AppStrings.firstName,
-                  controller: firstNameController,
-                  isLabel: true,
-                  validator: ValidationBuilder().maxLength(15).build(),
-                  onChanged: (value) {
-                    firstName.value = value;
-                  },
+                child: Column(
+                  crossAxisAlignment: crossStart,
+                  children: [
+                    gap20,
+                    ImagePickWidget(
+                      imageFile: imageFile,
+                      image: state.user.image,
+                      defaultWidget: Icon(
+                        Icons.person,
+                        size: 68.sp,
+                        color: ColorPalate.secondary,
+                      ),
+                      editIcon: true,
+                      builder: (imageProvider, child) => CircleAvatar(
+                        radius: 48.r,
+                        backgroundColor: ColorPalate.secondary.withOpacity(.2),
+                        backgroundImage: imageProvider,
+                        child: child,
+                      ),
+                    ),
+                    gap36,
+                    KTextFormField2(
+                      hintText: AppStrings.name,
+                      controller: nameController,
+                      isLabel: true,
+                      validator: ValidationBuilder().maxLength(15).build(),
+                      onChanged: (value) {
+                        firstName.value = value;
+                      },
+                    ),
+                    gap16,
+                    KTextFormField2(
+                      hintText: AppStrings.email,
+                      controller: emailController,
+                      isLabel: true,
+                      validator:
+                          ValidationBuilder().maxLength(30).email().build(),
+                      onChanged: (value) {
+                        email.value = value;
+                      },
+                    ),
+                    gap16,
+                    KTextFormField2(
+                      hintText: AppStrings.phoneNumber,
+                      controller: phoneController,
+                      isLabel: true,
+                      readOnly: true,
+                      validator: ValidationBuilder()
+                          .maxLength(11)
+                          .minLength(11)
+                          .phone()
+                          .build(),
+                      onChanged: (value) {
+                        phone.value = value;
+                      },
+                    ),
+                    gap28,
+                  ],
                 ),
-                gap24,
-                KTextFormField2(
-                  hintText: AppStrings.lastName,
-                  controller: lastNameController,
-                  isLabel: true,
-                  validator: ValidationBuilder().maxLength(15).build(),
-                  onChanged: (value) {
-                    lastName.value = value;
-                  },
+              ),
+              gap24,
+              "Address".text.lg.make().objectCenterLeft(),
+              gap8,
+              Container(
+                padding: paddingH16,
+                decoration: BoxDecoration(
+                  color: ColorPalate.white,
+                  borderRadius: BorderRadius.circular(16.r),
                 ),
-                gap24,
-                KTextFormField2(
-                  hintText: AppStrings.email,
-                  controller: emailController,
-                  isLabel: true,
-                  validator: ValidationBuilder().maxLength(30).email().build(),
-                  onChanged: (value) {
-                    email.value = value;
-                  },
+                child: Column(
+                  children: [
+                    gap20,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: KTextFormField2(
+                            hintText: "City",
+                            readOnly: true,
+                            onTap: () {},
+                          ),
+                        ),
+                        gap16,
+                        Flexible(
+                          child: KTextFormField2(
+                            hintText: "Thana",
+                            readOnly: true,
+                            onTap: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                    gap16,
+                    Select2dot1(
+                      selectDataController: SelectDataController(
+                        data: exampleData3,
+                        isMultiSelect: false,
+                      ),
+                      // globalSettings: GlobalSettings(
+                      //   mainColor: ColorPalate.primary,
+                      //   backgroundColor: ColorPalate.bg100,
+                      //   activeColor: context.colors.primary,
+                      // ),
+                      // searchBarModalBuilder: (context, searchBarModalDetails) {
+                      //   return TextFormField(
+                      //     controller:
+                      //         searchBarModalDetails.searchBarModalController,
+                      //     onChanged: (value) => searchBarModalDetails
+                      //         .onChangedSearchBarController,
+                      //   ).cornerRadius(6.r).px12();
+                      // },
+                      // doneButtonModalSettings: DoneButtonModalSettings(
+                      //   margin: EdgeInsets.only(
+                      //     bottom: 16.h,
+                      //     right: 12.w,
+                      //     top: 6.h,
+                      //   ),
+                      // ),
+                      // dropdownModalSettings: const DropdownModalSettings(
+                      //   backgroundColor: ColorPalate.bg100,
+                      // ),
+                    ),
+                    Select2dot1(
+                      selectDataController:
+                          SelectDataController(data: exampleData3),
+                      globalSettings: const GlobalSettings(
+                        fontFamily: 'Roboto',
+                        mainColor: Colors.blue,
+                      ),
+                    ),
+                    gap16,
+                    const KTextFormField2(
+                      hintText: "Address",
+                      isLabel: true,
+                    ),
+                    gap20,
+                  ],
                 ),
-                gap24,
-                KTextFormField2(
-                  hintText: AppStrings.phoneNumber,
-                  controller: phoneController,
-                  isLabel: true,
-                  readOnly: true,
-                  validator: ValidationBuilder()
-                      .maxLength(11)
-                      .minLength(11)
-                      .phone()
-                      .build(),
-                  onChanged: (value) {
-                    phone.value = value;
-                  },
-                ),
-                gap28,
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

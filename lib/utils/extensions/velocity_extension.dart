@@ -1,8 +1,15 @@
 part of 'extensions.dart';
 
-extension BoxColor on VxTextBuilder {
+extension TextColor on VxTextBuilder {
   VxTextBuilder colorPrimary(BuildContext context) =>
       color(context.colors.primary);
   VxTextBuilder colorSecondary(BuildContext context) =>
       color(context.colors.secondary);
+}
+
+extension BoxColor on VxBox {
+  VxBox colorPrimary(BuildContext context, {double? opacity}) =>
+      color(context.colors.primary.withOpacity(opacity ?? 1));
+  VxBox colorSecondary(BuildContext context, {double? opacity}) =>
+      color(context.colors.secondary.withOpacity(opacity ?? 1));
 }

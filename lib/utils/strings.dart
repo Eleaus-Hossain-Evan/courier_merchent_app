@@ -40,8 +40,7 @@ class AppStrings {
   static const String changePassword = "Change Password";
   static const String logout = "Logout";
   static const String save = "Save";
-  static const String firstName = "First Name";
-  static const String lastName = "Last Name";
+  static const String name = "Name";
   static const String email = "Email";
   static const String phoneNumber = "Phone Number";
   static const String phoneNumberOrEmail = "Phone Number or Email";
@@ -56,7 +55,7 @@ class AppStrings {
   static const String notifications = "Notifications";
 
   //#----------------  Auth ----------------
-  static const String signup = "Sign Up";
+  static const String signUp = "Sign Up";
   static const String login = "Sign In";
   static const String signupBelowText =
       "Press the signup button for create a new account";
@@ -67,7 +66,7 @@ class AppStrings {
   static const String dontHaveAccount = "Don't have account yet?";
   static const String alreadyHaveAccount = "Already have an Account";
   static const String createAccount = "Create Account";
-  static const String orSignupWith = "or Sign up with";
+  static const String orSignUpWith = "or Sign up with";
   static const String signUpPrivacyPolicy =
       "By clicking Sign Up, you agree to our Terms of Use and our Privacy Policy.";
   static const String reTypePassword = "Re-Type Password";

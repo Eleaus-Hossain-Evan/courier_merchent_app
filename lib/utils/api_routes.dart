@@ -4,14 +4,13 @@ class APIRoute {
   static const String DUMMY_PERSON = 'https://i.pravatar.cc/300';
   static const String WEB_URL = "";
 
-  static const String BASE_URL = "https://senaiyah-api.b2gsoft.xyz/";
+  static const String BASE_URL = "https://api.courier.b2gsoft.xyz/";
   // static const String BASE_URL = "https://api.senaiyah.com/";
   // static const String BASE_URL_LOCAL = "http://192.168.68.118:3697/";
   static const String API_V1 = "api/v1/";
 
-  static const String SIGNUP = "${API_V1}customer/registration";
-  static const String LIGNIN_SEND_OTP = "${API_V1}customer/phone/login";
-  static const String LIGNIN_CHECK_OTP = "${API_V1}customer/phone/otp-check";
+  static const String SIGN_UP = "${API_V1}merchant/registration";
+  static const String LOGIN = "${API_V1}merchant/login";
   static const String PROFILE_VIEW = "${API_V1}customer/profile/view";
   static const String PROFILE_UPDATE = "${API_V1}customer/profile/update";
   static const String IMAGE_UPLOAD = "${API_V1}admin/image/upload";

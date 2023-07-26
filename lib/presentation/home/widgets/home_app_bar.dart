@@ -29,7 +29,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
           ),
           Text(
             AppStrings.welcome(""),
-            style: CustomTextStyle.textStyle18w600HG1000,
+            style: CustomTextStyle.textStyle18w600Black1000,
           ),
         ],
       ),

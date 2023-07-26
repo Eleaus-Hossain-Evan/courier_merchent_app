@@ -16,12 +16,6 @@ class ProfileRepo {
       withToken: true,
     );
 
-    return data.fold((l) {
-      final error = jsonDecode(l.error);
-      final failure = l.copyWith(error: error['error']["message"]);
-      return left(failure);
-    }, (r) {
-      return right(r);
-    });
+    return data;
   }
 }

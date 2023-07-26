@@ -21,14 +21,6 @@ class ProfilePicWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authProvider);
 
-    String getName() {
-      return ref.watch(appLocalProvider).languageCode == 'en'
-          ? "${state.user.firstName} ${state.user.lastName}"
-          : state.user.nameInArabic.isEmpty
-              ? "_ _"
-              : state.user.nameInArabic;
-    }
-
     return KInkWell(
       onTap: onEditTap,
       borderRadius: radius16,
@@ -43,9 +35,9 @@ class ProfilePicWidget extends HookConsumerWidget {
             SizedBox(
               height: 81.w,
               width: 81.w,
-              child: state.user.profilePicture.isNotEmpty
+              child: state.user.image.isNotEmpty
                   ? KCircleAvatar(
-                      imgUrl: state.user.profilePicture,
+                      imgUrl: state.user.image,
                       radius: 40.w,
                       enableBorder: true,
                     )
@@ -64,20 +56,20 @@ class ProfilePicWidget extends HookConsumerWidget {
               crossAxisAlignment: crossStart,
               children: [
                 Text(
-                  getName(),
+                  state.user.name,
                   style: CustomTextStyle.textStyle16w600,
                 ),
                 gap4,
                 Text(
                   state.user.email,
-                  style: CustomTextStyle.textStyle14w400HG800,
+                  style: CustomTextStyle.textStyle14w400B800,
                 ),
                 gap4,
                 Text(
                   ref.watch(appLocalProvider).languageCode == 'en'
                       ? state.user.phone
                       : int.parse(state.user.phone).toArabicDigits(),
-                  style: CustomTextStyle.textStyle14w400HG800,
+                  style: CustomTextStyle.textStyle14w400B800,
                 ),
               ],
             ),

@@ -1,28 +1,24 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
 
 import 'model/user_model.dart';
 
-class AuthResponse extends Equatable {
-  final UserModel user;
+class AuthResponse {
+  final UserModel data;
   final bool success;
   final String message;
-
-  const AuthResponse({
-    required this.user,
+  AuthResponse({
+    required this.data,
     required this.success,
     required this.message,
   });
 
   AuthResponse copyWith({
-    UserModel? user,
+    UserModel? data,
     bool? success,
     String? message,
   }) {
     return AuthResponse(
-      user: user ?? this.user,
+      data: data ?? this.data,
       success: success ?? this.success,
       message: message ?? this.message,
     );
@@ -30,7 +26,7 @@ class AuthResponse extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'user': user.toMap(),
+      'data': data.toMap(),
       'success': success,
       'message': message,
     };
@@ -38,7 +34,7 @@ class AuthResponse extends Equatable {
 
   factory AuthResponse.fromMap(Map<String, dynamic> map) {
     return AuthResponse(
-      user: UserModel.fromMap(map['data']),
+      data: UserModel.fromMap(map['data']),
       success: map['success'] ?? false,
       message: map['message'] ?? '',
     );
@@ -50,12 +46,19 @@ class AuthResponse extends Equatable {
       AuthResponse.fromMap(json.decode(source));
 
   @override
-  bool get stringify => true;
-
-  @override
-  List<Object> get props => [user, success, message];
-
-  @override
   String toString() =>
-      'AuthResponse(user: $user, success: $success, message: $message)';
+      'LoginResponse(data: $data, success: $success, message: $message)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is AuthResponse &&
+        other.data == data &&
+        other.success == success &&
+        other.message == message;
+  }
+
+  @override
+  int get hashCode => data.hashCode ^ success.hashCode ^ message.hashCode;
 }

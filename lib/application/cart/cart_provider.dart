@@ -65,19 +65,18 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   Future<Either<CleanFailure, OrderResponse>> placeOrder(OrderBody body) async {
-    bool success = false;
     state = state.copyWith(loading: true);
 
     final result = await repo.placeOrder(body);
 
     state = result.fold(
       (l) {
-        showErrorToast(l.error);
+        showErrorToast(l.error.message);
         return state = state.copyWith(failure: l, loading: false);
       },
       (r) {
         showToast(r.message);
-        success = r.success;
+
         return state.copyWith(loading: false);
       },
     );

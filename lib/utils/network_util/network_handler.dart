@@ -84,7 +84,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": 'No Internet connection 😑'},
+          error: const CleanError(message: 'No Internet connection 😑'),
         ),
       );
     } on HttpException {
@@ -98,7 +98,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": "Couldn't find 😱"},
+          error: const CleanError(message: "Couldn't find 😱"),
         ),
       );
     } on FormatException {
@@ -112,7 +112,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": "Bad response format 👎"},
+          error: const CleanError(message: "Bad response format 👎"),
         ),
       );
     } catch (e) {
@@ -127,7 +127,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: e.toString(),
+          error: CleanError(message: e.toString()),
         ),
       );
     }
@@ -168,7 +168,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": 'No Internet connection 😑'},
+          error: const CleanError(message: 'No Internet connection 😑'),
         ),
       );
     } on HttpException {
@@ -182,7 +182,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": "Couldn't find 😱"},
+          error: const CleanError(message: "Couldn't find 😱"),
         ),
       );
     } on FormatException {
@@ -196,7 +196,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": "Bad response format 👎"},
+          error: const CleanError(message: "Bad response format 👎"),
         ),
       );
     } catch (e) {
@@ -211,7 +211,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: e.toString(),
+          error: CleanError(message: e.toString()),
         ),
       );
     }
@@ -254,7 +254,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": 'No Internet connection 😑'},
+          error: const CleanError(message: 'No Internet connection 😑'),
         ),
       );
     } on HttpException {
@@ -268,7 +268,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": "Couldn't find 😱"},
+          error: const CleanError(message: "Couldn't find 😱"),
         ),
       );
     } on FormatException {
@@ -282,7 +282,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": "Bad response format 👎"},
+          error: const CleanError(message: "Bad response format 👎"),
         ),
       );
     } catch (e) {
@@ -297,7 +297,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: e.toString(),
+          error: CleanError(message: e.toString()),
         ),
       );
     }
@@ -339,7 +339,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": 'No Internet connection 😑'},
+          error: const CleanError(message: 'No Internet connection 😑'),
         ),
       );
     } on HttpException {
@@ -353,7 +353,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": "Couldn't find 😱"},
+          error: const CleanError(message: "Couldn't find 😱"),
         ),
       );
     } on FormatException {
@@ -367,7 +367,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: const {"message": "Bad response format 👎"},
+          error: const CleanError(message: "Bad response format 👎"),
         ),
       );
     } catch (e) {
@@ -382,7 +382,7 @@ class NetworkHandler {
           url: "$_baseUrl$endPoint",
           header: _header,
           body: const {},
-          error: e.toString(),
+          error: CleanError(message: e.toString()),
         ),
       );
     }
@@ -418,7 +418,7 @@ class NetworkHandler {
             statusCode: response.statusCode,
             header: response.request?.headers ?? {},
             body: _regResponse,
-            error: e,
+            error: CleanError(message: e.toString()),
           ),
         );
       }
@@ -438,7 +438,7 @@ class NetworkHandler {
           url: response.request?.url.toString() ?? '',
           header: response.request?.headers ?? {},
           body: const {},
-          error: jsonDecode(response.body),
+          error: CleanError(message: jsonDecode(response.body)["message"]),
         ),
       );
     }
