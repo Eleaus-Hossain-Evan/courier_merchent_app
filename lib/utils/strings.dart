@@ -50,6 +50,9 @@ class AppStrings {
   static const String paymentMethod = "Payment Methods";
   static const String updateHub = "Update Hub";
   static const String support = "Support";
+  static const String choiceImageSource = "Choice Image Source";
+  static const String fromCamera = "From Camera";
+  static const String fromGallery = "From Gallery";
 
   //#----------------  Notification ----------------
   static const String notifications = "Notifications";

@@ -1,16 +1,17 @@
 import 'dart:io';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:select2dot1/select2dot1.dart';
 import 'package:velocity_x/velocity_x.dart';
+
 import '../../../../application/auth/auth_provider.dart';
 import '../../../../application/auth/auth_state.dart';
 import '../../../../domain/auth/profile_update_body.dart';
-import '../../../../application/global.dart';
 import '../../../../utils/utils.dart';
 import '../../../widgets/widgets.dart';
 
@@ -21,62 +22,31 @@ class EditProfileScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(authProvider);
+    final authState = ref.watch(authProvider);
+    // final state = ref.watch(profileProvider);
 
     final formKey = useMemoized(GlobalKey<FormState>.new);
 
     final imageFile = useState<File?>(null);
-    final avatar = useState('');
 
-    final nameController = useTextEditingController();
-    final lastNameController = useTextEditingController();
-    final emailController = useTextEditingController();
-    final phoneController = useTextEditingController();
-
-    final loading = useState(false);
-
-    useEffect(() {
-      // Future.microtask(() => ref.read(profileProvider.notifier).getProfile());
-      return null;
-    }, []);
+    final nameController = useTextEditingController(text: authState.user.name);
+    final emailController =
+        useTextEditingController(text: authState.user.email);
+    final phoneController =
+        useTextEditingController(text: authState.user.phone);
+    final addressController =
+        useTextEditingController(text: authState.user.address);
 
     ref.listen<AuthState>(
       authProvider,
       (previous, next) {
         if (previous!.loading == false && next.loading) {
-          showLoading();
+          BotToast.showLoading();
         } else {
-          closeLoading();
-
-          nameController.text = next.user.name;
-          // setDate(next.user.dateOfBirth);
-          emailController.text = next.user.email;
-          phoneController.text = next.user.phone;
+          BotToast.closeAllLoading();
         }
       },
     );
-
-    final firstName = useState(nameController.text);
-    final email = useState(emailController.text);
-    final phone = useState(phoneController.text);
-
-    useEffect(() {
-      // Future.microtask(() => ref.read(authProvider.notifier).profileView());
-      return null;
-    }, []);
-
-    const List<SingleCategoryModel> exampleData3 = [
-      SingleCategoryModel(
-        nameCategory: null,
-        singleItemCategoryList: [
-          SingleItemCategoryModel(nameSingleItem: 'Alabama'),
-          SingleItemCategoryModel(nameSingleItem: 'Arkansas'),
-          SingleItemCategoryModel(nameSingleItem: 'California'),
-          SingleItemCategoryModel(nameSingleItem: 'Illonois'),
-          SingleItemCategoryModel(nameSingleItem: 'Las Vegas'),
-        ],
-      ),
-    ];
 
     return Scaffold(
       appBar: KAppBar(
@@ -86,13 +56,13 @@ class EditProfileScreen extends HookConsumerWidget {
             width: 80.w,
             child: TextButton(
               onPressed: () {
+                FocusManager.instance.primaryFocus!.unfocus();
                 ref.read(authProvider.notifier).profileUpdate(
                     ProfileUpdateBody(
+                      name: nameController.text.trim(),
                       email: emailController.text.trim(),
-                      firstName: nameController.text.trim(),
-                      lastName: lastNameController.text.trim(),
                       phone: phoneController.text.trim(),
-                      profilePicture: state.user.image,
+                      address: addressController.text.trim(),
                     ),
                     imageFile.value);
               },
@@ -122,29 +92,27 @@ class EditProfileScreen extends HookConsumerWidget {
                     gap20,
                     ImagePickWidget(
                       imageFile: imageFile,
-                      image: state.user.image,
+                      imagePath: authState.user.image,
                       defaultWidget: Icon(
                         Icons.person,
                         size: 68.sp,
-                        color: ColorPalate.secondary,
+                        color: context.colors.secondary,
                       ),
                       editIcon: true,
-                      builder: (imageProvider, child) => CircleAvatar(
-                        radius: 48.r,
-                        backgroundColor: ColorPalate.secondary.withOpacity(.2),
-                        backgroundImage: imageProvider,
-                        child: child,
-                      ),
+                      onTapUploadImage: (file) async {
+                        Logger.w(file);
+                        final success = await ref
+                            .read(authProvider.notifier)
+                            .uploadImage(file);
+                        if (success) imageFile.value = null;
+                      },
                     ),
-                    gap36,
+                    gap24,
                     KTextFormField2(
                       hintText: AppStrings.name,
                       controller: nameController,
                       isLabel: true,
                       validator: ValidationBuilder().maxLength(15).build(),
-                      onChanged: (value) {
-                        firstName.value = value;
-                      },
                     ),
                     gap16,
                     KTextFormField2(
@@ -153,9 +121,6 @@ class EditProfileScreen extends HookConsumerWidget {
                       isLabel: true,
                       validator:
                           ValidationBuilder().maxLength(30).email().build(),
-                      onChanged: (value) {
-                        email.value = value;
-                      },
                     ),
                     gap16,
                     KTextFormField2(
@@ -168,9 +133,6 @@ class EditProfileScreen extends HookConsumerWidget {
                           .minLength(11)
                           .phone()
                           .build(),
-                      onChanged: (value) {
-                        phone.value = value;
-                      },
                     ),
                     gap28,
                   ],
@@ -188,65 +150,8 @@ class EditProfileScreen extends HookConsumerWidget {
                 child: Column(
                   children: [
                     gap20,
-                    Row(
-                      children: [
-                        Flexible(
-                          child: KTextFormField2(
-                            hintText: "City",
-                            readOnly: true,
-                            onTap: () {},
-                          ),
-                        ),
-                        gap16,
-                        Flexible(
-                          child: KTextFormField2(
-                            hintText: "Thana",
-                            readOnly: true,
-                            onTap: () {},
-                          ),
-                        ),
-                      ],
-                    ),
-                    gap16,
-                    Select2dot1(
-                      selectDataController: SelectDataController(
-                        data: exampleData3,
-                        isMultiSelect: false,
-                      ),
-                      // globalSettings: GlobalSettings(
-                      //   mainColor: ColorPalate.primary,
-                      //   backgroundColor: ColorPalate.bg100,
-                      //   activeColor: context.colors.primary,
-                      // ),
-                      // searchBarModalBuilder: (context, searchBarModalDetails) {
-                      //   return TextFormField(
-                      //     controller:
-                      //         searchBarModalDetails.searchBarModalController,
-                      //     onChanged: (value) => searchBarModalDetails
-                      //         .onChangedSearchBarController,
-                      //   ).cornerRadius(6.r).px12();
-                      // },
-                      // doneButtonModalSettings: DoneButtonModalSettings(
-                      //   margin: EdgeInsets.only(
-                      //     bottom: 16.h,
-                      //     right: 12.w,
-                      //     top: 6.h,
-                      //   ),
-                      // ),
-                      // dropdownModalSettings: const DropdownModalSettings(
-                      //   backgroundColor: ColorPalate.bg100,
-                      // ),
-                    ),
-                    Select2dot1(
-                      selectDataController:
-                          SelectDataController(data: exampleData3),
-                      globalSettings: const GlobalSettings(
-                        fontFamily: 'Roboto',
-                        mainColor: Colors.blue,
-                      ),
-                    ),
-                    gap16,
-                    const KTextFormField2(
+                    KTextFormField2(
+                      controller: addressController,
                       hintText: "Address",
                       isLabel: true,
                     ),

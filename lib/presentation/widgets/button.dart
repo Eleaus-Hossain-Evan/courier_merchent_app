@@ -343,7 +343,7 @@ class KFilledButton extends HookConsumerWidget {
       //     isSecondary ? context.color.secondary : context.color.primary,
       //   ),
       // ),
-      style: ElevatedButton.styleFrom(
+      style: FilledButton.styleFrom(
         textStyle: textStyle ??
             TextStyle(
               fontSize: 18.sp,

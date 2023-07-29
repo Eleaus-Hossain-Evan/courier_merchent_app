@@ -1,3 +1,4 @@
+import 'package:courier_merchent_app/application/auth/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -36,7 +37,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       leading: Padding(
         padding: EdgeInsets.all(4.w),
         child: KCircleAvatar(
-          imgUrl: "https://i.pravatar.cc/300",
+          imgUrl: APIRoute.BASE_URL + ref.watch(authProvider).user.image,
           enableBorder: true,
           radius: 20.r,
         ),

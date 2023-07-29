@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import '../../application/auth/auth_provider.dart';
-import '../../application/global.dart';
 import '../../utils/utils.dart';
 import '../auth/login/login.dart';
 import '../widgets/widgets.dart';
@@ -23,7 +21,6 @@ class ProfileScreen extends HookConsumerWidget {
     // final homeState = ref.watch(homeProvider);
     // final localState = ref.watch(appLocalProvider);
     // final isLoggedIn = ref.watch(loggedInProvider).loggedIn;
-
 
     return Scaffold(
       appBar: const KAppBar(titleText: AppStrings.profile),
@@ -77,15 +74,17 @@ class ProfileScreen extends HookConsumerWidget {
                   ProfileOptionsItem(
                     leading: EvaIcons.log_out,
                     title: AppStrings.logout,
-                    onTap: () => showFloatBottomSheet(context, builder: (_) {
-                      return LogoutDialog(
-                        onYesPressed: () {
-                          ref.read(authProvider.notifier).logout();
-                          context.go(LoginScreen.route);
-                        },
-                        onNoPressed: () {},
-                      );
-                    }),
+                    onTap: () => showAppModal(
+                        context: context,
+                        builder: (_) {
+                          return LogoutDialog(
+                            onYesPressed: () {
+                              ref.read(authProvider.notifier).logout();
+                              context.go(LoginScreen.route);
+                            },
+                            onNoPressed: () {},
+                          );
+                        }),
                   ),
                 ],
               ),

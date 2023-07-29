@@ -26,7 +26,7 @@ class CartRepo {
   Future<Either<CleanFailure, SimpleResponse>> bidPart(
       String id, double price) async {
     final data = await api.post(
-      endPoint: APIRoute.BIDDING_CREATE,
+      endPoint: '',
       body: {"id": id, "bidingAmount": price},
       fromData: (json) => SimpleResponse.fromMap(json),
       withToken: true,

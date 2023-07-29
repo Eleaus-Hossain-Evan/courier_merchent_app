@@ -67,12 +67,7 @@ class MyApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final appTheme = ref.watch(themeProvider);
-    final user = ref.watch(loggedInProvider.notifier).user.copyWith(
-          name: "name",
-          email: "evan@email.com",
-          phone: "01234567890",
-          image: "https://i.pravatar.cc/300",
-        );
+    final user = ref.watch(loggedInProvider.notifier).user;
 
     useEffect(() {
       Future.wait([

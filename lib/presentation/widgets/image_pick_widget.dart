@@ -15,17 +15,19 @@ class ImagePickWidget extends HookConsumerWidget {
   const ImagePickWidget({
     super.key,
     required this.imageFile,
-    required this.image,
+    required this.imagePath,
     required this.defaultWidget,
     this.editIcon = false,
-    required this.builder,
+    this.builder,
+    this.onTapUploadImage,
   });
 
   final ValueNotifier<File?> imageFile;
-  final String image;
+  final String imagePath;
   final Widget defaultWidget;
   final bool editIcon;
-  final Widget Function(ImageProvider<Object>?, Widget?) builder;
+  final Widget Function(ImageProvider<Object>?, Widget?)? builder;
+  final Function(File)? onTapUploadImage;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -40,26 +42,21 @@ class ImagePickWidget extends HookConsumerWidget {
       }
       if (image != null) {
         imageFile.value = File(image.path);
-        // final bytes = imageFile.value!.readAsBytesSync();
-        // avatar.value =
-        //     Uri.dataFromBytes(bytes, mimeType: "appication/png").toString();
+
         Logger.v(imageFile.value!.path);
       }
     }
 
     return Align(
       alignment: Alignment.center,
-      child: Stack(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           KInkWell(
             onTap: () {
-              showModalBottomSheet(
+              kShowBottomSheet(
                 context: context,
-                backgroundColor: context.themeData.scaffoldBackgroundColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: radius0,
-                ),
-                builder: (context) => ImagePickOptionWidget(
+                child: ImagePickOptionWidget(
                   onCameraTap: () {
                     chooseImage("camera");
 
@@ -74,34 +71,68 @@ class ImagePickWidget extends HookConsumerWidget {
                 ),
               );
             },
-            child: builder(
-              imageFile.value != null
-                  ? Image.file(imageFile.value!).image
-                  : image.isNotEmpty
-                      ? CachedNetworkImageProvider(image)
-                      : null,
-              imageFile.value == null && image.isEmpty ? defaultWidget : null,
-            ),
-          ),
-          Visibility(
-            visible: editIcon,
-            child: PositionedDirectional(
-              bottom: 0,
-              end: 0,
-              child: CircleAvatar(
-                radius: 18.r,
-                backgroundColor: ColorPalate.white,
-                child: CircleAvatar(
-                  radius: 16.r,
-                  child: const Icon(
-                    Icons.edit,
-                    color: Colors.white,
-                    size: 16,
+            child: Stack(
+              children: [
+                builder != null
+                    ? builder!(
+                        imageFile.value != null
+                            ? Image.file(imageFile.value!).image
+                            : imagePath.isNotEmpty
+                                ? CachedNetworkImageProvider(
+                                    APIRoute.BASE_URL + imagePath)
+                                : null,
+                        imageFile.value == null && imagePath.isEmpty
+                            ? defaultWidget
+                            : null,
+                      )
+                    : CircleAvatar(
+                        radius: 48.r,
+                        backgroundColor: ColorPalate.secondary.withOpacity(.2),
+                        backgroundImage: imageFile.value != null
+                            ? Image.file(imageFile.value!).image
+                            : imagePath.isNotEmpty
+                                ? CachedNetworkImageProvider(
+                                    APIRoute.BASE_URL + imagePath)
+                                : null,
+                        child: imageFile.value == null && imagePath.isEmpty
+                            ? defaultWidget
+                            : null,
+                      ),
+                Visibility(
+                  visible: editIcon,
+                  child: PositionedDirectional(
+                    bottom: 0,
+                    end: 0,
+                    child: CircleAvatar(
+                      radius: 18.r,
+                      backgroundColor: ColorPalate.white,
+                      child: CircleAvatar(
+                        radius: 16.r,
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
+          onTapUploadImage != null
+              ? imageFile.value != null
+                  ? KFilledButton(
+                      text: "Upload Image",
+                      onPressed: () => onTapUploadImage!(imageFile.value!),
+                      textStyle: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: .6,
+                      ),
+                    ).w(140.w).centered().h(42.h).py16()
+                  : const SizedBox.shrink()
+              : const SizedBox.shrink(),
         ],
       ),
     );
@@ -126,7 +157,7 @@ class ImagePickOptionWidget extends StatelessWidget {
         children: [
           gap24,
           Text(
-            "context.local.chooseImageSource",
+            AppStrings.choiceImageSource,
             style: context.titleSmall!.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 20.sp,
@@ -150,7 +181,7 @@ class ImagePickOptionWidget extends StatelessWidget {
                         size: 60.sp,
                       ),
                       Text(
-                        "context.local.fromCamera",
+                        AppStrings.fromCamera,
                         style: context.titleSmall!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -174,7 +205,7 @@ class ImagePickOptionWidget extends StatelessWidget {
                         size: 60.sp,
                       ),
                       Text(
-                        "context.local.fromGallery",
+                        AppStrings.fromGallery,
                         style: context.titleSmall!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

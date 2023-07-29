@@ -81,19 +81,14 @@ class LoginScreen extends HookConsumerWidget {
               ),
 
               gap24,
-              FilledButton(
+              KFilledButton(
                 onPressed: () async {
                   ref.read(authProvider.notifier).login(LoginBody(
                         value: emailPhoneController.text,
                         password: passwordController.text,
                       ));
                 },
-                child: const Text(
-                  AppStrings.login,
-                  style: TextStyle(
-                    color: ColorPalate.bg100,
-                  ),
-                ),
+                text: AppStrings.login,
               ),
               // FilledButton(
               //   onPressed: () {},

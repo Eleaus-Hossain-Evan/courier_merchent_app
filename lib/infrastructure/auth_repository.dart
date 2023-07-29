@@ -1,12 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:http/http.dart';
 
 import '../domain/auth/login_body.dart';
 import '../domain/auth/auth_response.dart';
-import '../domain/auth/profile_update_body.dart';
+import '../domain/auth/model/user_model.dart';
 import '../domain/auth/signUp_body.dart';
 import '../domain/simple_response.dart';
 import '../utils/api_routes.dart';
@@ -62,8 +58,8 @@ class AuthRepo {
   }
 
   Future<Either<CleanFailure, AuthResponse>> profileUpdate(
-      ProfileUpdateBody body) async {
-    final data = await api.put(
+      UserModel body) async {
+    final data = await api.patch(
       fromData: (json) => AuthResponse.fromMap(json),
       endPoint: APIRoute.PROFILE_UPDATE,
       body: body.toMap(),
@@ -73,23 +69,37 @@ class AuthRepo {
     return data;
   }
 
-  Future<String> imageUpload(File image) async {
-    var request = MultipartRequest(
-        'POST', Uri.parse(APIRoute.BASE_URL + APIRoute.IMAGE_UPLOAD));
+  Future<Either<CleanFailure, AuthResponse>> imageUpload(File image) async {
+    // var request = MultipartRequest(
+    //     'PATCH', Uri.parse(APIRoute.BASE_URL + APIRoute.IMAGE_UPLOAD));
 
-    request.files.add(
-      MultipartFile.fromBytes(
-        'image',
-        File(image.path).readAsBytesSync(),
-        filename: image.path,
-      ),
+    // request.files.add(
+    //   MultipartFile.fromBytes(
+    //     'image',
+    //     File(image.path).readAsBytesSync(),
+    //     filename: image.path,
+    //   ),
+    // );
+    // final res = await request.send();
+    // final response = await Response.fromStream(res);
+    // Logger.v(res);
+    // Logger.v(response.body);
+    // final Map<String, dynamic> data = jsonDecode(response.body);
+    // Logger.v(data['data']['Location']);
+    // return data['data']['Location'];
+    final bytes = image.readAsBytesSync();
+    final imageString = Uri.dataFromBytes(
+      bytes,
+      mimeType: 'image/png',
+    ).toString();
+
+    final data = await api.patch(
+      fromData: (json) => AuthResponse.fromMap(json),
+      endPoint: APIRoute.IMAGE_UPLOAD,
+      body: {"image": imageString},
+      withToken: true,
     );
-    final res = await request.send();
-    final response = await Response.fromStream(res);
-    Logger.v(res);
-    Logger.v(response.body);
-    final Map<String, dynamic> data = jsonDecode(response.body);
-    Logger.v(data['data']['Location']);
-    return data['data']['Location'];
+
+    return data;
   }
 }

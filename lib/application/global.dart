@@ -79,9 +79,6 @@ final notification = Provider.family<Function(), String>((ref, String text) {
   return notification;
 });
 
-showLoading() => BotToast.showLoading();
-closeLoading() => BotToast.closeAllLoading();
-
 showToast(String text) => BotToast.showText(
       text: text,
       textStyle: const TextStyle(fontSize: 14, color: Colors.white),
@@ -144,29 +141,29 @@ showAttachedWidget({
       duration: const Duration(seconds: 2),
     );
 
-showFloatBottomSheet(
-  BuildContext context, {
-  required Widget Function(BuildContext context) builder,
-}) =>
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero,
-      ),
-      elevation: 0,
-      builder: (context) => Container(
-        // height: height,
-        margin: EdgeInsets.all(20.w),
-        decoration: BoxDecoration(
-          color: context.themeData.scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(12.r),
-        ),
-        child: IntrinsicHeight(
-          child: builder(context),
-        ),
-      ),
-    );
+// showFloatBottomSheet(
+//   BuildContext context, {
+//   required Widget Function(BuildContext context) builder,
+// }) =>
+//     showModalBottomSheet(
+//       context: context,
+//       backgroundColor: Colors.transparent,
+//       shape: const RoundedRectangleBorder(
+//         borderRadius: BorderRadius.zero,
+//       ),
+//       elevation: 0,
+//       builder: (context) => Container(
+//         // height: height,
+//         margin: EdgeInsets.all(20.w),
+//         decoration: BoxDecoration(
+//           color: context.themeData.scaffoldBackgroundColor,
+//           borderRadius: BorderRadius.circular(12.r),
+//         ),
+//         child: IntrinsicHeight(
+//           child: builder(context),
+//         ),
+//       ),
+//     );
 
 bool? showBotToastDialog({
   required bool? Function() cancel,
