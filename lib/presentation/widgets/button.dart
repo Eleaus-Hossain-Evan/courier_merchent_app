@@ -346,7 +346,7 @@ class KFilledButton extends HookConsumerWidget {
       style: FilledButton.styleFrom(
         textStyle: textStyle ??
             TextStyle(
-              fontSize: 18.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w600,
             ),
         foregroundColor: foregroundColor ?? ColorPalate.bg200,

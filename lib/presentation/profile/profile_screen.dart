@@ -8,8 +8,12 @@ import '../../application/auth/auth_provider.dart';
 import '../../utils/utils.dart';
 import '../auth/login/login.dart';
 import '../widgets/widgets.dart';
+import 'pages/bank_details_screen.dart';
 import 'pages/change_password_screen.dart';
 import 'pages/edit_profile/edit_profile_screen.dart';
+import 'pages/html_text.dart';
+import 'pages/payment_method_screen.dart';
+import 'pages/update_hub_screen.dart';
 import 'widgets/picture_widget.dart';
 
 class ProfileScreen extends HookConsumerWidget {
@@ -50,19 +54,19 @@ class ProfileScreen extends HookConsumerWidget {
                   ProfileOptionsItem(
                     leading: Bootstrap.bank2,
                     title: AppStrings.bankDetail,
-                    onTap: () => context.push(ChangePasswordScreen.route),
+                    onTap: () => context.push(BankDetailsScreen.route),
                   ),
                   KDivider(height: 36.h),
                   ProfileOptionsItem(
                     leading: Iconsax.money_send,
                     title: AppStrings.paymentMethod,
-                    onTap: () => context.push(ChangePasswordScreen.route),
+                    onTap: () => context.push(PaymentMethodScreen.route),
                   ),
                   KDivider(height: 36.h),
                   ProfileOptionsItem(
                     leading: Iconsax.map,
                     title: AppStrings.updateHub,
-                    onTap: () => context.push(ChangePasswordScreen.route),
+                    onTap: () => context.push(UpdateHubScreen.route),
                   ),
                   KDivider(height: 36.h),
                   ProfileOptionsItem(
@@ -74,17 +78,16 @@ class ProfileScreen extends HookConsumerWidget {
                   ProfileOptionsItem(
                     leading: EvaIcons.log_out,
                     title: AppStrings.logout,
-                    onTap: () => showAppModal(
-                        context: context,
-                        builder: (_) {
-                          return LogoutDialog(
-                            onYesPressed: () {
-                              ref.read(authProvider.notifier).logout();
-                              context.go(LoginScreen.route);
-                            },
-                            onNoPressed: () {},
-                          );
-                        }),
+                    onTap: () => kShowFloatBottomSheet(
+                      context: context,
+                      child: LogoutDialog(
+                        onYesPressed: () {
+                          ref.read(authProvider.notifier).logout();
+                          context.go(LoginScreen.route);
+                        },
+                        onNoPressed: () {},
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -116,7 +119,7 @@ class ProfileScreen extends HookConsumerWidget {
                   ProfileOptionsItem(
                     leading: Icons.help_center_outlined,
                     title: AppStrings.contactUs,
-                    onTap: () {},
+                    onTap: () => context.push(HtmlTextScreen.route),
                   ),
                   KDivider(height: 36.h),
                   ProfileOptionsItem(
@@ -201,72 +204,74 @@ class LogoutDialog extends HookConsumerWidget {
   final VoidCallback onNoPressed;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 40.h,
-        ),
-        Text(
-          'LOGOUT',
-          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                color: Theme.of(context).colorScheme.error,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
-              ),
-        ),
-        const SizedBox(
-          height: 15,
-        ),
-        Text(
-          "Are you sure you want to logout?",
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 14.sp,
-              ),
-        ),
-        const SizedBox(
-          height: 15,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                width: .3.sw,
-                child: KElevatedButton(
-                  text: "Cancel",
-                  onPressed: () {
-                    Navigator.pop(context);
-                    onNoPressed.call();
-                  },
-                  backgroundColor: Theme.of(context)
-                      .colorScheme
-                      .secondaryContainer
-                      .withOpacity(.4),
-                  foregroundColor:
-                      Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
-              ),
-              SizedBox(
-                width: .3.sw,
-                child: FilledButton(
-                  child: const Text("Yes"),
-                  onPressed: () {
-                    Navigator.pop(context);
-                    onYesPressed.call();
-                    // context.go(LoginScreen.routeName);
-                  },
-                ),
-              ),
-            ],
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: mainMin,
+        children: [
+          SizedBox(
+            height: 40.h,
           ),
-        ),
-        SizedBox(
-          height: 40.h,
-        ),
-      ],
+          Text(
+            AppStrings.logout,
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.sp,
+                ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Text(
+            "Are you sure you want to logout?",
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 14.sp,
+                ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: .3.sw,
+                  child: KFilledButton(
+                    text: "Cancel",
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onNoPressed.call();
+                    },
+                    backgroundColor:
+                        Theme.of(context).colorScheme.secondaryContainer,
+                    foregroundColor:
+                        Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+                SizedBox(
+                  width: .3.sw,
+                  child: KFilledButton(
+                    text: "Yes",
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onYesPressed.call();
+                      // context.go(LoginScreen.routeName);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 40.h,
+          ),
+        ],
+      ),
     );
   }
 }

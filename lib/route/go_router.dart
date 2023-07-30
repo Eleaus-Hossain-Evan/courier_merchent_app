@@ -1,4 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:courier_merchent_app/presentation/profile/pages/bank_details_screen.dart';
+import 'package:courier_merchent_app/presentation/profile/pages/payment_method_screen.dart';
+import 'package:courier_merchent_app/presentation/profile/pages/update_hub_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +16,7 @@ import '../presentation/main_nav/main_nav.dart';
 import '../presentation/notification/notification_screen.dart';
 import '../presentation/profile/pages/change_password_screen.dart';
 import '../presentation/profile/pages/edit_profile/edit_profile_screen.dart';
+import '../presentation/profile/pages/html_text.dart';
 import '../presentation/splash/splash_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -88,7 +92,7 @@ class RouterNotifier extends ChangeNotifier {
         ),
         GoRoute(
           path: LoginScreen.route,
-          builder: (context, state) => LoginScreen(),
+          builder: (context, state) => const LoginScreen(),
         ),
         GoRoute(
           path: SignupScreen.route,
@@ -101,7 +105,6 @@ class RouterNotifier extends ChangeNotifier {
             child: const NotificationScreen(),
           ),
         ),
-        
         GoRoute(
           path: ResetPasswordScreen.route,
           pageBuilder: (context, state) => SlideBottomToTopTransitionPage(
@@ -114,6 +117,37 @@ class RouterNotifier extends ChangeNotifier {
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
             child: const EditProfileScreen(),
+          ),
+        ),
+        GoRoute(
+          path: BankDetailsScreen.route,
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: const BankDetailsScreen(),
+          ),
+        ),
+        GoRoute(
+          path: PaymentMethodScreen.route,
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: const PaymentMethodScreen(),
+          ),
+        ),
+        GoRoute(
+          path: UpdateHubScreen.route,
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: const UpdateHubScreen(),
+          ),
+        ),
+        GoRoute(
+          path: HtmlTextScreen.route,
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: const HtmlTextScreen(
+              details: '',
+              title: '',
+            ),
           ),
         ),
         GoRoute(
@@ -194,5 +228,24 @@ class SlideBottomToTopTransitionPage extends CustomTransitionPage {
           },
           child:
               child, // Here you may also wrap this child with some common designed widget
+        );
+}
+
+class NoTransitionPage extends CustomTransitionPage {
+  NoTransitionPage({
+    LocalKey? key,
+    required Widget child,
+  }) : super(
+          key: key,
+          fullscreenDialog: true,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return child;
+          },
+          child: child,
         );
 }

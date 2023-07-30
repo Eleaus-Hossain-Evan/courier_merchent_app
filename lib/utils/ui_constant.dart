@@ -30,16 +30,16 @@ double defaultOutsideMarin = 8.00.w;
 EdgeInsetsDirectional padding0 = EdgeInsetsDirectional.zero;
 EdgeInsetsDirectional padding2 = EdgeInsetsDirectional.all(2.w);
 EdgeInsetsDirectional padding4 = EdgeInsetsDirectional.all(4.w);
-EdgeInsetsDirectional padding6 = EdgeInsetsDirectional.all(6.w);
-EdgeInsetsDirectional padding8 = EdgeInsetsDirectional.all(8.w);
-EdgeInsetsDirectional padding10 = EdgeInsetsDirectional.all(10.w);
-EdgeInsetsDirectional padding12 = EdgeInsetsDirectional.all(12.w);
-EdgeInsetsDirectional padding14 = EdgeInsetsDirectional.all(14.w);
-EdgeInsetsDirectional padding16 = EdgeInsetsDirectional.all(16.w);
-EdgeInsetsDirectional padding18 = EdgeInsetsDirectional.all(18.w);
-EdgeInsetsDirectional padding20 = EdgeInsetsDirectional.all(20.w);
-EdgeInsetsDirectional padding22 = EdgeInsetsDirectional.all(22.w);
-EdgeInsetsDirectional padding24 = EdgeInsetsDirectional.all(24.w);
+EdgeInsetsGeometry padding6 = EdgeInsetsDirectional.all(6.w);
+EdgeInsetsGeometry padding8 = EdgeInsetsDirectional.all(8.w);
+EdgeInsetsGeometry padding10 = EdgeInsetsDirectional.all(10.w);
+EdgeInsetsGeometry padding12 = EdgeInsetsDirectional.all(12.w);
+EdgeInsetsGeometry padding14 = EdgeInsetsDirectional.all(14.w);
+EdgeInsets padding16 = EdgeInsets.all(16.w);
+EdgeInsetsGeometry padding18 = EdgeInsetsDirectional.all(18.w);
+EdgeInsetsGeometry padding20 = EdgeInsetsDirectional.all(20.w);
+EdgeInsetsGeometry padding22 = EdgeInsetsDirectional.all(22.w);
+EdgeInsetsGeometry padding24 = EdgeInsetsDirectional.all(24.w);
 
 EdgeInsetsDirectional paddingV2 =
     EdgeInsetsDirectional.fromSTEB(0, 2.h, 0, 2.h);

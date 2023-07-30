@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../utils/utils.dart';
 import 'k_inkwell.dart';
@@ -161,6 +162,7 @@ class KTextFormField2 extends HookConsumerWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.isLabel = true,
+    this.enabled = true,
     this.onTap,
     this.prefix,
     this.validator,
@@ -171,8 +173,8 @@ class KTextFormField2 extends HookConsumerWidget {
     this.onFieldSubmitted,
     this.textInputAction,
     this.maxLines = 1,
-    this.contentPadding = const EdgeInsetsDirectional.only(
-        start: 16, end: 16, top: 10, bottom: 10),
+    this.contentPadding =
+        const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
     this.fillColor = Colors.transparent,
     this.borderColor = ColorPalate.secondary200,
     this.hintTextStyle,
@@ -182,7 +184,7 @@ class KTextFormField2 extends HookConsumerWidget {
   final String hintText;
   final TextAlign textAlign;
   final Widget? suffixIcon;
-  final bool readOnly, isLabel;
+  final bool readOnly, isLabel, enabled;
   final VoidCallback? onTap;
   final Widget? prefix;
   final String? Function(String?)? validator;
@@ -192,7 +194,7 @@ class KTextFormField2 extends HookConsumerWidget {
   final TextInputAction? textInputAction;
   final Function(String)? onChanged, onFieldSubmitted;
   final int? maxLines;
-  final EdgeInsetsGeometry contentPadding;
+  final EdgeInsets contentPadding;
   final Color fillColor, borderColor;
   final TextStyle? hintTextStyle;
 
@@ -206,48 +208,60 @@ class KTextFormField2 extends HookConsumerWidget {
         width: 1,
       ),
     );
-    return TextFormField(
-      obscureText: isObscure ? hideText.value : false,
-      controller: controller,
-      focusNode: focusNode,
-      readOnly: readOnly,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      style: CustomTextStyle.textStyle14w400B900,
-      textAlign: textAlign,
-      keyboardType: keyboardType,
-      maxLines: maxLines,
-      decoration: InputDecoration(
-        hintText: isLabel ? null : hintText,
-        hintStyle: hintTextStyle ?? CustomTextStyle.textStyle14w500B800,
-        labelText: isLabel ? hintText : null,
-        labelStyle: CustomTextStyle.textStyle12w400B800,
-        contentPadding: contentPadding,
-        fillColor: fillColor,
-        border: border,
-        enabledBorder: border,
-        focusedBorder: border.copyWith(
-          borderSide: BorderSide(
-            color: borderColor,
+    return AnimatedContainer(
+      duration: 400.milliseconds,
+      margin: enabled
+          ? EdgeInsets.symmetric(horizontal: 24.w)
+          : EdgeInsets.symmetric(horizontal: 10.w),
+      child: TextFormField(
+        obscureText: isObscure ? hideText.value : false,
+        controller: controller,
+        focusNode: focusNode,
+        readOnly: readOnly,
+        enabled: enabled,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        style: CustomTextStyle.textStyle14w400B900,
+        textAlign: textAlign,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
+        decoration: InputDecoration(
+          hintText: isLabel ? null : hintText,
+          hintStyle: hintTextStyle ?? CustomTextStyle.textStyle14w500B800,
+          labelText: isLabel ? hintText : null,
+          labelStyle: CustomTextStyle.textStyle12w400B800,
+          contentPadding: contentPadding,
+          fillColor: fillColor,
+          border: border,
+          enabledBorder: border,
+          focusedBorder: border.copyWith(
+            borderSide: BorderSide(
+              color: borderColor,
+            ),
           ),
+          disabledBorder: border.copyWith(
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+            ),
+          ),
+          filled: true,
+          prefix: prefix,
+          suffixIcon: suffixIcon ??
+              (isObscure
+                  ? KInkWell(
+                      borderRadius: radius24,
+                      onTap: () {
+                        hideText.value = !hideText.value;
+                      },
+                      child: hideText.value
+                          ? const Icon(EvaIcons.eye_off_2_outline)
+                          : const Icon(EvaIcons.eye),
+                    )
+                  : null),
         ),
-        filled: true,
-        prefix: prefix,
-        suffixIcon: suffixIcon ??
-            (isObscure
-                ? KInkWell(
-                    borderRadius: radius24,
-                    onTap: () {
-                      hideText.value = !hideText.value;
-                    },
-                    child: hideText.value
-                        ? const Icon(EvaIcons.eye_off_2_outline)
-                        : const Icon(EvaIcons.eye),
-                  )
-                : null),
+        onTap: onTap,
+        validator: validator,
+        onFieldSubmitted: onFieldSubmitted,
       ),
-      onTap: onTap,
-      validator: validator,
-      onFieldSubmitted: onFieldSubmitted,
     );
   }
 }

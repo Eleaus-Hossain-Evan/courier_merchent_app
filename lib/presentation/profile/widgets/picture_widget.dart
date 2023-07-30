@@ -37,7 +37,7 @@ class ProfilePicWidget extends HookConsumerWidget {
               width: 81.w,
               child: state.user.image.isNotEmpty
                   ? KCircleAvatar(
-                      imgUrl: state.user.image,
+                      imgUrl: APIRoute.BASE_URL + state.user.image,
                       radius: 40.w,
                       enableBorder: true,
                     )

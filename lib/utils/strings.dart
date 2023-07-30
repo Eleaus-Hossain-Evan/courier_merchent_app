@@ -46,13 +46,21 @@ class AppStrings {
   static const String phoneNumberOrEmail = "Phone Number or Email";
   static const String contactUs = "Contact Us";
   static const String privacyPolicy = "Privacy & Policy";
-  static const String bankDetail = "Bank Details";
+  static const String bankDetail = "Bank Detail";
   static const String paymentMethod = "Payment Methods";
   static const String updateHub = "Update Hub";
   static const String support = "Support";
   static const String choiceImageSource = "Choice Image Source";
   static const String fromCamera = "From Camera";
   static const String fromGallery = "From Gallery";
+  static const String bankDetails = "Bank Details";
+  static const String accountHolder = "Account Holder";
+  static const String bankName = "Bank Name";
+  static const String branchCode = "Branch Code";
+  static const String routingNumber = "Routing Number";
+  static const String accountNumber = "Account Number";
+  static const String currentPassword = "Current Password";
+  static const String newPassword = "New Password";
 
   //#----------------  Notification ----------------
   static const String notifications = "Notifications";
@@ -73,4 +81,5 @@ class AppStrings {
   static const String signUpPrivacyPolicy =
       "By clicking Sign Up, you agree to our Terms of Use and our Privacy Policy.";
   static const String reTypePassword = "Re-Type Password";
+  static const String notMatch = "Password doesn't match";
 }
