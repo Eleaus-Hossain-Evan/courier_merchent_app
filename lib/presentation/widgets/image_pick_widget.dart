@@ -86,17 +86,22 @@ class ImagePickWidget extends HookConsumerWidget {
                             : null,
                       )
                     : CircleAvatar(
-                        radius: 48.r,
-                        backgroundColor: ColorPalate.secondary.withOpacity(.2),
-                        backgroundImage: imageFile.value != null
-                            ? Image.file(imageFile.value!).image
-                            : imagePath.isNotEmpty
-                                ? CachedNetworkImageProvider(
-                                    APIRoute.BASE_URL + imagePath)
-                                : null,
-                        child: imageFile.value == null && imagePath.isEmpty
-                            ? defaultWidget
-                            : null,
+                        radius: 49.r,
+                        backgroundColor: context.colors.primary,
+                        child: CircleAvatar(
+                          radius: 48.r,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.background,
+                          backgroundImage: imageFile.value != null
+                              ? Image.file(imageFile.value!).image
+                              : imagePath.isNotEmpty
+                                  ? CachedNetworkImageProvider(
+                                      APIRoute.BASE_URL + imagePath)
+                                  : null,
+                          child: imageFile.value == null && imagePath.isEmpty
+                              ? defaultWidget
+                              : null,
+                        ),
                       ),
                 Visibility(
                   visible: editIcon,

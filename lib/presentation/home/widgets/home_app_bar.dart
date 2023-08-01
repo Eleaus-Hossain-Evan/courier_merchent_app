@@ -36,8 +36,8 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       ),
       leading: Padding(
         padding: EdgeInsets.all(4.w),
-        child: KCircleAvatar(
-          imgUrl: APIRoute.BASE_URL + ref.watch(authProvider).user.image,
+        child: KUserAvatar(
+          imgUrl: ref.watch(authProvider).user.image,
           enableBorder: true,
           radius: 20.r,
         ),

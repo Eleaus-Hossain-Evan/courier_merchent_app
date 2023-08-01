@@ -88,8 +88,8 @@ class KAppBarBGTransparent extends StatelessWidget
     return AppBar(
       centerTitle: centerTitle,
       automaticallyImplyLeading: automaticallyImplyLeading,
-      backgroundColor: backgroundColor ??
-          context.theme.scaffoldBackgroundColor.withOpacity(.15),
+      backgroundColor:
+          backgroundColor ?? context.theme.primaryColorLight.darken(),
       foregroundColor: ColorPalate.white,
       systemOverlayStyle: SystemUiOverlayStyle.light,
       leading: isLeading

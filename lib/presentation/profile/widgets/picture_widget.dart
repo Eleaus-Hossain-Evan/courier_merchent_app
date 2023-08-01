@@ -1,5 +1,3 @@
-import 'package:velocity_x/velocity_x.dart';
-
 import '../../../utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,24 +30,10 @@ class ProfilePicWidget extends HookConsumerWidget {
         ),
         child: Row(
           children: [
-            SizedBox(
-              height: 81.w,
-              width: 81.w,
-              child: state.user.image.isNotEmpty
-                  ? KCircleAvatar(
-                      imgUrl: APIRoute.BASE_URL + state.user.image,
-                      radius: 40.w,
-                      enableBorder: true,
-                    )
-                  : CircleAvatar(
-                      radius: 40.w,
-                      backgroundColor: context.colors.onPrimaryContainer,
-                      child: const Icon(
-                        Icons.person_outline,
-                        size: 80,
-                      ),
-                    ),
-              // child: Image.asset(KAssets.avatar),
+            KUserAvatar(
+              imgUrl: state.user.image,
+              radius: 36.w,
+              enableBorder: true,
             ),
             gap16,
             Column(

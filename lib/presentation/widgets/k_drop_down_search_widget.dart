@@ -2,18 +2,19 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../utils/utils.dart';
 
-class KDropDownSearchWidget<AreaModel> extends HookConsumerWidget {
+class KDropDownSearchWidget<T> extends HookConsumerWidget {
   const KDropDownSearchWidget({
     Key? key,
     this.selectedItem,
     required this.hintText,
     this.isLabel = true,
-    this.enable = true,
-    this.contentPadding = const EdgeInsetsDirectional.only(
-        start: 16, end: 16, top: 10, bottom: 10),
+    this.enabled = true,
+    this.contentPadding =
+        const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
     this.fillColor = Colors.transparent,
     this.borderColor = ColorPalate.secondary200,
     this.hintTextStyle,
@@ -21,18 +22,20 @@ class KDropDownSearchWidget<AreaModel> extends HookConsumerWidget {
     this.itemAsString,
     this.compareFn,
     this.onChanged,
+    this.items = const [],
   }) : super(key: key);
 
-  final AreaModel? selectedItem;
+  final T? selectedItem;
   final String hintText;
-  final bool isLabel, enable;
+  final bool isLabel, enabled;
   final EdgeInsetsGeometry contentPadding;
   final Color fillColor, borderColor;
   final TextStyle? hintTextStyle;
-  final Future<List<AreaModel>> Function(String)? asyncItems;
-  final String Function(AreaModel)? itemAsString;
-  final bool Function(AreaModel, AreaModel)? compareFn;
-  final void Function(AreaModel?)? onChanged;
+  final Future<List<T>> Function(String)? asyncItems;
+  final String Function(T)? itemAsString;
+  final bool Function(T, T)? compareFn;
+  final void Function(T?)? onChanged;
+  final List<T> items;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -44,36 +47,54 @@ class KDropDownSearchWidget<AreaModel> extends HookConsumerWidget {
       ),
     );
 
-    return DropdownSearch<AreaModel>(
-      popupProps: const PopupProps.menu(
-        showSelectedItems: true,
-      ),
-      items: const [],
-      selectedItem: selectedItem,
-      itemAsString: itemAsString,
-      enabled: enable,
-      dropdownDecoratorProps: DropDownDecoratorProps(
-        baseStyle: CustomTextStyle.textStyle14w400B900,
-        dropdownSearchDecoration: InputDecoration(
-          hintText: isLabel ? null : hintText,
-          hintStyle: hintTextStyle ?? CustomTextStyle.textStyle14w500B800,
-          labelText: isLabel ? hintText : null,
-          labelStyle: CustomTextStyle.textStyle12w400B800,
-          contentPadding: contentPadding,
-          fillColor: fillColor,
-          border: border,
-          enabledBorder: border,
-          focusedBorder: border.copyWith(
-            borderSide: BorderSide(
-              color: borderColor,
-            ),
+    return AnimatedContainer(
+      duration: 400.milliseconds,
+      margin: enabled
+          ? EdgeInsets.symmetric(horizontal: 20.w)
+          : EdgeInsets.symmetric(horizontal: 10.w),
+      child: DropdownSearch<T>(
+        popupProps: const PopupProps.menu(
+          showSelectedItems: true,
+          fit: FlexFit.loose,
+          menuProps: MenuProps(
+            backgroundColor: ColorPalate.bg200,
           ),
-          filled: true,
         ),
+        items: items,
+        selectedItem: selectedItem,
+        itemAsString: itemAsString,
+        enabled: enabled,
+        autoValidateMode: AutovalidateMode.onUserInteraction,
+        dropdownDecoratorProps: DropDownDecoratorProps(
+          baseStyle: CustomTextStyle.textStyle14w400B900,
+          dropdownSearchDecoration: InputDecoration(
+            hintText: isLabel ? null : hintText,
+            hintStyle: hintTextStyle ?? CustomTextStyle.textStyle14w500B800,
+            labelText: isLabel ? hintText : null,
+            labelStyle: enabled
+                ? CustomTextStyle.textStyle12w400B800
+                : CustomTextStyle.textStyle14w400B800,
+            contentPadding: contentPadding,
+            fillColor: fillColor,
+            border: border,
+            enabledBorder: border,
+            focusedBorder: border.copyWith(
+              borderSide: BorderSide(
+                color: borderColor,
+              ),
+            ),
+            disabledBorder: border.copyWith(
+              borderSide: const BorderSide(
+                color: Colors.transparent,
+              ),
+            ),
+            filled: true,
+          ),
+        ),
+        asyncItems: asyncItems,
+        compareFn: compareFn,
+        onChanged: onChanged,
       ),
-      asyncItems: asyncItems,
-      compareFn: compareFn,
-      onChanged: onChanged,
     );
   }
 }

@@ -1,18 +1,20 @@
 import 'dart:convert';
 
-class OthersAccountModel {
+import 'package:equatable/equatable.dart';
+
+class OthersAccountModel extends Equatable {
   final String bkashNum;
   final String rocketNum;
   final String nagadNum;
 
-  OthersAccountModel({
+  const OthersAccountModel({
     required this.bkashNum,
     required this.rocketNum,
     required this.nagadNum,
   });
 
   factory OthersAccountModel.init() =>
-      OthersAccountModel(bkashNum: '', rocketNum: '', nagadNum: '');
+      const OthersAccountModel(bkashNum: '', rocketNum: '', nagadNum: '');
 
   OthersAccountModel copyWith({
     String? bkashNum,
@@ -52,16 +54,5 @@ class OthersAccountModel {
       'OthersAccount(bkashNum: $bkashNum, rocketNum: $rocketNum, nagadNum: $nagadNum)';
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is OthersAccountModel &&
-        other.bkashNum == bkashNum &&
-        other.rocketNum == rocketNum &&
-        other.nagadNum == nagadNum;
-  }
-
-  @override
-  int get hashCode =>
-      bkashNum.hashCode ^ rocketNum.hashCode ^ nagadNum.hashCode;
+  List<Object> get props => [bkashNum, rocketNum, nagadNum];
 }

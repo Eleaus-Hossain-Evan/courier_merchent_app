@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:bot_toast/bot_toast.dart';
+import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
+import 'package:courier_merchent_app/utils/network_util/network_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/auth/login_body.dart';
@@ -8,8 +9,6 @@ import '../../domain/auth/model/user_model.dart';
 import '../../domain/auth/profile_update_body.dart';
 import '../../domain/auth/signUp_body.dart';
 import '../../infrastructure/auth_repository.dart';
-import '../../route/go_router.dart';
-import '../../utils/utils.dart';
 import '../global.dart';
 import 'auth_state.dart';
 import 'loggedin_provider.dart';
@@ -63,6 +62,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         ref
             .read(loggedInProvider.notifier)
             .updateAuthCache(token: r.data.token, user: r.data);
+        NetworkHandler.instance.setToken(r.data.token);
         return state = state.copyWith(user: r.data, loading: false);
       },
     );
@@ -72,20 +72,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(user: UserModel.init());
 
     ref.read(loggedInProvider.notifier).deleteAuthCache();
+    NetworkHandler.instance.setToken("");
 
     // _ref.read(loggedInProvider.notifier).isLoggedIn();
 
     showToast('${state.user.name} logging out');
   }
 
-  void profileView() async {
-    state = state.copyWith(loading: true);
+  Future<void> profileView() async {
+    // state = state.copyWith(loading: true);
     final result = await repo.profileView();
 
     state = result.fold(
       (l) {
-        BotToast.showText(
-            text: l.error.message, contentColor: ColorPalate.error);
+        showErrorToast(l.error.message);
         return state = state.copyWith(failure: l, loading: false);
       },
       (r) {
@@ -94,18 +94,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  void profileUpdate(ProfileUpdateBody updateUser, File? image) async {
-    state = state.copyWith(loading: true);
+  Future<bool> profileUpdate(ProfileUpdateBody updateUser, File? image) async {
+    bool success = false;
 
-    // if (image != null) {
-    //   await uploadImage(image);
-    // }
+    // state = state.copyWith(loading: true);
+
+    if (image != null) {
+      uploadImage(image);
+    }
 
     final result = await repo.profileUpdate(state.user.copyWith(
       name: updateUser.name,
       email: updateUser.email,
       phone: updateUser.phone,
       address: updateUser.address,
+      pickupStyle: updateUser.pickUpStyle,
     ));
 
     state = result.fold(
@@ -114,10 +117,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
         return state = state.copyWith(failure: l, loading: false);
       },
       (r) {
-        ref.read(routerProvider).pop();
+        success = r.success;
         return state.copyWith(user: r.data, loading: false);
       },
     );
+
+    return success;
   }
 
   Future<bool> uploadImage(File file) async {
@@ -137,5 +142,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
 
     return success;
+  }
+
+  void addMyShop(MyShopModel shop) {
+    state = state.copyWith(
+      user: state.user.copyWith(
+        myShops: [shop, ...state.user.myShops],
+      ),
+    );
   }
 }

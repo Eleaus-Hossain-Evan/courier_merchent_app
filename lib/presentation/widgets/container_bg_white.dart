@@ -18,6 +18,8 @@ class ContainerBGWhite extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: padding ?? padding20,
+      width: 1.sw,
+      // margin: EdgeInsets.only(bottom: 28.h),
       decoration: BoxDecoration(
         color: ColorPalate.bg100,
         borderRadius: BorderRadius.circular(16.r),
@@ -27,11 +29,11 @@ class ContainerBGWhite extends StatelessWidget {
         ),
       ),
       child: FadeAnimation(
-        intervalStart: 0.4,
+        intervalStart: 0.5,
         duration: const Duration(milliseconds: 650),
         child: SlideAnimation(
           begin: const Offset(100, 0),
-          intervalStart: 0.4,
+          intervalStart: 0.5,
           duration: const Duration(milliseconds: 650),
           child: child,
         ),

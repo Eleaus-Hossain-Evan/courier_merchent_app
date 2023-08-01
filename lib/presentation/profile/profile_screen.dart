@@ -1,8 +1,11 @@
+import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../application/auth/auth_provider.dart';
 import '../../utils/utils.dart';
@@ -10,10 +13,8 @@ import '../auth/login/login.dart';
 import '../widgets/widgets.dart';
 import 'pages/bank_details_screen.dart';
 import 'pages/change_password_screen.dart';
-import 'pages/edit_profile/edit_profile_screen.dart';
+import 'pages/edit_profile/profile_detail_screen.dart';
 import 'pages/html_text.dart';
-import 'pages/payment_method_screen.dart';
-import 'pages/update_hub_screen.dart';
 import 'widgets/picture_widget.dart';
 
 class ProfileScreen extends HookConsumerWidget {
@@ -21,10 +22,12 @@ class ProfileScreen extends HookConsumerWidget {
   const ProfileScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final state = ref.watch(authProvider);
+    final state = ref.watch(authProvider);
     // final homeState = ref.watch(homeProvider);
     // final localState = ref.watch(appLocalProvider);
     // final isLoggedIn = ref.watch(loggedInProvider).loggedIn;
+
+    final isEditable = useState(!state.user.isApproved);
 
     return Scaffold(
       appBar: const KAppBar(titleText: AppStrings.profile),
@@ -33,10 +36,11 @@ class ProfileScreen extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // isEditable.value.toString().text.make(),
             //? Top Section
             gap18,
             ProfilePicWidget(
-              onEditTap: () => context.push(EditProfileScreen.route),
+              onEditTap: () => context.push(ProfileDetailScreen.route),
             ),
             gap40,
             Container(
@@ -52,23 +56,29 @@ class ProfileScreen extends HookConsumerWidget {
               child: Column(
                 children: [
                   ProfileOptionsItem(
+                    visible: isEditable.value,
                     leading: Bootstrap.bank2,
                     title: AppStrings.bankDetail,
+                    secondaryTrailing: const Icon(Icons.warning_rounded)
+                        .iconColor(ColorPalate.warning),
                     onTap: () => context.push(BankDetailsScreen.route),
                   ),
-                  KDivider(height: 36.h),
-                  ProfileOptionsItem(
-                    leading: Iconsax.money_send,
-                    title: AppStrings.paymentMethod,
-                    onTap: () => context.push(PaymentMethodScreen.route),
+                  KDivider(
+                    visible: (isEditable.value),
+                    height: 36.h,
                   ),
-                  KDivider(height: 36.h),
                   ProfileOptionsItem(
-                    leading: Iconsax.map,
-                    title: AppStrings.updateHub,
-                    onTap: () => context.push(UpdateHubScreen.route),
+                    leading: Bootstrap.shop,
+                    title: AppStrings.myShop,
+                    secondaryTrailing: state.user.myShops.isEmpty
+                        ? const Icon(Icons.warning_rounded)
+                            .iconColor(ColorPalate.warning)
+                        : const SizedBox.shrink(),
+                    onTap: () => context.push(MyShopScreen.route),
                   ),
-                  KDivider(height: 36.h),
+                  KDivider(
+                    height: 36.h,
+                  ),
                   ProfileOptionsItem(
                     leading: BoxIcons.bxs_lock,
                     title: AppStrings.changePassword,
@@ -142,17 +152,20 @@ class ProfileOptionsItem extends HookConsumerWidget {
     super.key,
     required this.leading,
     required this.title,
+    this.visible = true,
     this.trailingText,
     this.onTap,
     this.trailing,
+    this.secondaryTrailing,
   });
 
   final IconData leading;
   final String title;
-  final bool visible = true;
+  final bool visible;
   final String? trailingText;
   final VoidCallback? onTap;
   final Widget? trailing;
+  final Widget? secondaryTrailing;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Visibility(
@@ -175,12 +188,13 @@ class ProfileOptionsItem extends HookConsumerWidget {
               ),
             ),
             trailing ??
-                (trailingText == null
-                    ? const SizedBox.shrink()
-                    : Text(
-                        trailingText ?? "",
-                        style: CustomTextStyle.textStyle14w500Red,
-                      )),
+                (secondaryTrailing ??
+                    (trailingText == null
+                        ? const SizedBox.shrink()
+                        : Text(
+                            trailingText ?? "",
+                            style: CustomTextStyle.textStyle14w500Red,
+                          ))),
             gap12,
             trailing == null
                 ? Icon(
@@ -249,8 +263,8 @@ class LogoutDialog extends HookConsumerWidget {
                     },
                     backgroundColor:
                         Theme.of(context).colorScheme.secondaryContainer,
-                    foregroundColor:
-                        Theme.of(context).colorScheme.onPrimaryContainer,
+                    // foregroundColor:
+                    //     Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                 ),
                 SizedBox(

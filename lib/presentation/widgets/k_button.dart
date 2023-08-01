@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../utils/utils.dart';
+import 'k_inkwell.dart';
 
 class KIconElevatedButton extends HookConsumerWidget {
   const KIconElevatedButton({
@@ -146,8 +147,8 @@ class KOutlinedButton extends HookConsumerWidget {
     Key? key,
     required this.text,
     this.backgroundColor,
-    this.foregroundColor,
-    this.borderColor,
+    this.foregroundColor = ColorPalate.primary,
+    this.borderColor = ColorPalate.primary,
     this.borderWidth,
     required this.onPressed,
     this.loading,
@@ -175,46 +176,20 @@ class KOutlinedButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var side = borderSide?.copyWith(
-      color: borderColor ?? ColorPalate.secondary200,
-      width: borderWidth,
-      style: borderStyle,
-    );
     return OutlinedButton(
-      // style: ButtonStyle(
-      //   // shape: MaterialStateProperty.all(
-      //   //   RoundedRectangleBorder(
-      //   //     borderRadius: BorderRadius.circular(10.r),
-      //   //   ),
-      //   // ),
-
-      //   // minimumSize: MaterialStateProperty.all(size ?? Size.fromHeight(48.h)),
-      //   backgroundColor: MaterialStateProperty.all(backgroundColor),
-      //   foregroundColor: MaterialStateProperty.all(foregroundColor),
-      //   side: MaterialStateProperty.all(
-      //     BorderSide(
-      //       color: borderColor ??
-      //           (isSecondary
-      //               ? Theme.of(context).colorScheme.secondary
-      //               : Theme.of(context).colorScheme.primary),
-      //     ),
-      //   ),
-      //   overlayColor: MaterialStateProperty.all(
-      //     (isSecondary
-      //         ? Theme.of(context).colorScheme.secondary.withOpacity(.1)
-      //         : Theme.of(context).colorScheme.primary.withOpacity(.1)),
-      //   ),
-      // ),
       style: OutlinedButton.styleFrom(
         textStyle: textStyle ??
             TextStyle(
-              fontSize: 18.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w600,
-              color: ColorPalate.secondary200,
             ),
-        foregroundColor: foregroundColor,
-        backgroundColor: backgroundColor,
-        side: side,
+        foregroundColor: isSecondary ? ColorPalate.secondary : foregroundColor,
+        backgroundColor: isSecondary ? ColorPalate.secondary : backgroundColor,
+        side: BorderSide(
+          color: ColorPalate.primary,
+          width: borderWidth ?? 1,
+          style: borderStyle ?? BorderStyle.solid,
+        ),
       ),
       onPressed: onPressed,
       child: (loading != null && loading!.value)
@@ -227,19 +202,7 @@ class KOutlinedButton extends HookConsumerWidget {
                 ),
               ),
             )
-          : child ??
-              Text(
-                text,
-                style: TextStyle(
-                  color: isSecondary
-                      ? Theme.of(context).colorScheme.secondary
-                      : Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12.sp,
-                  letterSpacing: 1.50,
-                  fontFamily: "Open Sans",
-                ),
-              ),
+          : child ?? Text(text),
     );
   }
 }
@@ -350,24 +313,60 @@ class KFilledButton extends HookConsumerWidget {
               fontWeight: FontWeight.w600,
             ),
         foregroundColor: foregroundColor ?? ColorPalate.bg200,
-        backgroundColor: backgroundColor,
+        backgroundColor: isSecondary ? ColorPalate.secondary : backgroundColor,
         fixedSize: size,
         padding: padding,
       ),
       onPressed: onPressed,
       child: (loading != null && loading!)
           ? SizedBox(
-              height: 30.h,
-              width: 30.h,
-              child: CircularProgressIndicator(
+              height: 20.h,
+              width: 20.h,
+              child: const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  isSecondary
-                      ? context.colors.onSecondaryContainer
-                      : context.colors.onPrimaryContainer,
+                  ColorPalate.bg200,
                 ),
+                strokeWidth: 2,
               ),
             )
           : child ?? Text(text),
+    );
+  }
+}
+
+class KCircularButton extends StatelessWidget {
+  const KCircularButton({
+    Key? key,
+    this.radius = 20,
+    this.onTap,
+    this.icon,
+    this.bgColor,
+  }) : super(key: key);
+
+  final double radius;
+
+  final VoidCallback? onTap;
+  final Widget? icon;
+  final Color? bgColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      borderRadius: BorderRadius.circular(200.w),
+      color: Colors.transparent,
+      child: KInkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(200.w),
+        padding: EdgeInsets.all(4.w),
+        child: Ink(
+          color: Colors.transparent,
+          child: CircleAvatar(
+            radius: radius,
+            backgroundColor: Colors.transparent,
+            child: icon,
+          ),
+        ),
+      ),
     );
   }
 }

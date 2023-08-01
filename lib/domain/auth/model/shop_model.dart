@@ -1,10 +1,13 @@
 import 'dart:convert';
 
-class MyShopModel {
+import 'package:equatable/equatable.dart';
+
+class MyShopModel extends Equatable {
   final String id;
   final String shopName;
   final String address;
-  MyShopModel({
+
+  const MyShopModel({
     required this.id,
     required this.shopName,
     required this.address,
@@ -48,15 +51,5 @@ class MyShopModel {
       'MyShop(_id: $id, shopName: $shopName, address: $address)';
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is MyShopModel &&
-        other.id == id &&
-        other.shopName == shopName &&
-        other.address == address;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ shopName.hashCode ^ address.hashCode;
+  List<Object> get props => [id, shopName, address];
 }

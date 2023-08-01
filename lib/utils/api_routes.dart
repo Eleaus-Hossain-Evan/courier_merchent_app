@@ -11,7 +11,8 @@ class APIRoute {
 
   static const String SIGN_UP = "${API_V1}merchant/registration";
   static const String LOGIN = "${API_V1}merchant/login";
-  static const String PROFILE_VIEW = "${API_V1}customer/profile/view";
+  static const String PROFILE_VIEW =
+      "${API_V1}merchant/single-fetch-by-himself";
 
   static const String DEVICE_TOKEN = "${API_V1}customer/device-token/set-up";
 

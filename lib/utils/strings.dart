@@ -43,11 +43,16 @@ class AppStrings {
   static const String name = "Name";
   static const String email = "Email";
   static const String phoneNumber = "Phone Number";
+  static const String address = "Address";
+  static const String hubDetail = "Hub Detail";
   static const String phoneNumberOrEmail = "Phone Number or Email";
   static const String contactUs = "Contact Us";
   static const String privacyPolicy = "Privacy & Policy";
   static const String bankDetail = "Bank Detail";
-  static const String paymentMethod = "Payment Methods";
+  static const String otherPaymentMethod = "Other Payment Methods";
+  static const String bKashNumber = 'BKash Number';
+  static const String nahadNumber = 'Nagad Number';
+  static const String rocketNumber = 'Rocket Number';
   static const String updateHub = "Update Hub";
   static const String support = "Support";
   static const String choiceImageSource = "Choice Image Source";
@@ -61,6 +66,15 @@ class AppStrings {
   static const String accountNumber = "Account Number";
   static const String currentPassword = "Current Password";
   static const String newPassword = "New Password";
+  static const String defaultPayment = "Default Payment";
+  static const String defaultPaymentProcessForCustomer =
+      'Default Payment Process for Customer';
+  static const String paymentStyle = "Payment Style";
+  static const String pickupStyle = "Pickup Style";
+  static const String pickupStyleOptions = "Pickup Style Options";
+  static const String paymentOptions = "Payment Options";
+  static const String personalInfo = "Personal Info";
+  static const String myShop = "My Shop";
 
   //#----------------  Notification ----------------
   static const String notifications = "Notifications";

@@ -1,13 +1,15 @@
 import 'dart:convert';
 
-class BankAccountModel {
+import 'package:equatable/equatable.dart';
+
+class BankAccountModel extends Equatable {
   final String bankName;
   final String branch;
   final String routingNum;
   final String accName;
   final String accNum;
 
-  BankAccountModel({
+  const BankAccountModel({
     required this.bankName,
     required this.branch,
     required this.routingNum,
@@ -15,15 +17,8 @@ class BankAccountModel {
     required this.accNum,
   });
 
-  factory BankAccountModel.init() {
-    return BankAccountModel(
-      bankName: '',
-      branch: '',
-      routingNum: '',
-      accName: '',
-      accNum: '',
-    );
-  }
+  factory BankAccountModel.init() => const BankAccountModel(
+      bankName: '', branch: '', routingNum: '', accName: '', accNum: '');
 
   BankAccountModel copyWith({
     String? bankName,
@@ -72,23 +67,13 @@ class BankAccountModel {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is BankAccountModel &&
-        other.bankName == bankName &&
-        other.branch == branch &&
-        other.routingNum == routingNum &&
-        other.accName == accName &&
-        other.accNum == accNum;
-  }
-
-  @override
-  int get hashCode {
-    return bankName.hashCode ^
-        branch.hashCode ^
-        routingNum.hashCode ^
-        accName.hashCode ^
-        accNum.hashCode;
+  List<Object> get props {
+    return [
+      bankName,
+      branch,
+      routingNum,
+      accName,
+      accNum,
+    ];
   }
 }

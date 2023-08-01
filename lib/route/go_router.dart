@@ -1,7 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/bank_details_screen.dart';
-import 'package:courier_merchent_app/presentation/profile/pages/payment_method_screen.dart';
-import 'package:courier_merchent_app/presentation/profile/pages/update_hub_screen.dart';
+import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +14,7 @@ import '../presentation/home/home_screen.dart';
 import '../presentation/main_nav/main_nav.dart';
 import '../presentation/notification/notification_screen.dart';
 import '../presentation/profile/pages/change_password_screen.dart';
-import '../presentation/profile/pages/edit_profile/edit_profile_screen.dart';
+import '../presentation/profile/pages/edit_profile/profile_detail_screen.dart';
 import '../presentation/profile/pages/html_text.dart';
 import '../presentation/splash/splash_screen.dart';
 
@@ -113,10 +112,17 @@ class RouterNotifier extends ChangeNotifier {
           ),
         ),
         GoRoute(
-          path: EditProfileScreen.route,
+          path: ProfileDetailScreen.route,
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
-            child: const EditProfileScreen(),
+            child: const ProfileDetailScreen(),
+          ),
+        ),
+        GoRoute(
+          path: MyShopScreen.route,
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: const MyShopScreen(),
           ),
         ),
         GoRoute(
@@ -124,20 +130,6 @@ class RouterNotifier extends ChangeNotifier {
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
             child: const BankDetailsScreen(),
-          ),
-        ),
-        GoRoute(
-          path: PaymentMethodScreen.route,
-          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
-            key: state.pageKey,
-            child: const PaymentMethodScreen(),
-          ),
-        ),
-        GoRoute(
-          path: UpdateHubScreen.route,
-          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
-            key: state.pageKey,
-            child: const UpdateHubScreen(),
           ),
         ),
         GoRoute(

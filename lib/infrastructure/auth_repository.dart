@@ -62,7 +62,7 @@ class AuthRepo {
     final data = await api.patch(
       fromData: (json) => AuthResponse.fromMap(json),
       endPoint: APIRoute.PROFILE_UPDATE,
-      body: body.toMap(),
+      body: body.toUpdateMap(),
       withToken: true,
     );
 

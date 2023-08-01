@@ -211,7 +211,7 @@ class KTextFormField2 extends HookConsumerWidget {
     return AnimatedContainer(
       duration: 400.milliseconds,
       margin: enabled
-          ? EdgeInsets.symmetric(horizontal: 24.w)
+          ? EdgeInsets.symmetric(horizontal: 20.w)
           : EdgeInsets.symmetric(horizontal: 10.w),
       child: TextFormField(
         obscureText: isObscure ? hideText.value : false,
@@ -228,7 +228,9 @@ class KTextFormField2 extends HookConsumerWidget {
           hintText: isLabel ? null : hintText,
           hintStyle: hintTextStyle ?? CustomTextStyle.textStyle14w500B800,
           labelText: isLabel ? hintText : null,
-          labelStyle: CustomTextStyle.textStyle12w400B800,
+          labelStyle: enabled
+              ? CustomTextStyle.textStyle12w400B800
+              : CustomTextStyle.textStyle14w400B800,
           contentPadding: contentPadding,
           fillColor: fillColor,
           border: border,

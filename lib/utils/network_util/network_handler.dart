@@ -41,7 +41,8 @@ class NetworkHandler {
         'Content-Type': 'application/json',
         'Content': 'application/json',
         'Accept': 'application/json',
-        if (_token != null && _token!.isNotEmpty) "Authorization": "$_token"
+        if (_token != null && _token!.isNotEmpty)
+          "Authorization": "Bearer $_token"
       };
     } else {
       return {
