@@ -11,9 +11,9 @@ void main() {
     expect(File(Images.deliveryBoxList).existsSync(), isTrue);
     expect(File(Images.deliveryBoxLoading).existsSync(), isTrue);
     expect(File(Images.deliveryBoxes3d).existsSync(), isTrue);
+    expect(File(Images.homeBanner).existsSync(), isTrue);
     expect(File(Images.logo).existsSync(), isTrue);
     expect(File(Images.iconFacebook).existsSync(), isTrue);
     expect(File(Images.iconGoogle).existsSync(), isTrue);
-    expect(File(Images.animAnimationLogin).existsSync(), isTrue);
   });
 }

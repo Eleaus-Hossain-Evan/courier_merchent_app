@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../application/auth/auth_provider.dart';
@@ -28,119 +29,127 @@ class ProfileScreen extends HookConsumerWidget {
     // final isLoggedIn = ref.watch(loggedInProvider).loggedIn;
 
     final isEditable = useState(!state.user.isApproved);
+    final refreshController = RefreshController(initialRefresh: false);
 
     return Scaffold(
       appBar: const KAppBar(titleText: AppStrings.profile),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // isEditable.value.toString().text.make(),
-            //? Top Section
-            gap18,
-            ProfilePicWidget(
-              onEditTap: () => context.push(ProfileDetailScreen.route),
-            ),
-            gap40,
-            Container(
-              padding: padding20,
-              decoration: BoxDecoration(
-                color: ColorPalate.bg100,
-                borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(
-                  color: ColorPalate.primary.withOpacity(.2),
-                  width: 1.2.w,
-                ),
+      body: SmartRefresher(
+        controller: refreshController,
+        onRefresh: () => ref
+            .read(authProvider.notifier)
+            .profileView()
+            .then((value) => refreshController.refreshCompleted()),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // isEditable.value.toString().text.make(),
+              //? Top Section
+              gap18,
+              ProfilePicWidget(
+                onEditTap: () => context.push(ProfileDetailScreen.route),
               ),
-              child: Column(
-                children: [
-                  ProfileOptionsItem(
-                    visible: isEditable.value,
-                    leading: Bootstrap.bank2,
-                    title: AppStrings.bankDetail,
-                    secondaryTrailing: const Icon(Icons.warning_rounded)
-                        .iconColor(ColorPalate.warning),
-                    onTap: () => context.push(BankDetailsScreen.route),
+              gap40,
+              Container(
+                padding: padding20,
+                decoration: BoxDecoration(
+                  color: ColorPalate.bg100,
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(
+                    color: ColorPalate.primary.withOpacity(.2),
+                    width: 1.2.w,
                   ),
-                  KDivider(
-                    visible: (isEditable.value),
-                    height: 36.h,
-                  ),
-                  ProfileOptionsItem(
-                    leading: Bootstrap.shop,
-                    title: AppStrings.myShop,
-                    secondaryTrailing: state.user.myShops.isEmpty
-                        ? const Icon(Icons.warning_rounded)
-                            .iconColor(ColorPalate.warning)
-                        : const SizedBox.shrink(),
-                    onTap: () => context.push(MyShopScreen.route),
-                  ),
-                  KDivider(
-                    height: 36.h,
-                  ),
-                  ProfileOptionsItem(
-                    leading: BoxIcons.bxs_lock,
-                    title: AppStrings.changePassword,
-                    onTap: () => context.push(ChangePasswordScreen.route),
-                  ),
-                  KDivider(height: 36.h),
-                  ProfileOptionsItem(
-                    leading: EvaIcons.log_out,
-                    title: AppStrings.logout,
-                    onTap: () => kShowFloatBottomSheet(
-                      context: context,
-                      child: LogoutDialog(
-                        onYesPressed: () {
-                          ref.read(authProvider.notifier).logout();
-                          context.go(LoginScreen.route);
-                        },
-                        onNoPressed: () {},
+                ),
+                child: Column(
+                  children: [
+                    ProfileOptionsItem(
+                      visible: isEditable.value,
+                      leading: Bootstrap.bank2,
+                      title: AppStrings.bankDetail,
+                      secondaryTrailing: const Icon(Icons.warning_rounded)
+                          .iconColor(ColorPalate.warning),
+                      onTap: () => context.push(BankDetailsScreen.route),
+                    ),
+                    KDivider(
+                      visible: (isEditable.value),
+                      height: 36.h,
+                    ),
+                    ProfileOptionsItem(
+                      leading: Bootstrap.shop,
+                      title: AppStrings.myShop,
+                      secondaryTrailing: state.user.myShops.isEmpty
+                          ? const Icon(Icons.warning_rounded)
+                              .iconColor(ColorPalate.warning)
+                          : const SizedBox.shrink(),
+                      onTap: () => context.push(MyShopScreen.route),
+                    ),
+                    KDivider(
+                      height: 36.h,
+                    ),
+                    ProfileOptionsItem(
+                      leading: BoxIcons.bxs_lock,
+                      title: AppStrings.changePassword,
+                      onTap: () => context.push(ChangePasswordScreen.route),
+                    ),
+                    KDivider(height: 36.h),
+                    ProfileOptionsItem(
+                      leading: EvaIcons.log_out,
+                      title: AppStrings.logout,
+                      onTap: () => kShowFloatBottomSheet(
+                        context: context,
+                        child: LogoutDialog(
+                          onYesPressed: () {
+                            ref.read(authProvider.notifier).logout();
+                            context.go(LoginScreen.route);
+                          },
+                          onNoPressed: () {},
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            gap18,
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: paddingLeft10,
-                child: Text(
-                  AppStrings.support,
-                  style: CustomTextStyle.textStyle16w500Black900,
+                  ],
                 ),
               ),
-            ),
-            gap12,
-            Container(
-              padding: padding20,
-              decoration: BoxDecoration(
-                color: ColorPalate.bg100,
-                borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(
-                  color: ColorPalate.primary.withOpacity(.2),
-                  width: 1.2.w,
+              gap18,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: paddingLeft10,
+                  child: Text(
+                    AppStrings.support,
+                    style: CustomTextStyle.textStyle16w500Black900,
+                  ),
                 ),
               ),
-              child: Column(
-                children: [
-                  ProfileOptionsItem(
-                    leading: Icons.help_center_outlined,
-                    title: AppStrings.contactUs,
-                    onTap: () => context.push(HtmlTextScreen.route),
+              gap12,
+              Container(
+                padding: padding20,
+                decoration: BoxDecoration(
+                  color: ColorPalate.bg100,
+                  borderRadius: BorderRadius.circular(16.r),
+                  border: Border.all(
+                    color: ColorPalate.primary.withOpacity(.2),
+                    width: 1.2.w,
                   ),
-                  KDivider(height: 36.h),
-                  ProfileOptionsItem(
-                    leading: Icons.privacy_tip_outlined,
-                    title: AppStrings.privacyPolicy,
-                    onTap: () {},
-                  ),
-                ],
+                ),
+                child: Column(
+                  children: [
+                    ProfileOptionsItem(
+                      leading: Icons.help_center_outlined,
+                      title: AppStrings.contactUs,
+                      onTap: () => context.push(HtmlTextScreen.route),
+                    ),
+                    KDivider(height: 36.h),
+                    ProfileOptionsItem(
+                      leading: Icons.privacy_tip_outlined,
+                      title: AppStrings.privacyPolicy,
+                      onTap: () {},
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

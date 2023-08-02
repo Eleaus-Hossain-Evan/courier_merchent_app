@@ -57,13 +57,15 @@ class MainNav extends HookConsumerWidget {
               label: AppStrings.delivery,
             ),
             NavigationDestination(
-              icon: Icon(
-                Icons.currency_exchange_rounded,
-                color: navIndex.value == 2
-                    ? context.colors.primary
-                    : ColorPalate.black600,
+              icon: const Icon(
+                Icons.notifications_active_outlined,
+                color: ColorPalate.black600,
               ),
-              label: AppStrings.earning,
+              selectedIcon: Icon(
+                Icons.notifications_active_rounded,
+                color: context.colors.primary,
+              ),
+              label: AppStrings.notifications,
             ),
             NavigationDestination(
               icon: Icon(

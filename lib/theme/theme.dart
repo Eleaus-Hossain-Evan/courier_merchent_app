@@ -71,6 +71,9 @@ class MyTheme {
     subThemesData: FlexSubThemesData(
       useTextTheme: true,
       bottomSheetRadius: 20.r,
+      defaultRadius: 8.r,
+      adaptiveRadius: const FlexAdaptive.all(),
+      defaultRadiusAdaptive: 8.r,
       bottomSheetModalBackgroundColor: SchemeColor.surface,
       bottomSheetBackgroundColor: SchemeColor.surface,
       buttonMinSize: Size(1.sw, 42.h),
@@ -97,7 +100,7 @@ class MyTheme {
     ),
     useMaterial3: true,
     useMaterial3ErrorColors: true,
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
     // To use the playground font, add GoogleFonts package and uncomment
     fontFamily: GoogleFonts.openSans().fontFamily,
   );

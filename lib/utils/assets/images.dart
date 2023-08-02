@@ -10,9 +10,8 @@ class Images {
   static const String deliveryBoxLoading =
       'assets/images/delivery-box-loading.png';
   static const String deliveryBoxes3d = 'assets/images/delivery-boxes-3d.png';
+  static const String homeBanner = 'assets/images/home-banner.png';
   static const String logo = 'assets/images/logo.png';
   static const String iconFacebook = 'assets/icons/facebook.png';
   static const String iconGoogle = 'assets/icons/google.png';
-  static const String animAnimationLogin =
-      'assets/animations/animation_login.json';
 }

@@ -164,7 +164,7 @@ class KTextFormField2 extends HookConsumerWidget {
     this.isLabel = true,
     this.enabled = true,
     this.onTap,
-    this.prefix,
+    this.prefixIcon,
     this.validator,
     this.focusNode,
     this.isObscure = false,
@@ -175,6 +175,7 @@ class KTextFormField2 extends HookConsumerWidget {
     this.maxLines = 1,
     this.contentPadding =
         const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+    this.containerPadding,
     this.fillColor = Colors.transparent,
     this.borderColor = ColorPalate.secondary200,
     this.hintTextStyle,
@@ -186,7 +187,7 @@ class KTextFormField2 extends HookConsumerWidget {
   final Widget? suffixIcon;
   final bool readOnly, isLabel, enabled;
   final VoidCallback? onTap;
-  final Widget? prefix;
+  final Widget? prefixIcon;
   final String? Function(String?)? validator;
   final bool isObscure;
   final FocusNode? focusNode;
@@ -194,7 +195,7 @@ class KTextFormField2 extends HookConsumerWidget {
   final TextInputAction? textInputAction;
   final Function(String)? onChanged, onFieldSubmitted;
   final int? maxLines;
-  final EdgeInsets contentPadding;
+  final EdgeInsets? contentPadding, containerPadding;
   final Color fillColor, borderColor;
   final TextStyle? hintTextStyle;
 
@@ -210,9 +211,10 @@ class KTextFormField2 extends HookConsumerWidget {
     );
     return AnimatedContainer(
       duration: 400.milliseconds,
-      margin: enabled
-          ? EdgeInsets.symmetric(horizontal: 20.w)
-          : EdgeInsets.symmetric(horizontal: 10.w),
+      margin: containerPadding ??
+          (enabled
+              ? EdgeInsets.symmetric(horizontal: 20.w)
+              : EdgeInsets.symmetric(horizontal: 10.w)),
       child: TextFormField(
         obscureText: isObscure ? hideText.value : false,
         controller: controller,
@@ -246,7 +248,7 @@ class KTextFormField2 extends HookConsumerWidget {
             ),
           ),
           filled: true,
-          prefix: prefix,
+          prefixIcon: prefixIcon,
           suffixIcon: suffixIcon ??
               (isObscure
                   ? KInkWell(

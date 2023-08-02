@@ -21,13 +21,15 @@ Gap gap36 = Gap(36.w);
 Gap gap40 = Gap(40.w);
 Gap gap48 = Gap(48.w);
 
+Gap gap2V = Gap(2.h);
+
 Gap bottomGap = Gap(65.h);
 
 double defaultBorderRadius = 12.00.r;
 double defaultHorizontalPadding = gap16.mainAxisExtent;
 double defaultOutsideMarin = 8.00.w;
 
-EdgeInsetsDirectional padding0 = EdgeInsetsDirectional.zero;
+EdgeInsets padding0 = EdgeInsets.zero;
 EdgeInsetsDirectional padding2 = EdgeInsetsDirectional.all(2.w);
 EdgeInsetsDirectional padding4 = EdgeInsetsDirectional.all(4.w);
 EdgeInsetsGeometry padding6 = EdgeInsetsDirectional.all(6.w);

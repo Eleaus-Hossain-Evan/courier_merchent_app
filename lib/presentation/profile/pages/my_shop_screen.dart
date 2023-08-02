@@ -27,7 +27,6 @@ class MyShopScreen extends HookConsumerWidget {
     final addressFocus = useFocusNode();
 
     final isUpdate = useState(false);
-    final shops = useState<List<MyShopModel>>(state.user.myShops);
 
     return CustomScaffold(
       appBar: KAppBarBGTransparent(
@@ -75,7 +74,7 @@ class MyShopScreen extends HookConsumerWidget {
                     ],
                   ),
                   Visibility(
-                    visible: shops.value.isNotEmpty,
+                    visible: state.user.myShops.isNotEmpty,
                     replacement:
                         "No Shop added yet!".text.caption(context).make().p24(),
                     child: KListViewSeparated(
@@ -85,8 +84,19 @@ class MyShopScreen extends HookConsumerWidget {
                       itemBuilder: (context, index) {
                         final shop = state.user.myShops[index];
                         return ListTile(
+                          onTap: () {
+                            log("tap");
+                          },
                           title: shop.shopName.text.make(),
                           subtitle: shop.address.text.make(),
+                          dense: true,
+                          style: ListTileStyle.drawer,
+                          enableFeedback: true,
+                          tileColor: context.colors.primaryContainer,
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(width: 2),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         );
                       },
                       itemCount: state.user.myShops.length,
