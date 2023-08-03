@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:courier_merchent_app/presentation/parcel/add_parcel_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/bank_details_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
 import 'package:flutter/material.dart';
@@ -147,6 +148,13 @@ class RouterNotifier extends ChangeNotifier {
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
             child: const ChangePasswordScreen(),
+          ),
+        ),
+        GoRoute(
+          path: AddParcelScreen.route,
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: const AddParcelScreen(),
           ),
         ),
       ];

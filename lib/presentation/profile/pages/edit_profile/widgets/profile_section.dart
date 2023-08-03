@@ -10,7 +10,7 @@ class ProfileSection extends StatelessWidget {
     Key? key,
     required this.title,
     this.leading,
-    required this.visible,
+    this.visible = true,
     required this.child,
     this.replacement,
     this.containerPadding,

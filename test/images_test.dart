@@ -11,8 +11,13 @@ void main() {
     expect(File(Images.deliveryBoxList).existsSync(), isTrue);
     expect(File(Images.deliveryBoxLoading).existsSync(), isTrue);
     expect(File(Images.deliveryBoxes3d).existsSync(), isTrue);
+    expect(File(Images.homeBanner2).existsSync(), isTrue);
+    expect(File(Images.homeBanner3).existsSync(), isTrue);
+    expect(File(Images.homeBanner4).existsSync(), isTrue);
     expect(File(Images.homeBanner).existsSync(), isTrue);
     expect(File(Images.logo).existsSync(), isTrue);
+    expect(File(Images.parcelSearch).existsSync(), isTrue);
+    expect(File(Images.truck).existsSync(), isTrue);
     expect(File(Images.iconFacebook).existsSync(), isTrue);
     expect(File(Images.iconGoogle).existsSync(), isTrue);
   });
