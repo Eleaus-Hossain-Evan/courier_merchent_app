@@ -1,0 +1,73 @@
+import 'package:courier_merchent_app/application/parcel/percel_state.dart';
+import 'package:courier_merchent_app/domain/parcel/parcel_category_model_reponse.dart';
+import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
+import 'package:courier_merchent_app/infrastructure/parcel_repo.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../domain/parcel/create_parcel_body.dart';
+import '../../domain/parcel/get_area_model_response.dart';
+import '../global.dart';
+
+final parcelProvider =
+    StateNotifierProvider<ParcelNotifier, ParcelState>((ref) {
+  return ParcelNotifier(ref, ParcelRepo());
+}, name: "parcelProvider");
+
+class ParcelNotifier extends StateNotifier<ParcelState> {
+  final Ref ref;
+  final ParcelRepo repo;
+  ParcelNotifier(this.ref, this.repo) : super(ParcelState.init());
+
+  Future<List<AreaModel>> getDistrict() async {
+    final data = await repo.allDistrict();
+
+    return data.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return [];
+      },
+      (r) => (r.data),
+    );
+  }
+
+  Future<List<AreaModel>> getArea(String id) async {
+    final data = await repo.allAreaByDistrict(id);
+
+    return data.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return [];
+      },
+      (r) => (r.data),
+    );
+  }
+
+  Future<List<WeightModel>> getWeight() async {
+    final data = await repo.getWeight();
+
+    return data.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return [];
+      },
+      (r) => (r.data),
+    );
+  }
+
+  Future<List<ParcelCategoryModel>> getParcelCategpry() async {
+    final data = await repo.getParcelCategory();
+
+    return data.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return [];
+      },
+      (r) => (r.data),
+    );
+  }
+
+  void createParcel(CreateParcelBody body) {
+    Logger.d(body);
+  }
+}

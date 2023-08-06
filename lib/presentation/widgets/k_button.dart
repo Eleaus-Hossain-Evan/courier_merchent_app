@@ -184,9 +184,9 @@ class KOutlinedButton extends HookConsumerWidget {
               fontWeight: FontWeight.w600,
             ),
         foregroundColor: isSecondary ? ColorPalate.secondary : foregroundColor,
-        backgroundColor: isSecondary ? ColorPalate.secondary : backgroundColor,
+        backgroundColor: backgroundColor,
         side: BorderSide(
-          color: ColorPalate.primary,
+          color: isSecondary ? ColorPalate.secondary : ColorPalate.primary,
           width: borderWidth ?? 1,
           style: borderStyle ?? BorderStyle.solid,
         ),

@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
+
+import '../domain/auth/get_all_shop_response.dart';
 import '../domain/auth/login_body.dart';
 import '../domain/auth/auth_response.dart';
 import '../domain/auth/model/user_model.dart';
 import '../domain/auth/signUp_body.dart';
-import '../domain/simple_response.dart';
 import '../utils/api_routes.dart';
 import '../utils/network_util/network_handler.dart';
 
@@ -17,20 +19,6 @@ class AuthRepo {
       endPoint: APIRoute.LOGIN,
       body: body.toMap(),
       withToken: false,
-    );
-
-    return data;
-  }
-
-  Future<Either<CleanFailure, SimpleResponse>> setDeviceToken(
-      String dToken) async {
-    final data = await api.put(
-      fromData: (json) => SimpleResponse.fromMap(json),
-      endPoint: APIRoute.DEVICE_TOKEN,
-      body: {
-        "deviceToken": dToken,
-      },
-      withToken: true,
     );
 
     return data;
@@ -97,6 +85,27 @@ class AuthRepo {
       fromData: (json) => AuthResponse.fromMap(json),
       endPoint: APIRoute.IMAGE_UPLOAD,
       body: {"image": imageString},
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, AuthResponse>> addMyShop(AddShopBody body) async {
+    final data = await api.post(
+      body: body.toMap(),
+      fromData: (json) => AuthResponse.fromMap(json),
+      endPoint: APIRoute.ADD_SHOP,
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, GetAllShopResponse>> getMyShop() async {
+    final data = await api.get(
+      fromData: (json) => GetAllShopResponse.fromMap(json),
+      endPoint: APIRoute.FETCH_ALL_SHOP,
       withToken: true,
     );
 

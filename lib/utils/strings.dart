@@ -97,4 +97,21 @@ class AppStrings {
       "By clicking Sign Up, you agree to our Terms of Use and our Privacy Policy.";
   static const String reTypePassword = "Re-Type Password";
   static const String notMatch = "Password doesn't match";
+
+  //#----------------  Parcel ----------------
+  static const String deliveryInformation = "Delivery Information";
+  static const String createParcel = "Create Parcel";
+  static const String description = "Description";
+  static const String cashCollection = "Cash Collection";
+  static const String category = "Category";
+  static const String materialType = "Material Type";
+  static const String productPrice = "Product Price";
+  static const String productWeight = "Product Weight";
+  static const String invoiceNo = "Invoice no.";
+  static const String selectArea = "Select Area";
+  static const String selectDistrict = "Select District";
+  static const String addressInformation = "Address Information";
+  static const String customerInformation = "Customer Information";
+  static const String createNewParcel = 'Create New Parcel';
+  static const String search = "Search";
 }

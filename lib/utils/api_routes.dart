@@ -13,14 +13,15 @@ class APIRoute {
   static const String LOGIN = "${API_V1}merchant/login";
   static const String PROFILE_VIEW =
       "${API_V1}merchant/single-fetch-by-himself";
-
-  static const String DEVICE_TOKEN = "${API_V1}customer/device-token/set-up";
+  static const String ADD_SHOP = "${API_V1}merchant/add-shop-by-himself";
+  static const String FETCH_ALL_SHOP =
+      "${API_V1}merchant/fetch-all-shop-by-himself";
 
   //<<---------------- Courier Merchant ------------------>>
 
   static const String HOME = "${API_V1}home-page/view";
 
-  //'<<----------------Profile------------------>>
+  //#<<----------------Profile------------------>>
   static const String ALL_DISTRICT = "${API_V1}location/all-districts";
   static const String ALL_AREA_BY_DISTRICT =
       "${API_V1}location/district-areas/";
@@ -31,4 +32,8 @@ class APIRoute {
   static const ORDER_CREATE = "";
 
   static const SUBMIT_REVIEW = "";
+
+  //#<<----------------Parcel------------------>>
+  static const WEIGHT_CHARGE = "${API_V1}weight-charge/fetch-all";
+  static const PARCEL_CATEGORY = "${API_V1}category/fetch-all";
 }

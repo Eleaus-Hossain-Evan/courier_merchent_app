@@ -15,6 +15,7 @@ class KDropDownSearchWidget<T> extends HookConsumerWidget {
     this.enabled = true,
     this.contentPadding =
         const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+    this.containerMargin,
     this.fillColor = Colors.transparent,
     this.borderColor = ColorPalate.secondary200,
     this.hintTextStyle,
@@ -23,12 +24,20 @@ class KDropDownSearchWidget<T> extends HookConsumerWidget {
     this.compareFn,
     this.onChanged,
     this.items = const [],
+    this.popupProps = const PopupProps.menu(
+      // showSelectedItems: true,
+      fit: FlexFit.loose,
+      menuProps: MenuProps(
+        backgroundColor: ColorPalate.bg200,
+      ),
+    ),
+    this.focusNode,
   }) : super(key: key);
 
   final T? selectedItem;
   final String hintText;
   final bool isLabel, enabled;
-  final EdgeInsetsGeometry contentPadding;
+  final EdgeInsets? contentPadding, containerMargin;
   final Color fillColor, borderColor;
   final TextStyle? hintTextStyle;
   final Future<List<T>> Function(String)? asyncItems;
@@ -36,6 +45,8 @@ class KDropDownSearchWidget<T> extends HookConsumerWidget {
   final bool Function(T, T)? compareFn;
   final void Function(T?)? onChanged;
   final List<T> items;
+  final PopupProps<T> popupProps;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -49,51 +60,49 @@ class KDropDownSearchWidget<T> extends HookConsumerWidget {
 
     return AnimatedContainer(
       duration: 400.milliseconds,
-      margin: enabled
-          ? EdgeInsets.symmetric(horizontal: 20.w)
-          : EdgeInsets.symmetric(horizontal: 10.w),
-      child: DropdownSearch<T>(
-        popupProps: const PopupProps.menu(
-          showSelectedItems: true,
-          fit: FlexFit.loose,
-          menuProps: MenuProps(
-            backgroundColor: ColorPalate.bg200,
-          ),
-        ),
-        items: items,
-        selectedItem: selectedItem,
-        itemAsString: itemAsString,
-        enabled: enabled,
-        autoValidateMode: AutovalidateMode.onUserInteraction,
-        dropdownDecoratorProps: DropDownDecoratorProps(
-          baseStyle: CustomTextStyle.textStyle14w400B900,
-          dropdownSearchDecoration: InputDecoration(
-            hintText: isLabel ? null : hintText,
-            hintStyle: hintTextStyle ?? CustomTextStyle.textStyle14w500B800,
-            labelText: isLabel ? hintText : null,
-            labelStyle: enabled
-                ? CustomTextStyle.textStyle12w400B800
-                : CustomTextStyle.textStyle14w400B800,
-            contentPadding: contentPadding,
-            fillColor: fillColor,
-            border: border,
-            enabledBorder: border,
-            focusedBorder: border.copyWith(
-              borderSide: BorderSide(
-                color: borderColor,
+      margin: containerMargin ??
+          (enabled
+              ? EdgeInsets.symmetric(horizontal: 20.w)
+              : EdgeInsets.symmetric(horizontal: 10.w)),
+      child: Focus(
+        focusNode: focusNode,
+        child: DropdownSearch<T>(
+          popupProps: popupProps,
+          items: items,
+          selectedItem: selectedItem,
+          itemAsString: itemAsString,
+          enabled: enabled,
+          autoValidateMode: AutovalidateMode.onUserInteraction,
+          dropdownDecoratorProps: DropDownDecoratorProps(
+            baseStyle: CustomTextStyle.textStyle14w400B900,
+            dropdownSearchDecoration: InputDecoration(
+              hintText: isLabel ? null : hintText,
+              hintStyle: hintTextStyle ?? CustomTextStyle.textStyle14w500B800,
+              labelText: isLabel ? hintText : null,
+              labelStyle: enabled
+                  ? CustomTextStyle.textStyle12w400B800
+                  : CustomTextStyle.textStyle14w400B800,
+              contentPadding: contentPadding,
+              fillColor: fillColor,
+              border: border,
+              enabledBorder: border,
+              focusedBorder: border.copyWith(
+                borderSide: BorderSide(
+                  color: borderColor,
+                ),
               ),
-            ),
-            disabledBorder: border.copyWith(
-              borderSide: const BorderSide(
-                color: Colors.transparent,
+              disabledBorder: border.copyWith(
+                borderSide: const BorderSide(
+                  color: Colors.transparent,
+                ),
               ),
+              filled: true,
             ),
-            filled: true,
           ),
+          asyncItems: asyncItems,
+          compareFn: compareFn,
+          onChanged: onChanged,
         ),
-        asyncItems: asyncItems,
-        compareFn: compareFn,
-        onChanged: onChanged,
       ),
     );
   }

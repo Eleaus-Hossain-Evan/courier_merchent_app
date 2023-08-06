@@ -6,6 +6,7 @@ class AuthResponse {
   final UserModel data;
   final bool success;
   final String message;
+
   AuthResponse({
     required this.data,
     required this.success,

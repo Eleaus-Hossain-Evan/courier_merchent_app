@@ -40,7 +40,7 @@ EdgeInsetsGeometry padding14 = EdgeInsetsDirectional.all(14.w);
 EdgeInsets padding16 = EdgeInsets.all(16.w);
 EdgeInsetsGeometry padding18 = EdgeInsetsDirectional.all(18.w);
 EdgeInsetsGeometry padding20 = EdgeInsetsDirectional.all(20.w);
-EdgeInsetsGeometry padding22 = EdgeInsetsDirectional.all(22.w);
+EdgeInsets padding22 = EdgeInsets.all(22.w);
 EdgeInsetsGeometry padding24 = EdgeInsetsDirectional.all(24.w);
 
 EdgeInsetsDirectional paddingV2 =

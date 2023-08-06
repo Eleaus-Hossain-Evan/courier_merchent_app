@@ -16,26 +16,30 @@ class ContainerBGWhite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: padding ?? padding20,
-      width: 1.sw,
-      // margin: EdgeInsets.only(bottom: 28.h),
-      decoration: BoxDecoration(
-        color: ColorPalate.bg100,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: ColorPalate.primary.withOpacity(.2),
-          width: 1.2.w,
+    return FadeAnimation(
+      intervalStart: 0.6,
+      duration: const Duration(milliseconds: 400),
+      child: Container(
+        padding: padding ?? padding20,
+        width: 1.sw,
+        // margin: EdgeInsets.only(bottom: 28.h),
+        decoration: BoxDecoration(
+          color: ColorPalate.bg100,
+          borderRadius: BorderRadius.circular(16.r),
+          // border: Border.all(
+          //   color: ColorPalate.primary.withOpacity(.1),
+          //   width: 1.2.w,
+          // ),
         ),
-      ),
-      child: FadeAnimation(
-        intervalStart: 0.5,
-        duration: const Duration(milliseconds: 650),
-        child: SlideAnimation(
-          begin: const Offset(100, 0),
+        child: FadeAnimation(
           intervalStart: 0.5,
           duration: const Duration(milliseconds: 650),
-          child: child,
+          child: SlideAnimation(
+            begin: const Offset(100, 0),
+            intervalStart: 0.5,
+            duration: const Duration(milliseconds: 650),
+            child: child,
+          ),
         ),
       ),
     );

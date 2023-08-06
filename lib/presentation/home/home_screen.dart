@@ -1,16 +1,15 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import 'package:courier_merchent_app/application/auth/auth_provider.dart';
-import 'package:courier_merchent_app/presentation/home/widgets/home_app_bar.dart';
-import 'package:courier_merchent_app/presentation/home/widgets/search_delivery.dart';
-import 'package:courier_merchent_app/utils/utils.dart';
-
 import '../../application/home/home_provider.dart';
+import '../../utils/utils.dart';
 import '../widgets/widgets.dart';
+import 'widgets/home_app_bar.dart';
+import 'widgets/search_delivery.dart';
 import 'widgets/service_section.dart';
 
 class HomeScreen extends HookConsumerWidget {
@@ -18,8 +17,6 @@ class HomeScreen extends HookConsumerWidget {
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(authProvider);
-
     ref.listen(homeProvider, (previous, next) {
       if (previous!.loading == false && next.loading) {
         BotToast.showLoading();
@@ -28,6 +25,10 @@ class HomeScreen extends HookConsumerWidget {
         BotToast.closeAllLoading();
       }
     });
+
+    useEffect(() {
+      return () => BotToast.closeAllLoading();
+    }, const []);
 
     return Scaffold(
       appBar: const HomeAppBar(),

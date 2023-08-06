@@ -1,4 +1,3 @@
-import 'package:courier_merchent_app/presentation/profile/pages/edit_profile/widgets/profile_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,6 +6,7 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../../../../application/auth/auth_provider.dart';
 import '../../../../../utils/utils.dart';
+import 'profile_section.dart';
 
 class ViewOnlyWidget extends HookConsumerWidget {
   const ViewOnlyWidget({

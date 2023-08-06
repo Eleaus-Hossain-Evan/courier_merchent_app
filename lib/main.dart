@@ -13,7 +13,6 @@ import 'application/auth/loggedin_provider.dart';
 import 'application/local_storage/storage_handler.dart';
 import 'application/auth/auth_provider.dart';
 import 'application/global.dart';
-import 'domain/auth/model/shop_model.dart';
 import 'route/go_router.dart';
 
 import '../../utils/utils.dart';
@@ -68,18 +67,20 @@ class MyApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final appTheme = ref.watch(themeProvider);
-    final user = ref.watch(loggedInProvider.notifier).user.copyWith(myShops: [
-      const MyShopModel(
-        id: '',
-        shopName: "Forhad Shop - 1",
-        address: "address nikunjo-1, road 8, bisso road.",
-      ),
-      const MyShopModel(
-        id: '',
-        shopName: "Forhad Shop - 2",
-        address: "Khilkhet, road 8, bisso road.",
-      ),
-    ]);
+    final user = ref.watch(loggedInProvider.notifier).user.copyWith(
+        // myShops: [
+        //   const MyShopModel(
+        //     id: '',
+        //     shopName: "Forhad Shop - 1",
+        //     address: "address nikunjo-1, road 8, bisso road.",
+        //   ),
+        //   const MyShopModel(
+        //     id: '',
+        //     shopName: "Forhad Shop - 2",
+        //     address: "Khilkhet, road 8, bisso road.",
+        //   ),
+        // ],
+        );
 
     useEffect(() {
       Future.wait([
