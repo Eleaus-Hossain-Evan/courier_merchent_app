@@ -27,6 +27,7 @@ class HomeScreen extends HookConsumerWidget {
     });
 
     useEffect(() {
+      // Future.microtask(() => ref.read(authProvider.notifier).profileView());
       return () => BotToast.closeAllLoading();
     }, const []);
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:courier_merchent_app/presentation/parcel/add_parcel_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/bank_details_screen.dart';
@@ -58,7 +60,7 @@ class RouterNotifier extends ChangeNotifier {
     // final isOnboarding = _ref.watch(loggedInProvider).onboarding; //bool
 
     Logger.i('RouterNotifier: isLoggedIn - $isLoggedIn');
-    Logger.i('RouterNotifier:  $token, $user');
+    log('RouterNotifier:  $token, $user');
 
     final areWeLoggingIn = state.matchedLocation == LoginScreen.route;
     final areWeRegistering = state.matchedLocation == SignupScreen.route;

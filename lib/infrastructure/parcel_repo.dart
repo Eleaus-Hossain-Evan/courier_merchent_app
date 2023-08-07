@@ -1,7 +1,9 @@
+import 'package:courier_merchent_app/domain/parcel/create_parcel_body.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
 
+import '../domain/parcel/create_parcel_response.dart';
 import '../domain/parcel/get_area_model_response.dart';
-import '../domain/parcel/parcel_category_model_reponse.dart';
+import '../domain/parcel/parcel_category_model_response.dart';
 import '../utils/utils.dart';
 
 class ParcelRepo {
@@ -43,6 +45,18 @@ class ParcelRepo {
     final data = await api.get(
       fromData: (json) => ParcelCategoryModelResponse.fromMap(json),
       endPoint: APIRoute.PARCEL_CATEGORY,
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, CreateParcelResponse>> createParcel(
+      CreateParcelBody body) async {
+    final data = await api.post(
+      body: body.toMap(),
+      fromData: (json) => CreateParcelResponse.fromMap(json),
+      endPoint: APIRoute.PARCEL_CREATE,
       withToken: true,
     );
 

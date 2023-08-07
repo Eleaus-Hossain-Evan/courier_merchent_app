@@ -89,6 +89,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         return state = state.copyWith(failure: l, loading: false);
       },
       (r) {
+        // ref.read(loggedInProvider).changeSavedUser(r.data);
         return state.copyWith(user: r.data, loading: false);
       },
     );

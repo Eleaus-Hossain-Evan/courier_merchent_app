@@ -1,12 +1,11 @@
-import 'package:courier_merchent_app/application/parcel/percel_state.dart';
-import 'package:courier_merchent_app/domain/parcel/parcel_category_model_reponse.dart';
+import 'package:courier_merchent_app/application/parcel/parcel_state.dart';
+import 'package:courier_merchent_app/domain/parcel/parcel_category_model_response.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
 import 'package:courier_merchent_app/infrastructure/parcel_repo.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../domain/auth/model/area_model.dart';
 import '../../domain/parcel/create_parcel_body.dart';
-import '../../domain/parcel/get_area_model_response.dart';
 import '../global.dart';
 
 final parcelProvider =
@@ -55,7 +54,7 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
     );
   }
 
-  Future<List<ParcelCategoryModel>> getParcelCategpry() async {
+  Future<List<ParcelCategoryModel>> getParcelCategory() async {
     final data = await repo.getParcelCategory();
 
     return data.fold(
@@ -67,7 +66,20 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
     );
   }
 
-  void createParcel(CreateParcelBody body) {
-    Logger.d(body);
+  Future<bool> createParcel(CreateParcelBody body) async {
+    bool success = false;
+    state = state.copyWith(loading: true);
+
+    final result = await repo.createParcel(body);
+
+    result.fold((l) {
+      showErrorToast(l.error.message);
+      state = state.copyWith(loading: false);
+    }, (r) {
+      success = r.success;
+      state = state.copyWith(loading: false);
+    });
+
+    return success;
   }
 }

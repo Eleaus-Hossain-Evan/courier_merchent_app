@@ -147,7 +147,7 @@ class KOutlinedButton extends HookConsumerWidget {
     Key? key,
     required this.text,
     this.backgroundColor,
-    this.foregroundColor = ColorPalate.primary,
+    this.foregroundColor,
     this.borderColor = ColorPalate.primary,
     this.borderWidth,
     required this.onPressed,
@@ -163,7 +163,7 @@ class KOutlinedButton extends HookConsumerWidget {
   final String text;
   final Color? backgroundColor;
   final Color? foregroundColor;
-  final Color? borderColor;
+  final Color borderColor;
   final double? borderWidth;
   final VoidCallback? onPressed;
   final ValueNotifier<bool>? loading;
@@ -182,11 +182,13 @@ class KOutlinedButton extends HookConsumerWidget {
             TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
+              color: ColorPalate.black,
             ),
-        foregroundColor: isSecondary ? ColorPalate.secondary : foregroundColor,
+        foregroundColor: foregroundColor ??
+            (isSecondary ? ColorPalate.secondary : ColorPalate.primary),
         backgroundColor: backgroundColor,
         side: BorderSide(
-          color: isSecondary ? ColorPalate.secondary : ColorPalate.primary,
+          color: isSecondary ? ColorPalate.secondary : borderColor,
           width: borderWidth ?? 1,
           style: borderStyle ?? BorderStyle.solid,
         ),
@@ -202,7 +204,16 @@ class KOutlinedButton extends HookConsumerWidget {
                 ),
               ),
             )
-          : child ?? Text(text),
+          : child ??
+              Text(
+                text,
+                style: textStyle ??
+                    TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: ColorPalate.black,
+                    ),
+              ),
     );
   }
 }
@@ -367,6 +378,38 @@ class KCircularButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class KTextButton extends StatelessWidget {
+  const KTextButton({
+    Key? key,
+    this.child,
+    required this.onPressed,
+    this.borderRadius = BorderRadius.zero,
+    this.padding = EdgeInsets.zero,
+    this.style,
+    this.text,
+    this.foregroundColor,
+  }) : super(key: key);
+
+  final String? text;
+  final Widget? child;
+  final VoidCallback? onPressed;
+  final BorderRadiusGeometry borderRadius;
+  final EdgeInsetsGeometry? padding;
+  final ButtonStyle? style;
+  final Color? foregroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        foregroundColor: foregroundColor,
+      ),
+      onPressed: () => onPressed,
+      child: child ?? Text(text ?? ""),
     );
   }
 }

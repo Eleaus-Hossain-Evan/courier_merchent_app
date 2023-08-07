@@ -1,30 +1,37 @@
-import 'dart:developer';
-
-import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:courier_merchent_app/application/auth/auth_provider.dart';
-import 'package:courier_merchent_app/application/parcel/percel_provider.dart';
-import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
+import 'package:courier_merchent_app/application/parcel/parcel_provider.dart';
 import 'package:courier_merchent_app/domain/parcel/create_parcel_body.dart';
-import 'package:courier_merchent_app/domain/parcel/parcel_category_model_reponse.dart';
+import 'package:courier_merchent_app/domain/parcel/parcel_category_model_response.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
 import 'package:courier_merchent_app/utils/color_palate.dart';
 import 'package:courier_merchent_app/utils/strings.dart';
 import 'package:courier_merchent_app/utils/ui_constant.dart';
 
-import '../../domain/parcel/get_area_model_response.dart';
+import '../../domain/auth/model/area_model.dart';
+import '../../domain/auth/model/shop_model.dart';
+import '../../domain/parcel/model/regular_charge_model.dart';
 import '../widgets/widgets.dart';
+import 'widgets/create_parcel_end_drawer.dart';
 
 enum MaterialType { fragile, liquid }
+
+enum DistrictArea {
+  inside("642e4713912a102364a618e1"),
+  subside("63cfd08ade135f30482f5783");
+
+  final String id;
+  const DistrictArea(this.id);
+}
 
 class AddParcelScreen extends HookConsumerWidget {
   static const route = '/add-parcel';
@@ -36,7 +43,7 @@ class AddParcelScreen extends HookConsumerWidget {
 
     final scaffoldKey = useMemoized<GlobalKey<ScaffoldState>>(GlobalKey.new);
 
-    final selectedShop = useState(
+    final selectedShop = useState<MyShopModel?>(
       state.user.myShops.isNotEmpty ? state.user.myShops.first : null,
     );
 
@@ -62,6 +69,51 @@ class AddParcelScreen extends HookConsumerWidget {
     final selectedWeight = useState<WeightModel?>(null);
     final selectedParcelCategory = useState<ParcelCategoryModel?>(null);
 
+    final deliveryCharge = useState<double>(0);
+    final codCharge = useState(0.0);
+
+    void getDeliveryCharge() {
+      if (selectedDistrict.value == null) {
+        deliveryCharge.value = 0;
+      } else if (state.user.hub.district.id == DistrictArea.inside.id &&
+          selectedDistrict.value?.id == DistrictArea.subside.id) {
+        deliveryCharge.value = state.user.regularCharge.subside;
+      } else if (state.user.hub.district.id == DistrictArea.subside.id &&
+          selectedDistrict.value?.id == DistrictArea.inside.id) {
+        deliveryCharge.value = state.user.regularCharge.subside;
+      } else if (state.user.hub.district.id == selectedDistrict.value?.id) {
+        deliveryCharge.value = state.user.regularCharge.inside;
+      } else {
+        deliveryCharge.value = state.user.regularCharge.outside;
+      }
+    }
+
+    void calculateCod() {
+      codCharge.value = (int.tryParse(cashController.text) ?? 0) / 100 * 1;
+    }
+
+    selectedDistrict.addListener(getDeliveryCharge);
+
+    cashController.addListener(calculateCod);
+
+    ref.listen(parcelProvider, (previous, next) {
+      if (previous!.loading == false && next.loading) {
+        BotToast.showLoading();
+      }
+      if (previous.loading == true && next.loading == false) {
+        BotToast.closeAllLoading();
+      }
+    });
+
+    useEffect(() {
+      return () {
+        selectedDistrict.removeListener(getDeliveryCharge);
+        cashController.removeListener(calculateCod);
+
+        BotToast.closeAllLoading();
+      };
+    }, []);
+
     return Scaffold(
       key: scaffoldKey,
       appBar: KAppBar(
@@ -78,12 +130,60 @@ class AddParcelScreen extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: crossStart,
           children: [
-            (selectedShop.value?.toJson() ?? "null").text.make(),
-            KOutlinedButton(
-              isSecondary: false,
-              text: "Marchent Information",
-              onPressed: () => scaffoldKey.currentState!.openEndDrawer(),
-            ),
+            // KOutlinedButton(
+            //   isSecondary: false,
+            //   text: "Merchant Information",
+            //   onPressed: () => scaffoldKey.currentState!.openEndDrawer(),
+            // ),
+            IndividualSection(
+              title: "Merchant Information",
+              action: const Icon(EvaIcons.chevron_right),
+              child: Visibility(
+                visible: selectedShop.value != null,
+                replacement:
+                    "No Shop Selected".text.caption(context).make().p20(),
+                child: Column(
+                  crossAxisAlignment: crossStart,
+                  children: [
+                    (selectedShop.value?.shopName ?? "")
+                        .text
+                        .make()
+                        .objectCenterLeft(),
+                    gap4,
+                    // "Address: ".richText.semiBold.withTextSpanChildren([
+                    //   "${selectedShop.value?.address}".textSpan.normal.make(),
+                    // ]).make(),
+                    Text.rich(
+                      TextSpan(
+                        text: "Address:  ",
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "${selectedShop.value?.address}",
+                            style: context.textTheme.bodyMedium,
+                          ),
+                          // WidgetSpan(
+                          //   child: Icon(
+                          //     EvaIcons.chevron_down,
+                          //     size: 18.sp,
+                          //   ),
+                          // )
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+                    .pOnly(left: 16, right: 16, top: 10, bottom: 10)
+                    .box
+                    .roundedSM
+                    .border(color: ColorPalate.black600, width: 1.2.w)
+                    .make(),
+              ),
+            ).onInkTap(() {
+              scaffoldKey.currentState?.openEndDrawer();
+            }),
             gap16,
             IndividualSection(
               title: AppStrings.customerInformation,
@@ -256,7 +356,7 @@ class AddParcelScreen extends HookConsumerWidget {
                     hintText: AppStrings.category,
                     selectedItem: selectedParcelCategory.value,
                     asyncItems: (p0) =>
-                        ref.read(parcelProvider.notifier).getParcelCategpry(),
+                        ref.read(parcelProvider.notifier).getParcelCategory(),
                     itemAsString: (p0) => p0.name.capitalized,
                     compareFn: (p0, p1) => identical(p0.name, p0.name),
                     contentPadding:
@@ -295,6 +395,28 @@ class AddParcelScreen extends HookConsumerWidget {
               ),
             ),
             gap16,
+            IndividualSection(
+              title: "Other Information",
+              child: Column(
+                children: [
+                  OtherInfoItem(
+                    title: "Delivery Charge",
+                    amount: deliveryCharge.value.toString(),
+                  ),
+                  gap8,
+                  OtherInfoItem(
+                    title: "COD Charge",
+                    amount: codCharge.value.toString(),
+                  ),
+                  gap8,
+                  OtherInfoItem(
+                    title: "Weight Charge",
+                    amount: (selectedWeight.value?.price ?? 0).toString(),
+                  ),
+                ],
+              ),
+            ),
+            gap16,
             KFilledButton(
               text: AppStrings.createParcel,
               onPressed: () {
@@ -323,13 +445,16 @@ class AddParcelScreen extends HookConsumerWidget {
                           category: selectedParcelCategory.value?.name ?? "",
                           details: descriptionController.text,
                         ),
-                        regularPayment: RegularPayment(
+                        regularPayment: RegularPaymentModel(
                           cashCollection:
-                              int.tryParse(cashController.text) ?? 0,
-                          deliveryCharge: 0,
-                          codCharge: 0,
-                          weightCharge: 0,
-                          totalCharge: 0,
+                              double.tryParse(cashController.text) ?? 0.0,
+                          deliveryCharge: deliveryCharge.value,
+                          codCharge: codCharge.value,
+                          weightCharge:
+                              (selectedWeight.value?.price ?? 0).toDouble(),
+                          totalCharge: deliveryCharge.value +
+                              codCharge.value +
+                              (selectedWeight.value?.price ?? 0).toDouble(),
                         ),
                       ),
                     );
@@ -342,153 +467,24 @@ class AddParcelScreen extends HookConsumerWidget {
   }
 }
 
-class CreateParcelEndDrawer extends HookConsumerWidget {
-  const CreateParcelEndDrawer({
-    super.key,
-    this.onTap,
-    required this.drawerKey,
-    this.selectedShop,
-  });
+class OtherInfoItem extends StatelessWidget {
+  const OtherInfoItem({
+    Key? key,
+    required this.title,
+    required this.amount,
+  }) : super(key: key);
 
-  final Function(MyShopModel)? onTap;
-  final GlobalKey<ScaffoldState> drawerKey;
-  final MyShopModel? selectedShop;
+  final String title;
+  final String amount;
 
   @override
-  Widget build(BuildContext context, ref) {
-    final state = ref.watch(authProvider);
-
-    final nameController = useTextEditingController(text: state.user.name);
-    final emailController = useTextEditingController(text: state.user.email);
-    final phoneController = useTextEditingController(text: state.user.phone);
-
-    return Drawer(
-      child: Center(
-        child: Padding(
-          padding: padding22.copyWith(top: 42.h),
-          child: Column(
-            children: [
-              ContainerBGWhite(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          BoxIcons.bxs_user_account,
-                          size: 18.sp,
-                          color: ColorPalate.secondary,
-                        ).pOnly(right: 12.w, left: 8.w),
-                        AppStrings.personalInfo.text.lg
-                            .make()
-                            .objectCenterLeft(),
-                      ],
-                    ),
-                    gap28,
-                    KTextFormField2(
-                      hintText: AppStrings.name,
-                      controller: nameController,
-                      isLabel: true,
-                      enabled: false,
-                      containerPadding: EdgeInsets.zero,
-                      validator: ValidationBuilder().maxLength(15).build(),
-                    ),
-                    gap16,
-                    KTextFormField2(
-                      hintText: AppStrings.email,
-                      controller: emailController,
-                      isLabel: true,
-                      readOnly: true,
-                      enabled: false,
-                      containerPadding: EdgeInsets.zero,
-                      validator:
-                          ValidationBuilder().maxLength(30).email().build(),
-                    ),
-                    gap16,
-                    KTextFormField2(
-                      hintText: AppStrings.phoneNumber,
-                      controller: phoneController,
-                      isLabel: true,
-                      readOnly: true,
-                      enabled: false,
-                      containerPadding: EdgeInsets.zero,
-                      validator: ValidationBuilder()
-                          .maxLength(11)
-                          .minLength(11)
-                          .phone()
-                          .build(),
-                    ),
-                  ],
-                ),
-              ),
-              gap36,
-              ContainerBGWhite(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Bootstrap.shop,
-                          size: 18.sp,
-                          color: ColorPalate.secondary,
-                        ),
-                        gap12,
-                        "My Shops".text.lg.semiBold.make().objectCenterLeft(),
-                      ],
-                    ),
-                    Visibility(
-                      visible: state.user.myShops.isNotEmpty,
-                      replacement: Column(
-                        children: [
-                          gap12,
-                          "No Shop added yet!"
-                              .text
-                              .caption(context)
-                              .make()
-                              .p24(),
-                          gap16,
-                          KFilledButton(
-                            text: "Add Shop",
-                            isSecondary: true,
-                            foregroundColor: ColorPalate.black900,
-                            onPressed: () => context.push(MyShopScreen.route),
-                          ),
-                        ],
-                      ),
-                      child: KListViewSeparated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: padding0,
-                        itemBuilder: (context, index) {
-                          final shop = state.user.myShops[index];
-                          return ListTile(
-                            selected: shop == selectedShop,
-                            onTap: () {
-                              onTap?.call(shop);
-                              log(shop.toJson());
-                              drawerKey.currentState!.closeEndDrawer();
-                            },
-                            title: shop.shopName.text.make(),
-                            subtitle: shop.address.text.make(),
-                            dense: true,
-                            style: ListTileStyle.drawer,
-                            enableFeedback: true,
-                            tileColor: context.colors.primaryContainer,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(width: 2),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          );
-                        },
-                        itemCount: state.user.myShops.length,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: mainSpaceBetween,
+      children: [
+        title.text.caption(context).make().flexible(),
+        "TK $amount".text.sm.semiBold.make(),
+      ],
     );
   }
 }

@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class ChargeModel extends Equatable {
-  final int inside;
-  final int outside;
-  final int subside;
+  final double inside;
+  final double outside;
+  final double subside;
 
   const ChargeModel({
     required this.inside,
@@ -17,9 +17,9 @@ class ChargeModel extends Equatable {
       const ChargeModel(inside: 0, outside: 0, subside: 0);
 
   ChargeModel copyWith({
-    int? inside,
-    int? outside,
-    int? subside,
+    double? inside,
+    double? outside,
+    double? subside,
   }) {
     return ChargeModel(
       inside: inside ?? this.inside,
@@ -38,9 +38,9 @@ class ChargeModel extends Equatable {
 
   factory ChargeModel.fromMap(Map<String, dynamic> map) {
     return ChargeModel(
-      inside: map['inside']?.toInt() ?? 0,
-      outside: map['outside']?.toInt() ?? 0,
-      subside: map['subside']?.toInt() ?? 0,
+      inside: map['inside']?.toDouble() ?? 0.0,
+      outside: map['outside']?.toDouble() ?? 0.0,
+      subside: map['subside']?.toDouble() ?? 0.0,
     );
   }
 

@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import 'model/regular_charge_model.dart';
+
 class CreateParcelBody extends Equatable {
   final MerchantInfo merchantInfo;
   final CustomerInfo customerInfo;
   final RegularParcelInfo regularParcelInfo;
-  final RegularPayment regularPayment;
+  final RegularPaymentModel regularPayment;
   const CreateParcelBody({
     required this.merchantInfo,
     required this.customerInfo,
@@ -18,7 +20,7 @@ class CreateParcelBody extends Equatable {
     MerchantInfo? merchantInfo,
     CustomerInfo? customerInfo,
     RegularParcelInfo? regularParcelInfo,
-    RegularPayment? regularPayment,
+    RegularPaymentModel? regularPayment,
   }) {
     return CreateParcelBody(
       merchantInfo: merchantInfo ?? this.merchantInfo,
@@ -42,7 +44,7 @@ class CreateParcelBody extends Equatable {
       merchantInfo: MerchantInfo.fromMap(map['merchantInfo']),
       customerInfo: CustomerInfo.fromMap(map['customerInfo']),
       regularParcelInfo: RegularParcelInfo.fromMap(map['regularParcelInfo']),
-      regularPayment: RegularPayment.fromMap(map['regularPayment']),
+      regularPayment: RegularPaymentModel.fromMap(map['regularPayment']),
     );
   }
 
@@ -280,78 +282,6 @@ class RegularParcelInfo extends Equatable {
       materialType,
       category,
       details,
-    ];
-  }
-}
-
-class RegularPayment extends Equatable {
-  final int cashCollection;
-  final int deliveryCharge;
-  final int codCharge;
-  final int weightCharge;
-  final int totalCharge;
-  const RegularPayment({
-    required this.cashCollection,
-    required this.deliveryCharge,
-    required this.codCharge,
-    required this.weightCharge,
-    required this.totalCharge,
-  });
-
-  RegularPayment copyWith({
-    int? cashCollection,
-    int? deliveryCharge,
-    int? codCharge,
-    int? weightCharge,
-    int? totalCharge,
-  }) {
-    return RegularPayment(
-      cashCollection: cashCollection ?? this.cashCollection,
-      deliveryCharge: deliveryCharge ?? this.deliveryCharge,
-      codCharge: codCharge ?? this.codCharge,
-      weightCharge: weightCharge ?? this.weightCharge,
-      totalCharge: totalCharge ?? this.totalCharge,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'cashCollection': cashCollection,
-      'deliveryCharge': deliveryCharge,
-      'codCharge': codCharge,
-      'weightCharge': weightCharge,
-      'totalCharge': totalCharge,
-    };
-  }
-
-  factory RegularPayment.fromMap(Map<String, dynamic> map) {
-    return RegularPayment(
-      cashCollection: map['cashCollection']?.toInt() ?? 0,
-      deliveryCharge: map['deliveryCharge']?.toInt() ?? 0,
-      codCharge: map['codCharge']?.toInt() ?? 0,
-      weightCharge: map['weightCharge']?.toInt() ?? 0,
-      totalCharge: map['totalCharge']?.toInt() ?? 0,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory RegularPayment.fromJson(String source) =>
-      RegularPayment.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'RegularPayment(cashCollection: $cashCollection, deliveryCharge: $deliveryCharge, codCharge: $codCharge, weightCharge: $weightCharge, totalCharge: $totalCharge)';
-  }
-
-  @override
-  List<Object> get props {
-    return [
-      cashCollection,
-      deliveryCharge,
-      codCharge,
-      weightCharge,
-      totalCharge,
     ];
   }
 }

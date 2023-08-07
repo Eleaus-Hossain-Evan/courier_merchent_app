@@ -1,11 +1,7 @@
-import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../infrastructure/home_repo.dart';
-import '../../presentation/notification/notification_screen.dart';
-import '../../route/go_router.dart';
 import '../global.dart';
 import 'home_state.dart';
 

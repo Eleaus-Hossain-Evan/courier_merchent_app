@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:courier_merchent_app/application/auth/auth_provider.dart';
 import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,19 @@ class MyShopScreen extends HookConsumerWidget {
 
     final isUpdate = useState(false);
 
+    ref.listen(authProvider, (previous, next) {
+      if (previous!.loading == false && next.loading) {
+        BotToast.showLoading();
+      }
+      if (previous.loading == true && next.loading == false) {
+        BotToast.closeAllLoading();
+      }
+    });
+
     useEffect(() {
       Future.microtask(() => ref.read(authProvider.notifier).getMyShop());
-      return null;
+
+      return () => BotToast.closeAllLoading();
     }, const []);
 
     return CustomScaffold(
@@ -107,15 +118,14 @@ class MyShopScreen extends HookConsumerWidget {
                       itemCount: state.user.myShops.length,
                     ),
                   ),
-                  KFilledButton(
+                  KOutlinedButton(
                     text: "Add Shop",
-                    isSecondary: true,
+                    // foregroundColor: ColorPalate.black,
                     onPressed: () {
-                      kShowbarModalBottomSheet(
+                      showDialog(
                         context: context,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                        builder: (cancelFun) => Dialog(
+                          backgroundColor: Colors.white,
                           child: Column(
                             mainAxisSize: mainMin,
                             children: [
@@ -127,7 +137,7 @@ class MyShopScreen extends HookConsumerWidget {
                               ),
                               gap24,
                               KTextFormField2(
-                                hintText: "Shop Name",
+                                hintText: "Shop Address",
                                 controller: addressController,
                                 focusNode: addressFocus,
                               ),
@@ -147,6 +157,7 @@ class MyShopScreen extends HookConsumerWidget {
                                     nameController.clear();
                                     addressController.clear();
                                     Navigator.pop(context);
+                                    // cancelFun.call();
                                     log(state.user.myShops.toString());
                                   },
                                 ),

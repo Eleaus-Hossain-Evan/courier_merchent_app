@@ -84,9 +84,7 @@ class MyApp extends HookConsumerWidget {
 
     useEffect(() {
       Future.wait([
-        Future.microtask(
-          () => ref.read(authProvider.notifier).setUser(user),
-        ),
+        Future.microtask(() => ref.read(authProvider.notifier).setUser(user)),
         // Future.microtask(
         //     () => ref.read(loggedInProvider.notifier).onAppStart()),
         // Future.microtask(

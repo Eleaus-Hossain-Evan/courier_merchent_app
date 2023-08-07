@@ -2,7 +2,6 @@ export 'k_shadow_container.dart';
 export 'k_text_form_field.dart';
 export 'k_inkwell.dart';
 export 'k_button.dart';
-export 'k_text_button.dart';
 export 'k_circle_button.dart';
 export 'k_icon_circle_button.dart';
 export 'k_cached_network_image.dart';

@@ -36,4 +36,5 @@ class APIRoute {
   //#<<----------------Parcel------------------>>
   static const WEIGHT_CHARGE = "${API_V1}weight-charge/fetch-all";
   static const PARCEL_CATEGORY = "${API_V1}category/fetch-all";
+  static const PARCEL_CREATE = "${API_V1}parcel/create-by-merchant";
 }

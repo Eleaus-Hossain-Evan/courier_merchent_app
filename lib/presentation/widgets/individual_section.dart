@@ -14,10 +14,11 @@ class IndividualSection extends StatelessWidget {
     required this.child,
     this.replacement,
     this.containerPadding,
+    this.action,
   }) : super(key: key);
 
   final String title;
-  final Widget? leading;
+  final Widget? leading, action;
   final bool visible;
   final Widget child;
   final Widget? replacement;
@@ -32,7 +33,8 @@ class IndividualSection extends StatelessWidget {
           Row(
             children: [
               leading?.pOnly(right: 12.w, left: 8.w) ?? const SizedBox.shrink(),
-              title.text.bold.lg.make().objectCenterLeft(),
+              title.text.bold.lg.make().objectCenterLeft().flexible(),
+              action ?? const SizedBox.shrink()
             ],
           ),
           gap16,
