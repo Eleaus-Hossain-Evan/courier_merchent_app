@@ -33,6 +33,13 @@ class MyShopModel extends Equatable {
     };
   }
 
+  Map<String, dynamic> toUpdateMap() {
+    return {
+      'shopName': shopName,
+      'address': address,
+    };
+  }
+
   factory MyShopModel.fromMap(Map<String, dynamic> map) {
     return MyShopModel(
       id: map['_id'] ?? '',

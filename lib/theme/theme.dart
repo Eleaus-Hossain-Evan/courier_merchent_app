@@ -76,6 +76,7 @@ class MyTheme {
       defaultRadiusAdaptive: 8.r,
       bottomSheetModalBackgroundColor: SchemeColor.surface,
       bottomSheetBackgroundColor: SchemeColor.surface,
+      dialogBackgroundSchemeColor: SchemeColor.background,
       buttonMinSize: Size(1.sw, 42.h),
       outlinedButtonRadius: 8.r,
       outlinedButtonTextStyle: MaterialStateProperty.all(
@@ -97,10 +98,14 @@ class MyTheme {
       elevatedButtonSchemeColor: SchemeColor.secondary,
       outlinedButtonOutlineSchemeColor: SchemeColor.secondary,
       outlinedButtonSchemeColor: SchemeColor.secondary,
+      adaptiveSplash: const FlexAdaptive.all(),
+      splashType: FlexSplashType.inkRipple,
+      splashTypeAdaptive: FlexSplashType.defaultSplash,
     ),
     useMaterial3: true,
     useMaterial3ErrorColors: true,
     visualDensity: VisualDensity.adaptivePlatformDensity,
+    swapLegacyOnMaterial3: true,
     // To use the playground font, add GoogleFonts package and uncomment
     fontFamily: GoogleFonts.openSans().fontFamily,
   );

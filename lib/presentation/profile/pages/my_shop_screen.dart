@@ -1,14 +1,14 @@
-import 'dart:developer';
-
 import 'package:bot_toast/bot_toast.dart';
-import 'package:courier_merchent_app/application/auth/auth_provider.dart';
-import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import 'package:courier_merchent_app/application/auth/auth_provider.dart';
+import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
+import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
 
 import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
@@ -21,20 +21,16 @@ class MyShopScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authProvider);
 
-    final nameController = useTextEditingController();
-    final addressController = useTextEditingController();
-
-    final nameFocus = useFocusNode();
-    final addressFocus = useFocusNode();
-
-    final isUpdate = useState(false);
+    final loading = useState(false);
 
     ref.listen(authProvider, (previous, next) {
       if (previous!.loading == false && next.loading) {
-        BotToast.showLoading();
+        // BotToast.showLoading();
+        loading.value = true;
       }
       if (previous.loading == true && next.loading == false) {
-        BotToast.closeAllLoading();
+        // BotToast.closeAllLoading();
+        loading.value = false;
       }
     });
 
@@ -45,35 +41,8 @@ class MyShopScreen extends HookConsumerWidget {
     }, const []);
 
     return CustomScaffold(
-      appBar: KAppBarBGTransparent(
+      appBar: const KAppBarBGTransparent(
         titleText: AppStrings.myShop,
-        actions: [
-          Visibility(
-            visible: !isUpdate.value,
-            // replacement: SizedBox(
-            //   width: 100.w,
-            //   child: TextButton(
-            //     child: "Save"
-            //         .text
-            //         .colorSecondary(context)
-            //         .bold
-            //         .letterSpacing(1.2)
-            //         .make(),
-            //     onPressed: () {
-            //       isUpdate.value = !isUpdate.value;
-            //     },
-            //   ),
-            // ),
-            child: IconButton(
-              onPressed: () {
-                isUpdate.value = !isUpdate.value;
-              },
-              icon: const Icon(FontAwesome.pen_to_square)
-                  .iconColor(ColorPalate.white)
-                  .iconSize(18.sp),
-            ),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20.w).copyWith(top: 150.h),
@@ -100,10 +69,7 @@ class MyShopScreen extends HookConsumerWidget {
                       itemBuilder: (context, index) {
                         final shop = state.user.myShops[index];
                         return ListTile(
-                          onTap: () {
-                            log("tap");
-                          },
-                          title: shop.shopName.text.make(),
+                          title: shop.shopName.text.semiBold.make(),
                           subtitle: shop.address.text.make(),
                           dense: true,
                           style: ListTileStyle.drawer,
@@ -112,6 +78,28 @@ class MyShopScreen extends HookConsumerWidget {
                           shape: RoundedRectangleBorder(
                             side: const BorderSide(width: 2),
                             borderRadius: BorderRadius.circular(20),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: mainMin,
+                            children: [
+                              IconButton.outlined(
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      ShopModifyWidget(model: shop),
+                                ),
+                                icon: const Icon(FontAwesome.pen_to_square)
+                                    .iconSize(16.sp),
+                              ),
+                              IconButton.filledTonal(
+                                onPressed: () => ref
+                                    .read(authProvider.notifier)
+                                    .deleteShop(shop.id),
+                                icon: const Icon(EvaIcons.close)
+                                    .iconSize(22.sp)
+                                    .iconColor(Colors.white),
+                              ),
+                            ],
                           ),
                         );
                       },
@@ -124,48 +112,7 @@ class MyShopScreen extends HookConsumerWidget {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (cancelFun) => Dialog(
-                          backgroundColor: Colors.white,
-                          child: Column(
-                            mainAxisSize: mainMin,
-                            children: [
-                              gap28,
-                              KTextFormField2(
-                                hintText: "Shop Name",
-                                controller: nameController,
-                                focusNode: nameFocus,
-                              ),
-                              gap24,
-                              KTextFormField2(
-                                hintText: "Shop Address",
-                                controller: addressController,
-                                focusNode: addressFocus,
-                              ),
-                              gap24,
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                                child: KOutlinedButton(
-                                  text: "Add",
-                                  isSecondary: false,
-                                  onPressed: () {
-                                    ref.read(authProvider.notifier).addMyShop(
-                                          AddShopBody(
-                                            shopName: nameController.text,
-                                            address: addressController.text,
-                                          ),
-                                        );
-                                    nameController.clear();
-                                    addressController.clear();
-                                    Navigator.pop(context);
-                                    // cancelFun.call();
-                                    log(state.user.myShops.toString());
-                                  },
-                                ),
-                              ),
-                              gap28,
-                            ],
-                          ),
-                        ),
+                        builder: (cancelFun) => const ShopModifyWidget(),
                       );
                     },
                   ),
@@ -174,6 +121,87 @@ class MyShopScreen extends HookConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ShopModifyWidget extends HookConsumerWidget {
+  const ShopModifyWidget({
+    super.key,
+    this.model,
+  });
+
+  final MyShopModel? model;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final nameController = useTextEditingController(text: model?.shopName);
+    final addressController = useTextEditingController(text: model?.address);
+
+    final nameFocus = useFocusNode();
+    final addressFocus = useFocusNode();
+
+    final loading = useState(false);
+
+    void close() {
+      Navigator.pop(context);
+    }
+
+    return Dialog(
+      backgroundColor: Colors.white,
+      child: Column(
+        mainAxisSize: mainMin,
+        children: [
+          gap28,
+          KTextFormField2(
+            hintText: "Shop Name",
+            controller: nameController,
+            focusNode: nameFocus,
+            fillColor: Colors.white,
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (p0) => addressFocus.requestFocus(),
+          ),
+          gap24,
+          KTextFormField2(
+            hintText: "Shop Address",
+            controller: addressController,
+            focusNode: addressFocus,
+            fillColor: Colors.white,
+            textInputAction: TextInputAction.done,
+            onFieldSubmitted: (p0) =>
+                FocusManager.instance.primaryFocus?.unfocus(),
+          ),
+          gap24,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: KFilledButton(
+              text: model == null ? "Add" : "Update",
+              isSecondary: false,
+              loading: loading.value,
+              onPressed: () async {
+                loading.value = true;
+                if (model == null) {
+                  await ref.read(authProvider.notifier).addMyShop(
+                        AddShopBody(
+                          shopName: nameController.text,
+                          address: addressController.text,
+                        ),
+                      );
+                } else {
+                  await ref.read(authProvider.notifier).updateShop(model!
+                      .copyWith(
+                          shopName: nameController.text,
+                          address: addressController.text));
+                }
+                loading.value = false;
+
+                close();
+                // cancelFun.call();
+              },
+            ),
+          ),
+          gap28,
+        ],
       ),
     );
   }

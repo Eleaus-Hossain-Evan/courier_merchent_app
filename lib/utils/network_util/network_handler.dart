@@ -389,6 +389,90 @@ class NetworkHandler {
     }
   }
 
+  Future<Either<CleanFailure, T>> delete<T>({
+    required String endPoint,
+    required T Function(Map<String, dynamic> data) fromData,
+    Map<String, dynamic>? body,
+    bool withToken = true,
+  }) async {
+    final Map<String, String> _header = header(withToken);
+
+    final url = Uri.parse('$_baseUrl$endPoint');
+
+    Logger.v('URL : $url, Header : $_header');
+    Logger.v('BODY : $body');
+
+    try {
+      final response = await client.delete(
+        url,
+        headers: _header,
+      );
+
+      return handleResponse(
+        endPoint: endPoint,
+        response: response,
+        fromData: fromData,
+      );
+    } on SocketException {
+      Logger.e("<<SocketException>>");
+      return left(
+        CleanFailure.withData(
+          statusCode: -1,
+          enableDialogue: _enableDialogue,
+          tag: endPoint,
+          method: 'GET',
+          url: "$_baseUrl$endPoint",
+          header: _header,
+          body: const {},
+          error: const CleanError(message: 'No Internet connection 😑'),
+        ),
+      );
+    } on HttpException {
+      Logger.e("<<HttpException>>");
+      return left(
+        CleanFailure.withData(
+          statusCode: -1,
+          enableDialogue: _enableDialogue,
+          tag: endPoint,
+          method: 'GET',
+          url: "$_baseUrl$endPoint",
+          header: _header,
+          body: const {},
+          error: const CleanError(message: "Couldn't find 😱"),
+        ),
+      );
+    } on FormatException {
+      Logger.e("<<FormatException>>");
+      return left(
+        CleanFailure.withData(
+          statusCode: -1,
+          enableDialogue: _enableDialogue,
+          tag: endPoint,
+          method: 'GET',
+          url: "$_baseUrl$endPoint",
+          header: _header,
+          body: const {},
+          error: const CleanError(message: "Bad response format 👎"),
+        ),
+      );
+    } catch (e) {
+      Logger.e("1st catch Header: $_header");
+      Logger.e("1st catch Error: $e");
+      return left(
+        CleanFailure.withData(
+          statusCode: -1,
+          enableDialogue: _enableDialogue,
+          tag: endPoint,
+          method: 'GET',
+          url: "$_baseUrl$endPoint",
+          header: _header,
+          body: const {},
+          error: CleanError(message: e.toString()),
+        ),
+      );
+    }
+  }
+
   Either<CleanFailure, T> handleResponse<T>({
     required Response response,
     required String endPoint,

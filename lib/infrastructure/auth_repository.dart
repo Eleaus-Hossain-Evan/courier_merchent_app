@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
+import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
+import 'package:courier_merchent_app/domain/auth/password_update_body.dart';
 
 import '../domain/auth/get_all_shop_response.dart';
 import '../domain/auth/login_body.dart';
@@ -106,6 +108,40 @@ class AuthRepo {
     final data = await api.get(
       fromData: (json) => GetAllShopResponse.fromMap(json),
       endPoint: APIRoute.FETCH_ALL_SHOP,
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, AuthResponse>> updateShop(
+      MyShopModel body) async {
+    final data = await api.patch(
+      body: body.toUpdateMap(),
+      fromData: (json) => AuthResponse.fromMap(json),
+      endPoint: APIRoute.UPDATE_SHOP + body.id,
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, AuthResponse>> deleteShop(String id) async {
+    final data = await api.delete(
+      fromData: (json) => AuthResponse.fromMap(json),
+      endPoint: APIRoute.DELETE_SHOP + id,
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, AuthResponse>> passwordUpdate(
+      PasswordUpdateBody body) async {
+    final data = await api.patch(
+      body: body.toMap(),
+      fromData: (json) => AuthResponse.fromMap(json),
+      endPoint: APIRoute.PASSWORD_UPDATE,
       withToken: true,
     );
 

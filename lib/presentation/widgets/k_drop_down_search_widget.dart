@@ -32,6 +32,7 @@ class KDropDownSearchWidget<T> extends HookConsumerWidget {
       ),
     ),
     this.focusNode,
+    this.validator,
   }) : super(key: key);
 
   final T? selectedItem;
@@ -47,6 +48,7 @@ class KDropDownSearchWidget<T> extends HookConsumerWidget {
   final List<T> items;
   final PopupProps<T> popupProps;
   final FocusNode? focusNode;
+  final String? Function(T?)? validator;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -72,6 +74,7 @@ class KDropDownSearchWidget<T> extends HookConsumerWidget {
           selectedItem: selectedItem,
           itemAsString: itemAsString,
           enabled: enabled,
+          validator: validator,
           autoValidateMode: AutovalidateMode.onUserInteraction,
           dropdownDecoratorProps: DropDownDecoratorProps(
             baseStyle: CustomTextStyle.textStyle14w400B900,

@@ -36,12 +36,7 @@ class HomeAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                 mainAxisAlignment: mainEnd,
                 children: [
                   "Your Location".text.caption(context).make(),
-                  "authState.user.address, nikujo 1, road 7, Khilkhet, Dhaka."
-                      .text
-                      .bold
-                      .xl
-                      .ellipsis
-                      .make(),
+                  authState.user.address.text.bold.xl.ellipsis.make(),
                 ],
               ),
             ),

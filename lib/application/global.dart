@@ -244,18 +244,19 @@ bool? showBotToastDialog({
 
 bool? showSimpleDialog({
   required Widget Function(void Function()) builder,
+  BackButtonBehavior backButtonBehavior = BackButtonBehavior.close,
 }) {
   BotToast.showAnimationWidget(
-    clickClose: true,
-    allowClick: true,
-    onlyOne: true,
-    crossPage: true,
-    backButtonBehavior: BackButtonBehavior.close,
+    // clickClose: true,
+    // allowClick: true,
+    // onlyOne: true,
+    // crossPage: true,
+    backButtonBehavior: backButtonBehavior,
     wrapToastAnimation: (controller, cancel, child) => Stack(
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            cancel();
+            // cancel();
           },
           //The DecoratedBox here is very important,he will fill the entire parent component
           child: AnimatedBuilder(

@@ -104,9 +104,12 @@ class AppStrings {
   static const String description = "Description";
   static const String cashCollection = "Cash Collection";
   static const String category = "Category";
+  static const String selectCategory = "Select Category";
   static const String materialType = "Material Type";
+  static const String selectMaterialType = "Select Material Type";
   static const String productPrice = "Product Price";
   static const String productWeight = "Product Weight";
+  static const String selectProductWeight = "Select Product Weight";
   static const String invoiceNo = "Invoice no.";
   static const String selectArea = "Select Area";
   static const String selectDistrict = "Select District";
@@ -114,4 +117,12 @@ class AppStrings {
   static const String customerInformation = "Customer Information";
   static const String createNewParcel = 'Create New Parcel';
   static const String search = "Search";
+  static const String merchantInformation = "Merchant Information";
+  static const String noShopSelected = "No Shop Selected";
+  static const String otherInformation = "Other Information";
+  static const String deliveryCharge = "Delivery Charge";
+  static const String codCharge = "COD Charge";
+  static const String weightCharge = "Weight Charge";
+  static const String trackParcel = "Track Parcel";
+  static const String createAnotherParcel = "Create Another Parcel";
 }

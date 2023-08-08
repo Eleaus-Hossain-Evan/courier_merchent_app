@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,12 +16,12 @@ class CreateParcelEndDrawer extends HookConsumerWidget {
   const CreateParcelEndDrawer({
     super.key,
     this.onTap,
-    required this.drawerKey,
+    required this.scaffoldKey,
     this.selectedShop,
   });
 
   final Function(MyShopModel)? onTap;
-  final GlobalKey<ScaffoldState> drawerKey;
+  final GlobalKey<ScaffoldState> scaffoldKey;
   final MyShopModel? selectedShop;
 
   @override
@@ -35,7 +33,8 @@ class CreateParcelEndDrawer extends HookConsumerWidget {
     final phoneController = useTextEditingController(text: state.user.phone);
 
     return Drawer(
-      child: Center(
+      child: ColoredBox(
+        color: ColorPalate.bg200,
         child: Padding(
           padding: padding16.copyWith(top: 42.h),
           child: Column(
@@ -146,19 +145,17 @@ class CreateParcelEndDrawer extends HookConsumerWidget {
                         padding: padding0,
                         itemBuilder: (context, index) {
                           final shop = state.user.myShops[index];
+                          final isSelected = shop == selectedShop;
                           return ListTile(
-                            selected: shop == selectedShop,
+                            selected: isSelected,
                             onTap: () {
                               onTap?.call(shop);
-                              log(shop.toJson());
-                              drawerKey.currentState!.closeEndDrawer();
+                              scaffoldKey.currentState!.closeEndDrawer();
                             },
-                            title: shop.shopName.text.make(),
+                            title: shop.shopName.text.semiBold.make(),
                             subtitle: shop.address.text.make(),
-                            dense: true,
-                            style: ListTileStyle.drawer,
-                            enableFeedback: true,
-                            tileColor: context.colors.primaryContainer,
+                            // dense: true,
+                            style: ListTileStyle.list,
                             shape: RoundedRectangleBorder(
                               side: const BorderSide(width: 2),
                               borderRadius: BorderRadius.circular(20),
@@ -171,6 +168,7 @@ class CreateParcelEndDrawer extends HookConsumerWidget {
                   ],
                 ),
               ),
+              gap16,
             ],
           ),
         ),

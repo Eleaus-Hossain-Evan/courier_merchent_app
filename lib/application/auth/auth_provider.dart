@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
+import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
+import 'package:courier_merchent_app/route/go_router.dart';
 import 'package:courier_merchent_app/utils/network_util/network_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/auth/login_body.dart';
 import '../../domain/auth/model/user_model.dart';
+import '../../domain/auth/password_update_body.dart';
 import '../../domain/auth/profile_update_body.dart';
 import '../../domain/auth/signUp_body.dart';
 import '../../infrastructure/auth_repository.dart';
@@ -79,6 +82,28 @@ class AuthNotifier extends StateNotifier<AuthState> {
     showToast('${state.user.name} logging out');
   }
 
+  Future<bool> passwordUpdate(PasswordUpdateBody body) async {
+    bool success = false;
+    state = state.copyWith(loading: true);
+
+    repo.passwordUpdate(body).then((result) {
+      state = result.fold(
+        (l) {
+          showErrorToast(l.error.message);
+          return state = state.copyWith(failure: l, loading: false);
+        },
+        (r) {
+          success = r.success;
+          showToast(r.message);
+          ref.read(routerProvider).pop();
+          return state = state.copyWith(user: r.data, loading: false);
+        },
+      );
+    });
+
+    return success;
+  }
+
   Future<void> profileView() async {
     // state = state.copyWith(loading: true);
     final result = await repo.profileView();
@@ -145,7 +170,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     return success;
   }
 
-  void addMyShop(AddShopBody body) async {
+  Future<void> addMyShop(AddShopBody body) async {
     state = state.copyWith(loading: true);
     final result = await repo.addMyShop(body);
 
@@ -160,7 +185,45 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
-  getMyShop() async {
+  Future<bool> updateShop(MyShopModel model) async {
+    bool success = false;
+    state = state.copyWith(loading: true);
+    final result = await repo.updateShop(model);
+
+    state = result.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return state = state.copyWith(failure: l, loading: false);
+      },
+      (r) {
+        success = r.success;
+        return state.copyWith(user: r.data, loading: false);
+      },
+    );
+
+    return success;
+  }
+
+  Future<bool> deleteShop(String id) async {
+    bool success = false;
+    state = state.copyWith(loading: true);
+    final result = await repo.deleteShop(id);
+
+    state = result.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return state = state.copyWith(failure: l, loading: false);
+      },
+      (r) {
+        success = r.success;
+        return state.copyWith(user: r.data, loading: false);
+      },
+    );
+
+    return success;
+  }
+
+  void getMyShop() async {
     state = state.copyWith(loading: true);
     final result = await repo.getMyShop();
 

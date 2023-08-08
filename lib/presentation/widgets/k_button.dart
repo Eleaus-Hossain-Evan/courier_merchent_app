@@ -182,7 +182,8 @@ class KOutlinedButton extends HookConsumerWidget {
             TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
-              color: ColorPalate.black,
+              color: foregroundColor ??
+                  (isSecondary ? ColorPalate.secondary : ColorPalate.primary),
             ),
         foregroundColor: foregroundColor ??
             (isSecondary ? ColorPalate.secondary : ColorPalate.primary),
@@ -207,12 +208,6 @@ class KOutlinedButton extends HookConsumerWidget {
           : child ??
               Text(
                 text,
-                style: textStyle ??
-                    TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      color: ColorPalate.black,
-                    ),
               ),
     );
   }
