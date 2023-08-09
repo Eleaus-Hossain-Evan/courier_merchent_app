@@ -1,12 +1,16 @@
+import 'package:courier_merchent_app/application/home/home_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../application/auth/auth_provider.dart';
 import '../../utils/utils.dart';
 import '../home/home_screen.dart';
+import '../parcel/parcel_list_screen.dart';
 import '../profile/profile_screen.dart';
 
 final bottomNavigatorKey = GlobalKey();
@@ -21,21 +25,26 @@ class MainNav extends HookConsumerWidget {
     final navIndex = useState(0);
     final navWidget = [
       const HomeScreen(),
-      const Text("page2"),
-      const Text("page3"),
+      const ParcelListScreen(),
       const ProfileScreen(),
     ];
 
     useEffect(() {
-      Future.microtask(() => ref.read(authProvider.notifier).profileView());
-
+      Future.wait([
+        Future.microtask(() => ref.read(authProvider.notifier).profileView()),
+        Future.microtask(
+            () => ref.read(homeProvider.notifier).getRecentParcelList()),
+      ]);
       return () => Logger.i("app exit");
     }, const []);
 
     return LayoutBuilder(
       builder: (context, constrain) {
         return Scaffold(
-          body: navWidget[navIndex.value],
+          body: IndexedStack(
+            index: navIndex.value,
+            children: navWidget,
+          ),
           bottomNavigationBar: NavigationBar(
             backgroundColor: ColorPalate.bg200,
             elevation: 0,
@@ -58,23 +67,12 @@ class MainNav extends HookConsumerWidget {
               ),
               NavigationDestination(
                 icon: Icon(
-                  Icons.delivery_dining,
+                  FontAwesome.boxes_packing,
                   color: navIndex.value == 1
                       ? context.colors.primary
                       : ColorPalate.black600,
                 ),
-                label: AppStrings.delivery,
-              ),
-              NavigationDestination(
-                icon: const Icon(
-                  Icons.notifications_active_outlined,
-                  color: ColorPalate.black600,
-                ),
-                selectedIcon: Icon(
-                  Icons.notifications_active_rounded,
-                  color: context.colors.primary,
-                ),
-                label: AppStrings.notifications,
+                label: AppStrings.parcel,
               ),
               NavigationDestination(
                 icon: Icon(

@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:courier_merchent_app/presentation/parcel/add_parcel_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/bank_details_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -59,8 +56,8 @@ class RouterNotifier extends ChangeNotifier {
     final isLoggedIn = _ref.watch(loggedInProvider).loggedIn; //bool
     // final isOnboarding = _ref.watch(loggedInProvider).onboarding; //bool
 
-    Logger.i('RouterNotifier: isLoggedIn - $isLoggedIn');
-    log('RouterNotifier:  $token, $user');
+    // Logger.i('RouterNotifier: isLoggedIn - $isLoggedIn');
+    // log('RouterNotifier:  $token, $user');
 
     final areWeLoggingIn = state.matchedLocation == LoginScreen.route;
     final areWeRegistering = state.matchedLocation == SignupScreen.route;

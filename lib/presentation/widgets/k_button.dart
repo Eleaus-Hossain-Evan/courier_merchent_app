@@ -78,6 +78,7 @@ class KElevatedButton extends HookConsumerWidget {
     this.isSecondary = false,
     this.textStyle,
     this.size,
+    this.padding,
   }) : super(key: key);
 
   final String text;
@@ -89,6 +90,7 @@ class KElevatedButton extends HookConsumerWidget {
   final bool isSecondary;
   final TextStyle? textStyle;
   final Size? size;
+  final EdgeInsetsGeometry? padding;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
@@ -120,6 +122,7 @@ class KElevatedButton extends HookConsumerWidget {
             ),
         foregroundColor: foregroundColor ?? ColorPalate.secondary200,
         backgroundColor: backgroundColor,
+        padding: padding,
       ),
       onPressed: onPressed,
       child: (loading != null && loading!)

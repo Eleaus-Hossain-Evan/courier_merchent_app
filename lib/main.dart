@@ -67,28 +67,11 @@ class MyApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final appTheme = ref.watch(themeProvider);
-    final user = ref.watch(loggedInProvider.notifier).user.copyWith(
-        // myShops: [
-        //   const MyShopModel(
-        //     id: '',
-        //     shopName: "Forhad Shop - 1",
-        //     address: "address nikunjo-1, road 8, bisso road.",
-        //   ),
-        //   const MyShopModel(
-        //     id: '',
-        //     shopName: "Forhad Shop - 2",
-        //     address: "Khilkhet, road 8, bisso road.",
-        //   ),
-        // ],
-        );
+    final user = ref.watch(loggedInProvider.notifier).user.copyWith();
 
     useEffect(() {
       Future.wait([
         Future.microtask(() => ref.read(authProvider.notifier).setUser(user)),
-        // Future.microtask(
-        //     () => ref.read(loggedInProvider.notifier).onAppStart()),
-        // Future.microtask(
-        //     () => ref.read(loggedInProvider.notifier).isLoggedIn()),
       ]);
 
       return null;

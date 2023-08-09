@@ -1,60 +1,42 @@
 import 'package:equatable/equatable.dart';
+import 'package:fast_immutable_collections/src/ilist/ilist.dart';
 
-import '../../domain/home/model/home_data.dart';
-import '../../utils/network_util/network_handler.dart';
+import 'package:courier_merchent_app/domain/home/model/home_data.dart';
+import 'package:courier_merchent_app/domain/parcel/model/parcel_model.dart';
 
 class HomeState extends Equatable {
   final bool loading;
-  final CleanFailure failure;
   final HomeData homeData;
-  final bool notification;
-  final bool chatNotification;
+  final IList<ParcelModel> parcelList;
 
   const HomeState({
     required this.loading,
-    required this.failure,
     required this.homeData,
-    required this.notification,
-    required this.chatNotification,
+    required this.parcelList,
   });
 
   factory HomeState.init() => HomeState(
         loading: false,
-        failure: CleanFailure.none(),
         homeData: HomeData.init(),
-        notification: false,
-        chatNotification: false,
+        parcelList: const IListConst([]),
       );
 
   HomeState copyWith({
     bool? loading,
-    CleanFailure? failure,
     HomeData? homeData,
-    bool? notification,
-    bool? chatNotification,
+    IList<ParcelModel>? parcelList,
   }) {
     return HomeState(
       loading: loading ?? this.loading,
-      failure: failure ?? this.failure,
       homeData: homeData ?? this.homeData,
-      notification: notification ?? this.notification,
-      chatNotification: chatNotification ?? this.chatNotification,
+      parcelList: parcelList ?? this.parcelList,
     );
   }
 
   @override
-  String toString() {
-    return 'HomeState(loading: $loading, failure: $failure, homeData: $homeData, notification: $notification, chatNotification: $chatNotification)';
-  }
+  String toString() =>
+      'HomeState(loading: $loading, homeData: $homeData, parcelList: $parcelList)';
 
   @override
-  List<Object> get props {
-    return [
-      loading,
-      failure,
-      homeData,
-      notification,
-      chatNotification,
-    ];
-  }
+  List<Object> get props => [loading, homeData, parcelList];
 }

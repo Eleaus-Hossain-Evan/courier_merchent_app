@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../application/home/home_provider.dart';
 import '../../application/notification/notification_provider.dart';
 import '../../utils/utils.dart';
 import '../widgets/widgets.dart';
@@ -34,9 +33,9 @@ class NotificationScreen extends HookConsumerWidget {
       Future.microtask(() {
         ref.read(notificationProvider.notifier).getNotification();
       });
-      Future.microtask(() {
-        ref.read(homeProvider.notifier).removeNotificationBadge();
-      });
+      // Future.microtask(() {
+      //   ref.read(homeProvider.notifier).removeNotificationBadge();
+      // });
       return () => ref.invalidate(notificationProvider);
     }, const []);
     return Scaffold(

@@ -10,6 +10,8 @@ class AppStrings {
   static const String tkSymbol = "\u{09F3}";
   static const String theme = "theme";
 
+  static const String cancel = "Cancel";
+
   //#----------------  Home ----------------
   static const String home = "Home";
   static String welcome(String user) => "Welcome $user";
@@ -19,21 +21,6 @@ class AppStrings {
   static const String cancelDelivery = "Cancel Delivery";
   static const String completedDelivery = "Completed Delivery";
   static const String trackingNumber = "Tracking Number";
-
-  //#----------------  Delivery ----------------
-  static const String delivery = "Delivery";
-  static const String deliverDashboard = "Delivery Dashboard";
-  static const String totalPendingOrders = "Total Pending Orders";
-  static const String shippingNumber = "Shipping Number";
-
-  //#----------------  Earning ----------------
-  static const String earning = "Earning";
-  static const String myEarnings = "My Earnings";
-  static const String totalEarnings = "Total Earnings";
-  static const String tk = "৳";
-  static const String dailyOrders = "Daily\nOrders";
-  static const String dailyEarings = "Daily\nEarnings";
-  static const String monthlyEarings = "Monthly\nEarnings";
 
   //#----------------  Profile ----------------
   static const String profile = "Profile";
@@ -99,6 +86,7 @@ class AppStrings {
   static const String notMatch = "Password doesn't match";
 
   //#----------------  Parcel ----------------
+  static const String parcel = "Parcel";
   static const String deliveryInformation = "Delivery Information";
   static const String createParcel = "Create Parcel";
   static const String description = "Description";
@@ -124,5 +112,9 @@ class AppStrings {
   static const String codCharge = "COD Charge";
   static const String weightCharge = "Weight Charge";
   static const String trackParcel = "Track Parcel";
-  static const String createAnotherParcel = "Create Another Parcel";
+  static const String createAnother = "Create Another";
+  static const String yourParcelHasBeenCreatedSuccessfully =
+      "Your parcel has been created successfully";
+  static String youCanTruckYourParcel(String id) =>
+      "You can track your parcel with tracking id: #$id";
 }

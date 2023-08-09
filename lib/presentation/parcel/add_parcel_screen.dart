@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -17,6 +18,8 @@ import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
 import '../../application/global.dart';
 import '../../domain/auth/model/area_model.dart';
 import '../../domain/auth/model/shop_model.dart';
+import '../../domain/parcel/create_parcel_body.dart';
+import '../../domain/parcel/model/regular_charge_model.dart';
 import '../widgets/widgets.dart';
 import 'widgets/create_parcel_end_drawer.dart';
 
@@ -125,7 +128,6 @@ class AddParcelScreen extends HookConsumerWidget {
       ),
       body: Form(
         key: formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: SingleChildScrollView(
           padding: padding16,
           child: Column(
@@ -303,7 +305,8 @@ class AddParcelScreen extends HookConsumerWidget {
                       controller: addressController,
                       focusNode: addressFocus,
                       validator: ValidationBuilder().required().build(),
-                      keyboardType: TextInputType.multiline,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
                       maxLines: null,
                       containerPadding: padding0,
                     ),
@@ -459,56 +462,80 @@ class AddParcelScreen extends HookConsumerWidget {
               KFilledButton(
                 text: AppStrings.createParcel,
                 onPressed: () async {
-                  // if (selectedShop.value == null) {
-                  //   showErrorToast("Please a shop!");
-                  // } else if (formKey.currentState!.validate()) {
-                  //   ref
-                  //       .read(parcelProvider.notifier)
-                  //       .createParcel(
-                  //         CreateParcelBody(
-                  //           merchantInfo: MerchantInfo(
-                  //             name: ref.watch(authProvider).user.name,
-                  //             phone: ref.watch(authProvider).user.phone,
-                  //             address: ref.watch(authProvider).user.address,
-                  //             shopName: selectedShop.value?.shopName ?? "",
-                  //             shopAddress: selectedShop.value?.address ?? "",
-                  //           ),
-                  //           customerInfo: CustomerInfo(
-                  //             name: nameController.text,
-                  //             phone: phoneController.text,
-                  //             address: addressController.text,
-                  //             districtId: selectedDistrict.value?.id ?? "",
-                  //             areaId: selectedArea.value?.id ?? "",
-                  //           ),
-                  //           regularParcelInfo: RegularParcelInfo(
-                  //             invoiceId: invoiceController.text,
-                  //             weight: selectedWeight.value?.name ?? "",
-                  //             productPrice:
-                  //                 int.tryParse(productPriceController.text) ??
-                  //                     0,
-                  //             materialType: selectedMaterialType.value.name,
-                  //             category:
-                  //                 selectedParcelCategory.value?.name ?? "",
-                  //             details: descriptionController.text,
-                  //           ),
-                  //           regularPayment: RegularPaymentModel(
-                  //             cashCollection:
-                  //                 double.tryParse(cashController.text) ?? 0.0,
-                  //             deliveryCharge: deliveryCharge.value,
-                  //             codCharge: codCharge.value,
-                  //             weightCharge:
-                  //                 (selectedWeight.value?.price ?? 0).toDouble(),
-                  //             totalCharge: deliveryCharge.value +
-                  //                 codCharge.value +
-                  //                 (selectedWeight.value?.price ?? 0).toDouble(),
-                  //           ),
-                  //         ),
-                  //       )
-                  //       .then((value) =>
-                  //           value ? showSuccessDialog(context) : null);
-                  // }
+                  if (selectedShop.value == null) {
+                    showErrorToast("Please a shop!");
+                  } else if (formKey.currentState!.validate()) {
+                    ref
+                        .read(parcelProvider.notifier)
+                        .createParcel(
+                          CreateParcelBody(
+                            merchantInfo: MerchantInfo(
+                              name: ref.watch(authProvider).user.name,
+                              phone: ref.watch(authProvider).user.phone,
+                              address: ref.watch(authProvider).user.address,
+                              shopName: selectedShop.value?.shopName ?? "",
+                              shopAddress: selectedShop.value?.address ?? "",
+                            ),
+                            customerInfo: CustomerInfo(
+                              name: nameController.text,
+                              phone: phoneController.text,
+                              address: addressController.text,
+                              districtId: selectedDistrict.value?.id ?? "",
+                              areaId: selectedArea.value?.id ?? "",
+                            ),
+                            regularParcelInfo: RegularParcelInfo(
+                              invoiceId: invoiceController.text,
+                              weight: selectedWeight.value?.name ?? "",
+                              productPrice:
+                                  int.tryParse(productPriceController.text) ??
+                                      0,
+                              materialType: selectedMaterialType.value.name,
+                              category:
+                                  selectedParcelCategory.value?.name ?? "",
+                              details: descriptionController.text,
+                            ),
+                            regularPayment: RegularPaymentModel(
+                              cashCollection:
+                                  double.tryParse(cashController.text) ?? 0.0,
+                              deliveryCharge: deliveryCharge.value,
+                              codCharge: codCharge.value,
+                              weightCharge:
+                                  (selectedWeight.value?.price ?? 0).toDouble(),
+                              totalCharge: deliveryCharge.value +
+                                  codCharge.value +
+                                  (selectedWeight.value?.price ?? 0).toDouble(),
+                            ),
+                          ),
+                        )
+                        .then((value) => value
+                            ? showSuccessDialog(
+                                context,
+                                onTapCreate: () {
+                                  formKey.currentState?.reset();
+                                  formKey.currentState?.reset();
 
-                  showSuccessDialog(context);
+                                  nameController.clear();
+                                  phoneController.clear();
+                                  addressController.clear();
+                                  invoiceController.clear();
+                                  productPriceController.clear();
+                                  cashController.clear();
+                                  descriptionController.clear();
+
+                                  selectedDistrict.value = null;
+                                  selectedArea.value = null;
+                                  selectedMaterialType.value =
+                                      MaterialType.fragile;
+                                  selectedWeight.value = null;
+                                  selectedParcelCategory.value = null;
+                                  deliveryCharge.value = 0;
+                                  codCharge.value = 0.0;
+                                },
+                                onTapTruck: () {},
+                                onTapCancel: () => context.pop(),
+                              )
+                            : null);
+                  }
                 },
               ),
             ],
@@ -520,8 +547,11 @@ class AddParcelScreen extends HookConsumerWidget {
 }
 
 bool? showSuccessDialog(
-  BuildContext context,
-) {
+  BuildContext context, {
+  required Function() onTapTruck,
+  required Function() onTapCreate,
+  required Function() onTapCancel,
+}) {
   return showSimpleDialog(
     backButtonBehavior: BackButtonBehavior.ignore,
     builder: (cancelFunc) => Dialog(
@@ -535,15 +565,15 @@ bool? showSuccessDialog(
             gap32,
             CircleAvatar(
               backgroundColor: context.colors.primary.lighten().withOpacity(.2),
-              radius: 52.r,
+              radius: 72.r,
               child: CircleAvatar(
                 backgroundColor:
                     context.colors.primary.lighten().withOpacity(.4),
-                radius: 44.r,
+                radius: 62.r,
                 child: CircleAvatar(
                   backgroundColor:
                       context.colors.primary.lighten().withOpacity(.6),
-                  radius: 40.r,
+                  radius: 52.r,
                   child: Image.asset(
                     Images.deliveryBoxCheck,
                     width: 200.w,
@@ -554,15 +584,11 @@ bool? showSuccessDialog(
               ),
             ),
             gap32,
-            "Your parcel has been created successfully"
-                .text
-                .lg
-                .bold
-                .center
+            AppStrings.yourParcelHasBeenCreatedSuccessfully.text.lg.bold.center
                 .make()
                 .objectCenter(),
             gap6,
-            "Your track your parcel with tracking id: #5YE339XX19NINTXI"
+            AppStrings.youCanTruckYourParcel("5YE339XX19NINTXI")
                 .text
                 .caption(context)
                 .center
@@ -574,12 +600,15 @@ bool? showSuccessDialog(
                 children: [
                   Expanded(
                     child: KElevatedButton(
-                      text: 'No',
+                      text: AppStrings.createAnother,
                       textStyle: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                       ),
+                      foregroundColor: ColorPalate.secondary,
+                      padding: EdgeInsets.zero,
                       onPressed: () {
+                        onTapCreate.call();
                         cancelFunc.call();
                       },
                     ),
@@ -594,11 +623,31 @@ bool? showSuccessDialog(
                       ),
                       padding: EdgeInsets.zero,
                       onPressed: () {
+                        onTapTruck.call();
                         cancelFunc.call();
                       },
                     ),
                   ),
                 ],
+              ),
+            ),
+            gap8,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: KFilledButton(
+                text: AppStrings.cancel,
+                isSecondary: true,
+                foregroundColor: ColorPalate.black800,
+                textStyle: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: ColorPalate.black,
+                ),
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  onTapCancel.call();
+                  cancelFunc.call();
+                },
               ),
             ),
             gap18,

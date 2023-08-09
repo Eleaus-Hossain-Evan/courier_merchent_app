@@ -17,6 +17,13 @@ class RegularPaymentModel extends Equatable {
     required this.totalCharge,
   });
 
+  factory RegularPaymentModel.init() => const RegularPaymentModel(
+      cashCollection: 00,
+      deliveryCharge: 0,
+      codCharge: 0,
+      weightCharge: 0,
+      totalCharge: 0);
+
   RegularPaymentModel copyWith({
     double? cashCollection,
     double? deliveryCharge,

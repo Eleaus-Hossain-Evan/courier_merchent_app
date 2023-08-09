@@ -9,6 +9,7 @@ import '../../application/home/home_provider.dart';
 import '../../utils/utils.dart';
 import '../widgets/widgets.dart';
 import 'widgets/home_app_bar.dart';
+import 'widgets/recent_parcel_section.dart';
 import 'widgets/search_delivery.dart';
 import 'widgets/service_section.dart';
 
@@ -54,21 +55,7 @@ class HomeScreen extends HookConsumerWidget {
               //?  recent parcel section ----------------
               "Recent Parcels".text.lg.bold.make(),
               gap16,
-              KListViewSeparated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gap: 16,
-                padding: padding0,
-                itemBuilder: (context, index) {
-                  return const DeliveryListTile(
-                    customerName: "Evan Hossain",
-                    address:
-                        "169/B, North Konipara, Tejgoan, Dhaka, Bangladesh",
-                    distance: "3 kms",
-                  );
-                },
-                itemCount: 10,
-              ),
+              const RecentParcelSection(),
             ],
           ),
         ),

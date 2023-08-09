@@ -1,4 +1,5 @@
 import 'package:courier_merchent_app/domain/parcel/create_parcel_body.dart';
+import 'package:courier_merchent_app/domain/parcel/fetch_all_parcel_reponse.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
 
 import '../domain/parcel/create_parcel_response.dart';
@@ -57,6 +58,20 @@ class ParcelRepo {
       body: body.toMap(),
       fromData: (json) => CreateParcelResponse.fromMap(json),
       endPoint: APIRoute.PARCEL_CREATE,
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, FetchAllParcelResponse>> getParcelList({
+    int page = 1,
+    int limit = 10,
+  }) async {
+    final data = await api.post(
+      body: {"status": "all"},
+      fromData: (json) => FetchAllParcelResponse.fromMap(json),
+      endPoint: "${APIRoute.FETCH_ALL_PARCEL}page=$page&limit=$limit",
       withToken: true,
     );
 

@@ -1,3 +1,4 @@
+import 'package:courier_merchent_app/application/parcel/parcel_provider.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -15,10 +16,6 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   HomeNotifier(this.repo, this.ref) : super(HomeState.init());
 
-  void removeNotificationBadge() {
-    state = state.copyWith(notification: false);
-  }
-
   void getHomeData() async {
     state = state.copyWith(loading: true);
     final result = await repo.getHomeDate();
@@ -26,10 +23,19 @@ class HomeNotifier extends StateNotifier<HomeState> {
     Logger.d("result: $result");
     result.fold(
       (l) {
-        ref.watch(snackBarProvider(l.error.message));
-        return state = state.copyWith(failure: l, loading: false);
+        showErrorToast(l.error.message);
+        return state = state.copyWith(loading: false);
       },
       (r) => state = state.copyWith(homeData: r.data, loading: false),
     );
+  }
+
+  Future<void> getRecentParcelList() async {
+    state = state.copyWith(loading: true);
+    final result = await ref.read(parcelProvider.notifier).getParcelList();
+
+    Logger.i(result);
+
+    state = state.copyWith(parcelList: result, loading: false);
   }
 }
