@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +8,6 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../application/home/home_provider.dart';
 import '../../utils/utils.dart';
-import '../widgets/widgets.dart';
 import 'widgets/home_app_bar.dart';
 import 'widgets/recent_parcel_section.dart';
 import 'widgets/search_delivery.dart';
@@ -37,26 +37,31 @@ class HomeScreen extends HookConsumerWidget {
       body: SizedBox(
         height: 1.sh,
         width: 1.sw,
-        child: SingleChildScrollView(
-          padding: padding16,
-          child: Column(
-            crossAxisAlignment: crossStart,
-            children: [
-              const SearchDelivery(),
-              gap32,
+        child: EasyRefresh(
+          onRefresh: () => Future.microtask(
+              () => ref.read(homeProvider.notifier).getRecentParcelList()),
+          header: const MaterialHeader(),
+          child: SingleChildScrollView(
+            padding: padding16,
+            child: Column(
+              crossAxisAlignment: crossStart,
+              children: [
+                const SearchDelivery(),
+                gap32,
 
-              //?  Services section ---------------------
+                //?  Services section ---------------------
 
-              "Our Services".text.lg.bold.make(),
-              gap16,
-              const ServiceSection(),
-              gap32,
+                "Our Services".text.lg.bold.make(),
+                gap16,
+                const ServiceSection(),
+                gap32,
 
-              //?  recent parcel section ----------------
-              "Recent Parcels".text.lg.bold.make(),
-              gap16,
-              const RecentParcelSection(),
-            ],
+                //?  recent parcel section ----------------
+                "Recent Parcels".text.lg.bold.make(),
+                gap16,
+                const RecentParcelSection(),
+              ],
+            ),
           ),
         ),
       ),

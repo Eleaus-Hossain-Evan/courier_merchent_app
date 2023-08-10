@@ -61,7 +61,7 @@ class NetworkHandler {
     final Map<String, String> _header = header(withToken);
 
     final url = Uri.parse('$_baseUrl$endPoint');
-    Logger.v('URL : $url, Header : $_header');
+    Logger.v('METHOD : GET\nURL : $url\nHeader : $_header');
 
     try {
       final response = await client.get(
@@ -143,8 +143,7 @@ class NetworkHandler {
     final Map<String, String> _header = header(withToken);
 
     final url = Uri.parse('$_baseUrl$endPoint');
-    Logger.v('URL : $url, Header : $_header');
-    Logger.v('BODY : $body');
+    Logger.v('METHOD : POST\nURL : $url\nHeader : $_header\nBODY : $body');
 
     try {
       final response = await client.post(
@@ -224,13 +223,10 @@ class NetworkHandler {
     required Map<String, dynamic> body,
     bool withToken = true,
   }) async {
-    Logger.v('BODY : $body');
-
     final Map<String, String> _header = header(withToken);
 
     final url = Uri.parse('$_baseUrl$endPoint');
-    Logger.v('URL : $url, Header : $_header');
-    Logger.v('BODY : $body');
+    Logger.v('METHOD : PUT\nURL : $url\nHeader : $_header\nBODY : $body');
 
     try {
       final response = await client.put(
@@ -314,8 +310,7 @@ class NetworkHandler {
 
     final url = Uri.parse('$_baseUrl$endPoint');
 
-    Logger.v('URL : $url, Header : $_header');
-    Logger.v('BODY : $body');
+    Logger.v('METHOD : PATCH\nURL : $url\nHeader : $_header\nBODY : $body');
 
     try {
       final response = await client.patch(
@@ -399,8 +394,7 @@ class NetworkHandler {
 
     final url = Uri.parse('$_baseUrl$endPoint');
 
-    Logger.v('URL : $url, Header : $_header');
-    Logger.v('BODY : $body');
+    Logger.v('METHOD : DELETE\nURL : $url\nHeader : $_header\nBODY : $body');
 
     try {
       final response = await client.delete(
@@ -478,7 +472,7 @@ class NetworkHandler {
     required String endPoint,
     required T Function(Map<String, dynamic> data) fromData,
   }) {
-    Logger.v("request: ${response.request}");
+    // Logger.v("request: ${response.request}");
     Logger.json(response.body);
 
     if (isSuccessful(response.statusCode)) {

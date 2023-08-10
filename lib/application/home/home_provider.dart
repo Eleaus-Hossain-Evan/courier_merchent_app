@@ -1,4 +1,5 @@
 import 'package:courier_merchent_app/application/parcel/parcel_provider.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -32,10 +33,11 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   Future<void> getRecentParcelList() async {
     state = state.copyWith(loading: true);
-    final result = await ref.read(parcelProvider.notifier).getParcelList();
+    final result = await ref.read(parcelProvider.notifier).fetchParcelList();
 
-    Logger.i(result);
-
-    state = state.copyWith(parcelList: result, loading: false);
+    result.fold((l) {
+      showErrorToast(l.error.message);
+      state = state.copyWith(loading: false);
+    }, (r) => state = state.copyWith(parcelList: r.data.lock, loading: false));
   }
 }

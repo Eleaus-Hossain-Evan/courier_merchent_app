@@ -1,7 +1,5 @@
 import 'package:courier_merchent_app/application/home/home_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../utils/utils.dart';
@@ -16,8 +14,6 @@ class RecentParcelSection extends HookConsumerWidget {
   Widget build(BuildContext context, ref) {
     final state = ref.watch(homeProvider);
 
-    final parcelList = useState(state.parcelList);
-    Logger.w('parcelList: ${state.parcelList}');
     return KListViewSeparated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

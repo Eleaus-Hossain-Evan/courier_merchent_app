@@ -7,7 +7,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/auth/model/area_model.dart';
 import '../../domain/parcel/create_parcel_body.dart';
-import '../../domain/parcel/model/parcel_model.dart';
+import '../../domain/parcel/fetch_all_parcel_reponse.dart';
+import '../../presentation/parcel/parcel_list_screen.dart';
+import '../../utils/utils.dart';
 import '../global.dart';
 
 final parcelProvider =
@@ -85,17 +87,61 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
     return success;
   }
 
-  Future<IList<ParcelModel>> getParcelList({int page = 1}) async {
+  Future<Either<CleanFailure, FetchAllParcelResponse>> fetchParcelList({
+    ParcelListType type = ParcelListType.all,
+    int page = 1,
+    int limit = 10,
+  }) async {
+    final result = await repo.fetchParcelList(
+      page: page,
+      limit: limit,
+      type: type,
+    );
+
+    return result;
+  }
+
+  void fetchCategorizedParcel(
+      {ParcelListType type = ParcelListType.all, int page = 1}) async {
     state = state.copyWith(loading: true);
-    final result = await repo.getParcelList(page: page);
 
-    result.fold((l) {
-      showErrorToast(l.error.message);
-      state = state.copyWith(loading: false);
-    }, (r) {
-      state = state.copyWith(parcelList: r.data.lock, loading: false);
-    });
+    final result = await fetchParcelList(type: type, page: page);
 
-    return state.parcelList;
+    result.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        state = state.copyWith(loading: false);
+      },
+      (r) {
+        switch (type) {
+          case ParcelListType.all:
+            state = state.copyWith(allParcel: r.data.lock, loading: false);
+            break;
+          case ParcelListType.pending:
+            state = state.copyWith(pendingParcel: r.data.lock, loading: false);
+            break;
+          case ParcelListType.pickup:
+            state = state.copyWith(pickupParcel: r.data.lock, loading: false);
+            break;
+          case ParcelListType.shipping:
+            state = state.copyWith(shippingParcel: r.data.lock, loading: false);
+            break;
+          case ParcelListType.shipped:
+            state = state.copyWith(shippedParcel: r.data.lock, loading: false);
+            break;
+          case ParcelListType.dropoff:
+            state = state.copyWith(dropoffParcel: r.data.lock, loading: false);
+            break;
+          case ParcelListType.returns:
+            state = state.copyWith(returnParcel: r.data.lock, loading: false);
+            break;
+          case ParcelListType.cancel:
+            state = state.copyWith(cancelParcel: r.data.lock, loading: false);
+            break;
+          default:
+            state = state.copyWith(allParcel: r.data.lock, loading: false);
+        }
+      },
+    );
   }
 }

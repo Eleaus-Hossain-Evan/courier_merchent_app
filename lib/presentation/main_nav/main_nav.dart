@@ -1,6 +1,5 @@
 import 'package:courier_merchent_app/application/home/home_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -41,10 +40,7 @@ class MainNav extends HookConsumerWidget {
     return LayoutBuilder(
       builder: (context, constrain) {
         return Scaffold(
-          body: IndexedStack(
-            index: navIndex.value,
-            children: navWidget,
-          ),
+          body: navWidget[navIndex.value],
           bottomNavigationBar: NavigationBar(
             backgroundColor: ColorPalate.bg200,
             elevation: 0,
