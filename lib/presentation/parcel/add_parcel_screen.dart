@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:courier_merchent_app/domain/parcel/model/parcel_model.dart';
 import 'package:courier_merchent_app/utils/utils.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,10 @@ import '../../application/global.dart';
 import '../../domain/auth/model/area_model.dart';
 import '../../domain/auth/model/shop_model.dart';
 import '../../domain/parcel/create_parcel_body.dart';
+import '../../domain/parcel/model/customer_info_model.dart';
+import '../../domain/parcel/model/merchant_info_model.dart';
 import '../../domain/parcel/model/regular_charge_model.dart';
+import '../../domain/parcel/model/regular_parcel_info_model.dart';
 import '../widgets/widgets.dart';
 import 'widgets/create_parcel_end_drawer.dart';
 
@@ -36,7 +40,9 @@ enum DistrictArea {
 class AddParcelScreen extends HookConsumerWidget {
   static const route = '/add-parcel';
 
-  const AddParcelScreen({super.key});
+  final ParcelModel? parcel;
+
+  const AddParcelScreen({super.key, this.parcel});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authProvider);
@@ -48,13 +54,20 @@ class AddParcelScreen extends HookConsumerWidget {
       state.user.myShops.isNotEmpty ? state.user.myShops.first : null,
     );
 
-    final nameController = useTextEditingController();
-    final phoneController = useTextEditingController();
-    final addressController = useTextEditingController();
-    final invoiceController = useTextEditingController();
-    final productPriceController = useTextEditingController();
-    final cashController = useTextEditingController();
-    final descriptionController = useTextEditingController();
+    final nameController =
+        useTextEditingController(text: parcel?.customerInfo.name);
+    final phoneController =
+        useTextEditingController(text: parcel?.customerInfo.phone);
+    final addressController =
+        useTextEditingController(text: parcel?.customerInfo.address);
+    final invoiceController =
+        useTextEditingController(text: parcel?.regularParcelInfo.invoiceId);
+    final productPriceController = useTextEditingController(
+        text: parcel?.regularParcelInfo.productPrice.toString());
+    final cashController = useTextEditingController(
+        text: parcel?.regularPayment.cashCollection.toString());
+    final descriptionController =
+        useTextEditingController(text: parcel?.regularParcelInfo.details);
 
     final nameFocus = useFocusNode();
     final phoneFocus = useFocusNode();
@@ -70,8 +83,9 @@ class AddParcelScreen extends HookConsumerWidget {
     final selectedWeight = useState<WeightModel?>(null);
     final selectedParcelCategory = useState<ParcelCategoryModel?>(null);
 
-    final deliveryCharge = useState<double>(0);
-    final codCharge = useState(0.0);
+    final deliveryCharge =
+        useState<double>(parcel?.regularPayment.deliveryCharge ?? 0);
+    final codCharge = useState(parcel?.regularPayment.deliveryCharge ?? 0);
 
     void getDeliveryCharge() {
       if (selectedDistrict.value == null) {
@@ -107,6 +121,20 @@ class AddParcelScreen extends HookConsumerWidget {
     });
 
     useEffect(() {
+      parcel != null
+          ? Future.wait([
+              ref.read(parcelProvider.notifier).getDistrict(),
+              ref
+                  .read(parcelProvider.notifier)
+                  .getArea(parcel!.customerInfo.districtId),
+              ref.read(parcelProvider.notifier).getWeight(),
+              ref.read(parcelProvider.notifier).getParcelCategory(),
+            ]).then((value) {
+              return selectedDistrict.value = (value[0] as List<AreaModel>)
+                      .where((e) => e.id == parcel!.customerInfo.districtId)
+                  as AreaModel?;
+            })
+          : null;
       return () {
         selectedDistrict.removeListener(getDeliveryCharge);
         cashController.removeListener(calculateCod);
@@ -460,7 +488,9 @@ class AddParcelScreen extends HookConsumerWidget {
 
               //  Create Parcel Button----------
               KFilledButton(
-                text: AppStrings.createParcel,
+                text: parcel == null
+                    ? AppStrings.createParcel
+                    : AppStrings.updateParcel,
                 onPressed: () async {
                   if (selectedShop.value == null) {
                     showErrorToast("Please a shop!");
@@ -469,21 +499,21 @@ class AddParcelScreen extends HookConsumerWidget {
                         .read(parcelProvider.notifier)
                         .createParcel(
                           CreateParcelBody(
-                            merchantInfo: MerchantInfo(
+                            merchantInfo: MerchantInfoModel(
                               name: ref.watch(authProvider).user.name,
                               phone: ref.watch(authProvider).user.phone,
                               address: ref.watch(authProvider).user.address,
                               shopName: selectedShop.value?.shopName ?? "",
                               shopAddress: selectedShop.value?.address ?? "",
                             ),
-                            customerInfo: CustomerInfo(
+                            customerInfo: CustomerInfoModel(
                               name: nameController.text,
                               phone: phoneController.text,
                               address: addressController.text,
                               districtId: selectedDistrict.value?.id ?? "",
                               areaId: selectedArea.value?.id ?? "",
                             ),
-                            regularParcelInfo: RegularParcelInfo(
+                            regularParcelInfo: RegularParcelInfoModel(
                               invoiceId: invoiceController.text,
                               weight: selectedWeight.value?.name ?? "",
                               productPrice:

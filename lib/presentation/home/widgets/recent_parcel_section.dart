@@ -1,6 +1,8 @@
 import 'package:courier_merchent_app/application/home/home_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
@@ -22,15 +24,13 @@ class RecentParcelSection extends HookConsumerWidget {
       itemBuilder: (context, index) {
         final parcel = state.parcelList[index];
 
-        return DeliveryListTile(
-          customerName: parcel.customerInfo.name,
-          address: "169/B, North Konipara, Tejgoan, Dhaka, Bangladesh",
-          price: parcel.regularPayment.cashCollection.toString(),
-          serialId: parcel.serialId,
-          status: parcel.regularStatus,
-        );
+        return DeliveryListTile(parcel: parcel);
       },
       itemCount: state.parcelList.length,
-    );
+      separator: KDivider(
+        color: ColorPalate.bg200,
+        thickness: 2.2.h,
+      ),
+    ).box.white.roundedSM.make();
   }
 }

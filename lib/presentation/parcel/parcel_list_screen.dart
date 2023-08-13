@@ -67,16 +67,8 @@ class ParcelListScreen extends HookConsumerWidget {
       ),
       body: TabBarView(
         controller: tabController,
-        children: const [
-          AllParcel(listType: ParcelListType.all),
-          AllParcel(listType: ParcelListType.pending),
-          AllParcel(listType: ParcelListType.pickup),
-          AllParcel(listType: ParcelListType.shipped),
-          AllParcel(listType: ParcelListType.shipped),
-          AllParcel(listType: ParcelListType.dropoff),
-          AllParcel(listType: ParcelListType.returns),
-          AllParcel(listType: ParcelListType.cancel),
-        ],
+        children:
+            ParcelListType.values.map((e) => AllParcel(listType: e)).toList(),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -40,57 +41,59 @@ class AllParcel extends HookConsumerWidget {
       return () => BotToast.closeAllLoading();
     }, const []);
 
-    return Center(
-      child: KListViewSeparated(
-        gap: 16,
-        padding: padding0,
-        alternateWidget:
-            "No order placed yet!".text.caption(context).make().objectCenter(),
-        itemBuilder: (context, index) {
-          final parcel = listType == ParcelListType.all
-              ? state.allParcel[index]
-              : listType == ParcelListType.pending
-                  ? state.pendingParcel[index]
-                  : listType == ParcelListType.pickup
-                      ? state.pickupParcel[index]
-                      : listType == ParcelListType.shipping
-                          ? state.shippingParcel[index]
-                          : listType == ParcelListType.shipped
-                              ? state.shippedParcel[index]
-                              : listType == ParcelListType.dropoff
-                                  ? state.dropoffParcel[index]
-                                  : listType == ParcelListType.returns
-                                      ? state.returnParcel[index]
-                                      : listType == ParcelListType.cancel
-                                          ? state.cancelParcel[index]
-                                          : state.allParcel[index];
-
-          return DeliveryListTile(
-            customerName: parcel.customerInfo.name,
-            address: "169/B, North Konipara, Tejgoan, Dhaka, Bangladesh",
-            price: parcel.regularPayment.cashCollection.toString(),
-            serialId: parcel.serialId,
-            status: parcel.regularStatus,
-          );
-        },
-        itemCount: listType == ParcelListType.all
-            ? state.allParcel.length
+    return KListViewSeparated(
+      gap: 16,
+      padding: padding0,
+      alternateWidget: "No order placed yet!"
+          .text
+          .caption(context)
+          .make()
+          .objectCenter()
+          .box
+          .height(1.sh)
+          .make(),
+      itemBuilder: (context, index) {
+        final parcel = listType == ParcelListType.all
+            ? state.allParcel[index]
             : listType == ParcelListType.pending
-                ? state.pendingParcel.length
+                ? state.pendingParcel[index]
                 : listType == ParcelListType.pickup
-                    ? state.pickupParcel.length
+                    ? state.pickupParcel[index]
                     : listType == ParcelListType.shipping
-                        ? state.shippingParcel.length
+                        ? state.shippingParcel[index]
                         : listType == ParcelListType.shipped
-                            ? state.shippedParcel.length
+                            ? state.shippedParcel[index]
                             : listType == ParcelListType.dropoff
-                                ? state.dropoffParcel.length
+                                ? state.dropoffParcel[index]
                                 : listType == ParcelListType.returns
-                                    ? state.returnParcel.length
+                                    ? state.returnParcel[index]
                                     : listType == ParcelListType.cancel
-                                        ? state.cancelParcel.length
-                                        : state.allParcel.length,
+                                        ? state.cancelParcel[index]
+                                        : state.allParcel[index];
+
+        return DeliveryListTile(parcel: parcel);
+      },
+      itemCount: listType == ParcelListType.all
+          ? state.allParcel.length
+          : listType == ParcelListType.pending
+              ? state.pendingParcel.length
+              : listType == ParcelListType.pickup
+                  ? state.pickupParcel.length
+                  : listType == ParcelListType.shipping
+                      ? state.shippingParcel.length
+                      : listType == ParcelListType.shipped
+                          ? state.shippedParcel.length
+                          : listType == ParcelListType.dropoff
+                              ? state.dropoffParcel.length
+                              : listType == ParcelListType.returns
+                                  ? state.returnParcel.length
+                                  : listType == ParcelListType.cancel
+                                      ? state.cancelParcel.length
+                                      : state.allParcel.length,
+      separator: KDivider(
+        color: ColorPalate.bg200,
+        thickness: 2.2.h,
       ),
-    );
+    ).box.white.roundedSM.make().p16();
   }
 }

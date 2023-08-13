@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import 'customer_info_model.dart';
+import 'merchant_info_model.dart';
 import 'regular_charge_model.dart';
+import 'regular_parcel_info_model.dart';
 
 class ParcelModel extends Equatable {
-  final MerchantInfo merchantInfo;
-  final RegularParcelInfo regularParcelInfo;
-  final ExchangeParcelInfo exchangeParcelInfo;
+  final MerchantInfoModel merchantInfo;
+  final RegularParcelInfoModel regularParcelInfo;
+  final RegularParcelInfoModel exchangeParcelInfo;
   final RegularPaymentModel regularPayment;
   final RegularPaymentModel exchangePayment;
   final String createdBy;
@@ -20,7 +23,7 @@ class ParcelModel extends Equatable {
   final String exchangeStatus;
   final int merchantUpdate;
   final String id;
-  final CustomerInfo customerInfo;
+  final CustomerInfoModel customerInfo;
   final String sourceHubId;
   final String currentHubId;
   final String destinationHubId;
@@ -62,9 +65,9 @@ class ParcelModel extends Equatable {
   });
 
   ParcelModel copyWith({
-    MerchantInfo? merchantInfo,
-    RegularParcelInfo? regularParcelInfo,
-    ExchangeParcelInfo? exchangeParcelInfo,
+    MerchantInfoModel? merchantInfo,
+    RegularParcelInfoModel? regularParcelInfo,
+    RegularParcelInfoModel? exchangeParcelInfo,
     RegularPaymentModel? regularPayment,
     RegularPaymentModel? exchangePayment,
     String? createdBy,
@@ -77,7 +80,7 @@ class ParcelModel extends Equatable {
     String? exchangeStatus,
     int? merchantUpdate,
     String? id,
-    CustomerInfo? customerInfo,
+    CustomerInfoModel? customerInfo,
     String? sourceHubId,
     String? currentHubId,
     String? destinationHubId,
@@ -153,14 +156,14 @@ class ParcelModel extends Equatable {
   factory ParcelModel.fromMap(Map<String, dynamic> map) {
     return ParcelModel(
       merchantInfo: map['merchantInfo'] != null
-          ? MerchantInfo.fromMap(map['merchantInfo'])
-          : MerchantInfo.init(),
+          ? MerchantInfoModel.fromMap(map['merchantInfo'])
+          : MerchantInfoModel.init(),
       regularParcelInfo: map['regularParcelInfo'] != null
-          ? RegularParcelInfo.fromMap(map['regularParcelInfo'])
-          : RegularParcelInfo.init(),
+          ? RegularParcelInfoModel.fromMap(map['regularParcelInfo'])
+          : RegularParcelInfoModel.init(),
       exchangeParcelInfo: map['exchangeParcelInfo'] != null
-          ? ExchangeParcelInfo.fromMap(map['exchangeParcelInfo'])
-          : ExchangeParcelInfo.init(),
+          ? RegularParcelInfoModel.fromMap(map['exchangeParcelInfo'])
+          : RegularParcelInfoModel.init(),
       regularPayment: map['regularPayment'] != null
           ? RegularPaymentModel.fromMap(map['regularPayment'])
           : RegularPaymentModel.init(),
@@ -178,8 +181,8 @@ class ParcelModel extends Equatable {
       merchantUpdate: map['merchantUpdate']?.toInt() ?? 0,
       id: map['_id'] ?? '',
       customerInfo: map['customerInfo'] != null
-          ? CustomerInfo.fromMap(map['customerInfo'])
-          : CustomerInfo.init(),
+          ? CustomerInfoModel.fromMap(map['customerInfo'])
+          : CustomerInfoModel.init(),
       sourceHubId: map['sourceHubId'] ?? '',
       currentHubId: map['currentHubId'] ?? '',
       destinationHubId: map['destinationHubId'] ?? '',
@@ -237,335 +240,6 @@ class ParcelModel extends Equatable {
       exchangeStatusLogs,
       createdAt,
       updatedAt,
-    ];
-  }
-}
-
-class MerchantInfo extends Equatable {
-  final String address;
-  final String shopAddress;
-  final String name;
-  final String phone;
-  final String shopName;
-
-  const MerchantInfo({
-    required this.address,
-    required this.shopAddress,
-    required this.name,
-    required this.phone,
-    required this.shopName,
-  });
-
-  factory MerchantInfo.init() => const MerchantInfo(
-      address: '', shopAddress: '', name: '', phone: '', shopName: '');
-
-  MerchantInfo copyWith({
-    String? address,
-    String? shopAddress,
-    String? name,
-    String? phone,
-    String? shopName,
-  }) {
-    return MerchantInfo(
-      address: address ?? this.address,
-      shopAddress: shopAddress ?? this.shopAddress,
-      name: name ?? this.name,
-      phone: phone ?? this.phone,
-      shopName: shopName ?? this.shopName,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'address': address,
-      'shopAddress': shopAddress,
-      'name': name,
-      'phone': phone,
-      'shopName': shopName,
-    };
-  }
-
-  factory MerchantInfo.fromMap(Map<String, dynamic> map) {
-    return MerchantInfo(
-      address: map['address'] ?? '',
-      shopAddress: map['shopAddress'] ?? '',
-      name: map['name'] ?? '',
-      phone: map['phone'] ?? '',
-      shopName: map['shopName'] ?? '',
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory MerchantInfo.fromJson(String source) =>
-      MerchantInfo.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'MerchantInfo(address: $address, shopAddress: $shopAddress, name: $name, phone: $phone, shopName: $shopName)';
-  }
-
-  @override
-  List<Object> get props {
-    return [
-      address,
-      shopAddress,
-      name,
-      phone,
-      shopName,
-    ];
-  }
-}
-
-class RegularParcelInfo extends Equatable {
-  final String invoiceId;
-  final String weight;
-  final int productPrice;
-  final String materialType;
-  final String category;
-  final String details;
-
-  const RegularParcelInfo({
-    required this.invoiceId,
-    required this.weight,
-    required this.productPrice,
-    required this.materialType,
-    required this.category,
-    required this.details,
-  });
-
-  factory RegularParcelInfo.init() => const RegularParcelInfo(
-      invoiceId: '',
-      weight: '',
-      productPrice: 0,
-      materialType: '',
-      category: '',
-      details: '');
-
-  RegularParcelInfo copyWith({
-    String? invoiceId,
-    String? weight,
-    int? productPrice,
-    String? materialType,
-    String? category,
-    String? details,
-  }) {
-    return RegularParcelInfo(
-      invoiceId: invoiceId ?? this.invoiceId,
-      weight: weight ?? this.weight,
-      productPrice: productPrice ?? this.productPrice,
-      materialType: materialType ?? this.materialType,
-      category: category ?? this.category,
-      details: details ?? this.details,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'invoiceId': invoiceId,
-      'weight': weight,
-      'productPrice': productPrice,
-      'materialType': materialType,
-      'category': category,
-      'details': details,
-    };
-  }
-
-  factory RegularParcelInfo.fromMap(Map<String, dynamic> map) {
-    return RegularParcelInfo(
-      invoiceId: map['invoiceId'] ?? '',
-      weight: map['weight'] ?? '',
-      productPrice: map['productPrice']?.toInt() ?? 0,
-      materialType: map['materialType'] ?? '',
-      category: map['category'] ?? '',
-      details: map['details'] ?? '',
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory RegularParcelInfo.fromJson(String source) =>
-      RegularParcelInfo.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'RegularParcelInfo(invoiceId: $invoiceId, weight: $weight, productPrice: $productPrice, materialType: $materialType, category: $category, details: $details)';
-  }
-
-  @override
-  List<Object> get props {
-    return [
-      invoiceId,
-      weight,
-      productPrice,
-      materialType,
-      category,
-      details,
-    ];
-  }
-}
-
-class ExchangeParcelInfo extends Equatable {
-  final String invoiceId;
-  final String weight;
-  final int productPrice;
-  final String materialType;
-  final String category;
-  final String details;
-
-  const ExchangeParcelInfo({
-    required this.invoiceId,
-    required this.weight,
-    required this.productPrice,
-    required this.materialType,
-    required this.category,
-    required this.details,
-  });
-
-  factory ExchangeParcelInfo.init() => const ExchangeParcelInfo(
-        invoiceId: '',
-        weight: '',
-        productPrice: 0,
-        materialType: '',
-        category: '',
-        details: '',
-      );
-
-  ExchangeParcelInfo copyWith({
-    String? invoiceId,
-    String? weight,
-    int? productPrice,
-    String? materialType,
-    String? category,
-    String? details,
-  }) {
-    return ExchangeParcelInfo(
-      invoiceId: invoiceId ?? this.invoiceId,
-      weight: weight ?? this.weight,
-      productPrice: productPrice ?? this.productPrice,
-      materialType: materialType ?? this.materialType,
-      category: category ?? this.category,
-      details: details ?? this.details,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'invoiceId': invoiceId,
-      'weight': weight,
-      'productPrice': productPrice,
-      'materialType': materialType,
-      'category': category,
-      'details': details,
-    };
-  }
-
-  factory ExchangeParcelInfo.fromMap(Map<String, dynamic> map) {
-    return ExchangeParcelInfo(
-      invoiceId: map['invoiceId'] ?? '',
-      weight: map['weight'] ?? '',
-      productPrice: map['productPrice']?.toInt() ?? 0,
-      materialType: map['materialType'] ?? '',
-      category: map['category'] ?? '',
-      details: map['details'] ?? '',
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory ExchangeParcelInfo.fromJson(String source) =>
-      ExchangeParcelInfo.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'ExchangeParcelInfo(invoiceId: $invoiceId, weight: $weight, productPrice: $productPrice, materialType: $materialType, category: $category, details: $details)';
-  }
-
-  @override
-  List<Object> get props {
-    return [
-      invoiceId,
-      weight,
-      productPrice,
-      materialType,
-      category,
-      details,
-    ];
-  }
-}
-
-class CustomerInfo extends Equatable {
-  final String name;
-  final String phone;
-  final String address;
-  final String districtId;
-  final String areaId;
-
-  const CustomerInfo({
-    required this.name,
-    required this.phone,
-    required this.address,
-    required this.districtId,
-    required this.areaId,
-  });
-
-  factory CustomerInfo.init() => const CustomerInfo(
-      name: '', phone: '', address: '', districtId: '', areaId: '');
-
-  CustomerInfo copyWith({
-    String? name,
-    String? phone,
-    String? address,
-    String? districtId,
-    String? areaId,
-  }) {
-    return CustomerInfo(
-      name: name ?? this.name,
-      phone: phone ?? this.phone,
-      address: address ?? this.address,
-      districtId: districtId ?? this.districtId,
-      areaId: areaId ?? this.areaId,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'phone': phone,
-      'address': address,
-      'districtId': districtId,
-      'areaId': areaId,
-    };
-  }
-
-  factory CustomerInfo.fromMap(Map<String, dynamic> map) {
-    return CustomerInfo(
-      name: map['name'] ?? '',
-      phone: map['phone'] ?? '',
-      address: map['address'] ?? '',
-      districtId: map['districtId'] ?? '',
-      areaId: map['areaId'] ?? '',
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory CustomerInfo.fromJson(String source) =>
-      CustomerInfo.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'CustomerInfo(name: $name, phone: $phone, address: $address, districtId: $districtId, areaId: $areaId)';
-  }
-
-  @override
-  List<Object> get props {
-    return [
-      name,
-      phone,
-      address,
-      districtId,
-      areaId,
     ];
   }
 }

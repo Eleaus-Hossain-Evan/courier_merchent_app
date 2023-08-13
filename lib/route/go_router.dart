@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../application/auth/loggedin_provider.dart';
+import '../domain/parcel/model/parcel_model.dart';
 import '../presentation/auth/login/login.dart';
 import '../presentation/auth/reset_password/reset_password.dart';
 import '../presentation/auth/signup/signup.dart';
@@ -153,7 +154,7 @@ class RouterNotifier extends ChangeNotifier {
           path: AddParcelScreen.route,
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
-            child: const AddParcelScreen(),
+            child: AddParcelScreen(parcel: state.extra as ParcelModel),
           ),
         ),
       ];

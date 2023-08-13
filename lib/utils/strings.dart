@@ -89,6 +89,7 @@ class AppStrings {
   static const String parcel = "Parcel";
   static const String deliveryInformation = "Delivery Information";
   static const String createParcel = "Create Parcel";
+  static const String updateParcel = "Update Parcel";
   static const String description = "Description";
   static const String cashCollection = "Cash Collection";
   static const String category = "Category";
