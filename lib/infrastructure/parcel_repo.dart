@@ -65,6 +65,18 @@ class ParcelRepo {
     return data;
   }
 
+  Future<Either<CleanFailure, CreateParcelResponse>> updateParcel(
+      String parcelId, CreateParcelBody body) async {
+    final data = await api.patch(
+      body: body.toMap(),
+      fromData: (json) => CreateParcelResponse.fromMap(json),
+      endPoint: APIRoute.PARCEL_UPDATE + parcelId,
+      withToken: true,
+    );
+
+    return data;
+  }
+
   Future<Either<CleanFailure, FetchAllParcelResponse>> fetchParcelList({
     ParcelListType type = ParcelListType.all,
     int page = 1,

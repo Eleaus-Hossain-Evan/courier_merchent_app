@@ -1,3 +1,4 @@
+import 'package:courier_merchent_app/application/home/home_provider.dart';
 import 'package:courier_merchent_app/application/parcel/parcel_state.dart';
 import 'package:courier_merchent_app/domain/parcel/parcel_category_model_response.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
@@ -75,6 +76,25 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
     state = state.copyWith(loading: true);
 
     final result = await repo.createParcel(body);
+
+    ref.read(homeProvider.notifier).getRecentParcelList();
+
+    result.fold((l) {
+      showErrorToast(l.error.message);
+      state = state.copyWith(loading: false);
+    }, (r) {
+      success = r.success;
+      state = state.copyWith(loading: false);
+    });
+
+    return success;
+  }
+
+  Future<bool> updateParcel(String parcelId, CreateParcelBody body) async {
+    bool success = false;
+    state = state.copyWith(loading: true);
+
+    final result = await repo.updateParcel(parcelId, body);
 
     result.fold((l) {
       showErrorToast(l.error.message);

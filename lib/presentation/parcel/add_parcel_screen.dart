@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:courier_merchent_app/domain/parcel/model/parcel_model.dart';
 import 'package:courier_merchent_app/utils/utils.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -120,20 +121,51 @@ class AddParcelScreen extends HookConsumerWidget {
       }
     });
 
+    Future<void> setDistrict() async {
+      final districts = await ref.read(parcelProvider.notifier).getDistrict();
+      selectedDistrict.value = districts.lock
+          .where((e) => e.id == parcel!.customerInfo.districtId)
+          .firstOption
+          .toNullable();
+    }
+
+    Future<void> setArea() async {
+      final areas = await ref
+          .read(parcelProvider.notifier)
+          .getArea(parcel!.customerInfo.districtId);
+      selectedArea.value = areas.lock
+          .where((e) => e.id == parcel!.customerInfo.areaId)
+          .firstOption
+          .toNullable();
+    }
+
+    Future<void> setWeight() async {
+      final weights = await ref.read(parcelProvider.notifier).getWeight();
+      selectedWeight.value = weights.lock
+          .where((e) => e.name == parcel!.regularParcelInfo.weight)
+          .firstOption
+          .toNullable();
+    }
+
+    Future<void> setCategory() async {
+      final categories =
+          await ref.read(parcelProvider.notifier).getParcelCategory();
+      selectedParcelCategory.value = categories.lock
+          .where((e) => e.name == parcel!.regularParcelInfo.category)
+          .firstOption
+          .toNullable();
+    }
+
     useEffect(() {
       parcel != null
-          ? Future.wait([
-              ref.read(parcelProvider.notifier).getDistrict(),
-              ref
-                  .read(parcelProvider.notifier)
-                  .getArea(parcel!.customerInfo.districtId),
-              ref.read(parcelProvider.notifier).getWeight(),
-              ref.read(parcelProvider.notifier).getParcelCategory(),
-            ]).then((value) {
-              return selectedDistrict.value = (value[0] as List<AreaModel>)
-                      .where((e) => e.id == parcel!.customerInfo.districtId)
-                  as AreaModel?;
-            })
+          ? Future.wait(
+              [
+                setDistrict(),
+                setArea(),
+                setWeight(),
+                setCategory(),
+              ],
+            )
           : null;
       return () {
         selectedDistrict.removeListener(getDeliveryCharge);
@@ -451,7 +483,7 @@ class AddParcelScreen extends HookConsumerWidget {
                       focusNode: descriptionFocus,
                       containerPadding: EdgeInsets.zero,
                       textInputAction: TextInputAction.newline,
-                      validator: ValidationBuilder().required().build(),
+                      validator: ValidationBuilder().build(),
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       onFieldSubmitted: (_) =>
@@ -492,79 +524,129 @@ class AddParcelScreen extends HookConsumerWidget {
                     ? AppStrings.createParcel
                     : AppStrings.updateParcel,
                 onPressed: () async {
+                  FocusManager.instance.primaryFocus?.requestFocus();
                   if (selectedShop.value == null) {
-                    showErrorToast("Please a shop!");
+                    showErrorToast("Please select a shop!");
                   } else if (formKey.currentState!.validate()) {
-                    ref
-                        .read(parcelProvider.notifier)
-                        .createParcel(
-                          CreateParcelBody(
-                            merchantInfo: MerchantInfoModel(
-                              name: ref.watch(authProvider).user.name,
-                              phone: ref.watch(authProvider).user.phone,
-                              address: ref.watch(authProvider).user.address,
-                              shopName: selectedShop.value?.shopName ?? "",
-                              shopAddress: selectedShop.value?.address ?? "",
+                    if (parcel != null) {
+                      ref
+                          .read(parcelProvider.notifier)
+                          .updateParcel(
+                            parcel!.id,
+                            CreateParcelBody(
+                              merchantInfo: MerchantInfoModel(
+                                name: ref.watch(authProvider).user.name,
+                                phone: ref.watch(authProvider).user.phone,
+                                address: ref.watch(authProvider).user.address,
+                                shopName: selectedShop.value?.shopName ?? "",
+                                shopAddress: selectedShop.value?.address ?? "",
+                              ),
+                              customerInfo: CustomerInfoModel(
+                                name: nameController.text,
+                                phone: phoneController.text,
+                                address: addressController.text,
+                                districtId: selectedDistrict.value?.id ?? "",
+                                areaId: selectedArea.value?.id ?? "",
+                              ),
+                              regularParcelInfo: RegularParcelInfoModel(
+                                invoiceId: invoiceController.text,
+                                weight: selectedWeight.value?.name ?? "",
+                                productPrice:
+                                    int.tryParse(productPriceController.text) ??
+                                        0,
+                                materialType: selectedMaterialType.value.name,
+                                category:
+                                    selectedParcelCategory.value?.name ?? "",
+                                details: descriptionController.text,
+                              ),
+                              regularPayment: RegularPaymentModel(
+                                cashCollection:
+                                    double.tryParse(cashController.text) ?? 0.0,
+                                deliveryCharge: deliveryCharge.value,
+                                codCharge: codCharge.value,
+                                weightCharge: (selectedWeight.value?.price ?? 0)
+                                    .toDouble(),
+                                totalCharge: deliveryCharge.value +
+                                    codCharge.value +
+                                    (selectedWeight.value?.price ?? 0)
+                                        .toDouble(),
+                              ),
                             ),
-                            customerInfo: CustomerInfoModel(
-                              name: nameController.text,
-                              phone: phoneController.text,
-                              address: addressController.text,
-                              districtId: selectedDistrict.value?.id ?? "",
-                              areaId: selectedArea.value?.id ?? "",
+                          )
+                          .then((value) => value ? context.pop() : null);
+                    } else {
+                      ref
+                          .read(parcelProvider.notifier)
+                          .createParcel(
+                            CreateParcelBody(
+                              merchantInfo: MerchantInfoModel(
+                                name: ref.watch(authProvider).user.name,
+                                phone: ref.watch(authProvider).user.phone,
+                                address: ref.watch(authProvider).user.address,
+                                shopName: selectedShop.value?.shopName ?? "",
+                                shopAddress: selectedShop.value?.address ?? "",
+                              ),
+                              customerInfo: CustomerInfoModel(
+                                name: nameController.text,
+                                phone: phoneController.text,
+                                address: addressController.text,
+                                districtId: selectedDistrict.value?.id ?? "",
+                                areaId: selectedArea.value?.id ?? "",
+                              ),
+                              regularParcelInfo: RegularParcelInfoModel(
+                                invoiceId: invoiceController.text,
+                                weight: selectedWeight.value?.name ?? "",
+                                productPrice:
+                                    int.tryParse(productPriceController.text) ??
+                                        0,
+                                materialType: selectedMaterialType.value.name,
+                                category:
+                                    selectedParcelCategory.value?.name ?? "",
+                                details: descriptionController.text,
+                              ),
+                              regularPayment: RegularPaymentModel(
+                                cashCollection:
+                                    double.tryParse(cashController.text) ?? 0.0,
+                                deliveryCharge: deliveryCharge.value,
+                                codCharge: codCharge.value,
+                                weightCharge: (selectedWeight.value?.price ?? 0)
+                                    .toDouble(),
+                                totalCharge: deliveryCharge.value +
+                                    codCharge.value +
+                                    (selectedWeight.value?.price ?? 0)
+                                        .toDouble(),
+                              ),
                             ),
-                            regularParcelInfo: RegularParcelInfoModel(
-                              invoiceId: invoiceController.text,
-                              weight: selectedWeight.value?.name ?? "",
-                              productPrice:
-                                  int.tryParse(productPriceController.text) ??
-                                      0,
-                              materialType: selectedMaterialType.value.name,
-                              category:
-                                  selectedParcelCategory.value?.name ?? "",
-                              details: descriptionController.text,
-                            ),
-                            regularPayment: RegularPaymentModel(
-                              cashCollection:
-                                  double.tryParse(cashController.text) ?? 0.0,
-                              deliveryCharge: deliveryCharge.value,
-                              codCharge: codCharge.value,
-                              weightCharge:
-                                  (selectedWeight.value?.price ?? 0).toDouble(),
-                              totalCharge: deliveryCharge.value +
-                                  codCharge.value +
-                                  (selectedWeight.value?.price ?? 0).toDouble(),
-                            ),
-                          ),
-                        )
-                        .then((value) => value
-                            ? showSuccessDialog(
-                                context,
-                                onTapCreate: () {
-                                  formKey.currentState?.reset();
-                                  formKey.currentState?.reset();
+                          )
+                          .then((value) => value
+                              ? showSuccessDialog(
+                                  context,
+                                  onTapCreate: () {
+                                    formKey.currentState?.reset();
+                                    formKey.currentState?.reset();
 
-                                  nameController.clear();
-                                  phoneController.clear();
-                                  addressController.clear();
-                                  invoiceController.clear();
-                                  productPriceController.clear();
-                                  cashController.clear();
-                                  descriptionController.clear();
+                                    nameController.clear();
+                                    phoneController.clear();
+                                    addressController.clear();
+                                    invoiceController.clear();
+                                    productPriceController.clear();
+                                    cashController.clear();
+                                    descriptionController.clear();
 
-                                  selectedDistrict.value = null;
-                                  selectedArea.value = null;
-                                  selectedMaterialType.value =
-                                      MaterialType.fragile;
-                                  selectedWeight.value = null;
-                                  selectedParcelCategory.value = null;
-                                  deliveryCharge.value = 0;
-                                  codCharge.value = 0.0;
-                                },
-                                onTapTruck: () {},
-                                onTapCancel: () => context.pop(),
-                              )
-                            : null);
+                                    selectedDistrict.value = null;
+                                    selectedArea.value = null;
+                                    selectedMaterialType.value =
+                                        MaterialType.fragile;
+                                    selectedWeight.value = null;
+                                    selectedParcelCategory.value = null;
+                                    deliveryCharge.value = 0;
+                                    codCharge.value = 0.0;
+                                  },
+                                  onTapTruck: () {},
+                                  onTapCancel: () => context.pop(),
+                                )
+                              : null);
+                    }
                   }
                 },
               ),

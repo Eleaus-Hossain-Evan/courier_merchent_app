@@ -154,7 +154,9 @@ class RouterNotifier extends ChangeNotifier {
           path: AddParcelScreen.route,
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
-            child: AddParcelScreen(parcel: state.extra as ParcelModel),
+            child: AddParcelScreen(
+                parcel:
+                    state.extra == null ? null : state.extra as ParcelModel),
           ),
         ),
       ];

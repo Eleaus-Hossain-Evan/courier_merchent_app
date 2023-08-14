@@ -8,22 +8,21 @@ import 'regular_charge_model.dart';
 import 'regular_parcel_info_model.dart';
 
 class ParcelModel extends Equatable {
-  final MerchantInfoModel merchantInfo;
-  final RegularParcelInfoModel regularParcelInfo;
-  final RegularParcelInfoModel exchangeParcelInfo;
-  final RegularPaymentModel regularPayment;
-  final RegularPaymentModel exchangePayment;
+  final MerchantInfoModel merchantInfo;//
+  final RegularParcelInfoModel regularParcelInfo;//
+  final RegularParcelInfoModel exchangeParcelInfo;//
+  final RegularPaymentModel regularPayment;//
+  final RegularPaymentModel exchangePayment;//
   final String createdBy;
   final String merchantId;
   final String parcelType;
-  final List<dynamic> hubHistory;
   final String pickupStatus;
   final bool isTransferMode;
   final String regularStatus;
   final String exchangeStatus;
   final int merchantUpdate;
   final String id;
-  final CustomerInfoModel customerInfo;
+  final CustomerInfoModel customerInfo;//
   final String sourceHubId;
   final String currentHubId;
   final String destinationHubId;
@@ -44,7 +43,6 @@ class ParcelModel extends Equatable {
     required this.createdBy,
     required this.merchantId,
     required this.parcelType,
-    required this.hubHistory,
     required this.pickupStatus,
     required this.isTransferMode,
     required this.regularStatus,
@@ -73,7 +71,6 @@ class ParcelModel extends Equatable {
     String? createdBy,
     String? merchantId,
     String? parcelType,
-    List<dynamic>? hubHistory,
     String? pickupStatus,
     bool? isTransferMode,
     String? regularStatus,
@@ -101,7 +98,6 @@ class ParcelModel extends Equatable {
       createdBy: createdBy ?? this.createdBy,
       merchantId: merchantId ?? this.merchantId,
       parcelType: parcelType ?? this.parcelType,
-      hubHistory: hubHistory ?? this.hubHistory,
       pickupStatus: pickupStatus ?? this.pickupStatus,
       isTransferMode: isTransferMode ?? this.isTransferMode,
       regularStatus: regularStatus ?? this.regularStatus,
@@ -132,7 +128,6 @@ class ParcelModel extends Equatable {
       'createdBy': createdBy,
       'merchantId': merchantId,
       'parcelType': parcelType,
-      'hubHistory': hubHistory,
       'pickupStatus': pickupStatus,
       'isTransferMode': isTransferMode,
       'regularStatus': regularStatus,
@@ -173,7 +168,6 @@ class ParcelModel extends Equatable {
       createdBy: map['createdBy'] ?? '',
       merchantId: map['merchantId'] ?? '',
       parcelType: map['parcelType'] ?? '',
-      hubHistory: List<dynamic>.from(map['hubHistory'] ?? const []),
       pickupStatus: map['pickupStatus'] ?? '',
       isTransferMode: map['isTransferMode'] ?? false,
       regularStatus: map['regularStatus'] ?? '',
@@ -208,7 +202,7 @@ class ParcelModel extends Equatable {
 
   @override
   String toString() {
-    return 'Data(merchantInfo: $merchantInfo, regularParcelInfo: $regularParcelInfo, exchangeParcelInfo: $exchangeParcelInfo, regularPayment: $regularPayment, exchangePayment: $exchangePayment, createdBy: $createdBy, merchantId: $merchantId, parcelType: $parcelType, hubHistory: $hubHistory, pickupStatus: $pickupStatus, isTransferMode: $isTransferMode, regularStatus: $regularStatus, exchangeStatus: $exchangeStatus, merchantUpdate: $merchantUpdate, _id: $id, customerInfo: $customerInfo, sourceHubId: $sourceHubId, currentHubId: $currentHubId, destinationHubId: $destinationHubId, regularStatusLogs: $regularStatusLogs, adminLogs: $adminLogs, serialId: $serialId, qrCode: $qrCode, exchangeStatusLogs: $exchangeStatusLogs, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Data(merchantInfo: $merchantInfo, regularParcelInfo: $regularParcelInfo, exchangeParcelInfo: $exchangeParcelInfo, regularPayment: $regularPayment, exchangePayment: $exchangePayment, createdBy: $createdBy, merchantId: $merchantId, parcelType: $parcelType, pickupStatus: $pickupStatus, isTransferMode: $isTransferMode, regularStatus: $regularStatus, exchangeStatus: $exchangeStatus, merchantUpdate: $merchantUpdate, _id: $id, customerInfo: $customerInfo, sourceHubId: $sourceHubId, currentHubId: $currentHubId, destinationHubId: $destinationHubId, regularStatusLogs: $regularStatusLogs, adminLogs: $adminLogs, serialId: $serialId, qrCode: $qrCode, exchangeStatusLogs: $exchangeStatusLogs, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -222,7 +216,6 @@ class ParcelModel extends Equatable {
       createdBy,
       merchantId,
       parcelType,
-      hubHistory,
       pickupStatus,
       isTransferMode,
       regularStatus,
