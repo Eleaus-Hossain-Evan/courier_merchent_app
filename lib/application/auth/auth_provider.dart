@@ -104,7 +104,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     return success;
   }
 
-  Future<void> profileView() async {
+  Future<bool> profileView() async {
+    bool success = false;
     // state = state.copyWith(loading: true);
     final result = await repo.profileView();
 
@@ -114,10 +115,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
         return state = state.copyWith(failure: l, loading: false);
       },
       (r) {
+        success = r.success;
         // ref.read(loggedInProvider).changeSavedUser(r.data);
         return state.copyWith(user: r.data, loading: false);
       },
     );
+
+    return success;
   }
 
   Future<bool> profileUpdate(ProfileUpdateBody updateUser, File? image) async {
