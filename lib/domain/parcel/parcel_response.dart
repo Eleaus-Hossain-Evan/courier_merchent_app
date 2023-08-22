@@ -4,23 +4,23 @@ import 'package:equatable/equatable.dart';
 
 import 'model/parcel_model.dart';
 
-class CreateParcelResponse extends Equatable {
+class ParcelResponse extends Equatable {
   final ParcelModel data;
   final String message;
   final bool success;
 
-  const CreateParcelResponse({
+  const ParcelResponse({
     required this.data,
     required this.message,
     required this.success,
   });
 
-  CreateParcelResponse copyWith({
+  ParcelResponse copyWith({
     ParcelModel? data,
     String? message,
     bool? success,
   }) {
-    return CreateParcelResponse(
+    return ParcelResponse(
       data: data ?? this.data,
       message: message ?? this.message,
       success: success ?? this.success,
@@ -35,8 +35,8 @@ class CreateParcelResponse extends Equatable {
     };
   }
 
-  factory CreateParcelResponse.fromMap(Map<String, dynamic> map) {
-    return CreateParcelResponse(
+  factory ParcelResponse.fromMap(Map<String, dynamic> map) {
+    return ParcelResponse(
       data: ParcelModel.fromMap(map['data']),
       message: map['message'] ?? '',
       success: map['success'] ?? false,
@@ -45,8 +45,8 @@ class CreateParcelResponse extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory CreateParcelResponse.fromJson(String source) =>
-      CreateParcelResponse.fromMap(json.decode(source));
+  factory ParcelResponse.fromJson(String source) =>
+      ParcelResponse.fromMap(json.decode(source));
 
   @override
   String toString() =>

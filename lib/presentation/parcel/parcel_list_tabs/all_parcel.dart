@@ -6,9 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../application/parcel/parcel_provider.dart';
+import '../../../domain/parcel/model/parcel_model.dart';
 import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
-import '../parcel_list_screen.dart';
 
 class AllParcel extends HookConsumerWidget {
   const AllParcel({
@@ -16,7 +16,7 @@ class AllParcel extends HookConsumerWidget {
     required this.listType,
   });
 
-  final ParcelListType listType;
+  final ParcelRegularStatus listType;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -53,41 +53,41 @@ class AllParcel extends HookConsumerWidget {
           .height(1.sh)
           .make(),
       itemBuilder: (context, index) {
-        final parcel = listType == ParcelListType.all
+        final parcel = listType == ParcelRegularStatus.all
             ? state.allParcel[index]
-            : listType == ParcelListType.pending
+            : listType == ParcelRegularStatus.pending
                 ? state.pendingParcel[index]
-                : listType == ParcelListType.pickup
+                : listType == ParcelRegularStatus.pickup
                     ? state.pickupParcel[index]
-                    : listType == ParcelListType.shipping
+                    : listType == ParcelRegularStatus.shipping
                         ? state.shippingParcel[index]
-                        : listType == ParcelListType.shipped
+                        : listType == ParcelRegularStatus.shipped
                             ? state.shippedParcel[index]
-                            : listType == ParcelListType.dropoff
+                            : listType == ParcelRegularStatus.dropoff
                                 ? state.dropoffParcel[index]
-                                : listType == ParcelListType.returns
+                                : listType == ParcelRegularStatus.returns
                                     ? state.returnParcel[index]
-                                    : listType == ParcelListType.cancel
+                                    : listType == ParcelRegularStatus.cancel
                                         ? state.cancelParcel[index]
                                         : state.allParcel[index];
 
         return DeliveryListTile(parcel: parcel);
       },
-      itemCount: listType == ParcelListType.all
+      itemCount: listType == ParcelRegularStatus.all
           ? state.allParcel.length
-          : listType == ParcelListType.pending
+          : listType == ParcelRegularStatus.pending
               ? state.pendingParcel.length
-              : listType == ParcelListType.pickup
+              : listType == ParcelRegularStatus.pickup
                   ? state.pickupParcel.length
-                  : listType == ParcelListType.shipping
+                  : listType == ParcelRegularStatus.shipping
                       ? state.shippingParcel.length
-                      : listType == ParcelListType.shipped
+                      : listType == ParcelRegularStatus.shipped
                           ? state.shippedParcel.length
-                          : listType == ParcelListType.dropoff
+                          : listType == ParcelRegularStatus.dropoff
                               ? state.dropoffParcel.length
-                              : listType == ParcelListType.returns
+                              : listType == ParcelRegularStatus.returns
                                   ? state.returnParcel.length
-                                  : listType == ParcelListType.cancel
+                                  : listType == ParcelRegularStatus.cancel
                                       ? state.cancelParcel.length
                                       : state.allParcel.length,
       separator: KDivider(

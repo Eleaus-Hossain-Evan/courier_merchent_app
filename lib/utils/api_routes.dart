@@ -43,6 +43,7 @@ class APIRoute {
   static const PARCEL_UPDATE = "${API_V1}parcel/update-by-merchant/";
   static const FETCH_ALL_PARCEL =
       "${API_V1}parcel/fetch-all-parcel-by-merchant?";
+  static const SINGLE_PARCEL = "${API_V1}parcel/fetch-single/";
 
   static const ORDER_CREATE = "";
 

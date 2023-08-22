@@ -8,6 +8,7 @@ class HubModel extends Equatable {
   final String id;
   final String address;
   final String name;
+  final String serialId;
   final AreaModel district;
 
   const HubModel({
@@ -15,39 +16,44 @@ class HubModel extends Equatable {
     required this.address,
     required this.name,
     required this.district,
+    required this.serialId,
   });
 
-  factory HubModel.init() =>
-      HubModel(id: '', address: '', name: '', district: AreaModel.init());
+  factory HubModel.init() => HubModel(
+      id: '', address: '', name: '', district: AreaModel.init(), serialId: '');
 
   HubModel copyWith({
     String? id,
     String? address,
     String? name,
+    String? serialId,
     AreaModel? district,
   }) {
     return HubModel(
       id: id ?? this.id,
       address: address ?? this.address,
       name: name ?? this.name,
+      serialId: serialId ?? this.serialId,
       district: district ?? this.district,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      '_id': id,
       'address': address,
       'name': name,
+      'serialId': serialId,
       'district': district.toMap(),
     };
   }
 
   factory HubModel.fromMap(Map<String, dynamic> map) {
     return HubModel(
-      id: map['id'] ?? '',
+      id: map['_id'] ?? '',
       address: map['address'] ?? '',
       name: map['name'] ?? '',
+      serialId: map['serialId'] ?? '',
       district: map['district'] != null
           ? AreaModel.fromMap(map['district'])
           : AreaModel.init(),
@@ -61,9 +67,17 @@ class HubModel extends Equatable {
 
   @override
   String toString() {
-    return 'HubModel(id: $id, address: $address, name: $name, district: $district)';
+    return 'HubModel(_id: $id, address: $address, name: $name, serialId: $serialId, district: $district)';
   }
 
   @override
-  List<Object> get props => [id, address, name, district];
+  List<Object> get props {
+    return [
+      id,
+      address,
+      name,
+      serialId,
+      district,
+    ];
+  }
 }

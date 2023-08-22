@@ -42,6 +42,15 @@ class CreateParcelBody extends Equatable {
     };
   }
 
+  Map<String, dynamic> toUpdateMap() {
+    return {
+      'merchantInfo': merchantInfo.toMap(),
+      'customerInfo': customerInfo.toUpdateMap(),
+      'regularParcelInfo': regularParcelInfo.toMap(),
+      'regularPayment': regularPayment.toMap(),
+    };
+  }
+
   factory CreateParcelBody.fromMap(Map<String, dynamic> map) {
     return CreateParcelBody(
       merchantInfo: MerchantInfoModel.fromMap(map['merchantInfo']),

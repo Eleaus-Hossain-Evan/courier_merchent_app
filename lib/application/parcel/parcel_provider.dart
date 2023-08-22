@@ -1,17 +1,23 @@
-import 'package:courier_merchent_app/application/home/home_provider.dart';
-import 'package:courier_merchent_app/application/parcel/parcel_state.dart';
-import 'package:courier_merchent_app/domain/parcel/parcel_category_model_response.dart';
-import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
-import 'package:courier_merchent_app/infrastructure/parcel_repo.dart';
+import 'dart:async';
+
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../../application/home/home_provider.dart';
+import '../../application/parcel/parcel_state.dart';
+import '../../domain/parcel/parcel_category_model_response.dart';
+import '../../domain/parcel/weight_model_response.dart';
+import '../../infrastructure/parcel_repo.dart';
 
 import '../../domain/auth/model/area_model.dart';
 import '../../domain/parcel/create_parcel_body.dart';
-import '../../domain/parcel/fetch_all_parcel_reponse.dart';
-import '../../presentation/parcel/parcel_list_screen.dart';
+import '../../domain/parcel/fetch_all_parcel_response.dart';
+import '../../domain/parcel/model/parcel_model.dart';
 import '../../utils/utils.dart';
 import '../global.dart';
+
+part 'parcel_provider.g.dart';
 
 final parcelProvider =
     StateNotifierProvider<ParcelNotifier, ParcelState>((ref) {
@@ -108,7 +114,7 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
   }
 
   Future<Either<CleanFailure, FetchAllParcelResponse>> fetchParcelList({
-    ParcelListType type = ParcelListType.all,
+    ParcelRegularStatus type = ParcelRegularStatus.all,
     int page = 1,
     int limit = 10,
   }) async {
@@ -122,7 +128,8 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
   }
 
   void fetchCategorizedParcel(
-      {ParcelListType type = ParcelListType.all, int page = 1}) async {
+      {ParcelRegularStatus type = ParcelRegularStatus.all,
+      int page = 1}) async {
     state = state.copyWith(loading: true);
 
     final result = await fetchParcelList(type: type, page: page);
@@ -134,28 +141,28 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
       },
       (r) {
         switch (type) {
-          case ParcelListType.all:
+          case ParcelRegularStatus.all:
             state = state.copyWith(allParcel: r.data.lock, loading: false);
             break;
-          case ParcelListType.pending:
+          case ParcelRegularStatus.pending:
             state = state.copyWith(pendingParcel: r.data.lock, loading: false);
             break;
-          case ParcelListType.pickup:
+          case ParcelRegularStatus.pickup:
             state = state.copyWith(pickupParcel: r.data.lock, loading: false);
             break;
-          case ParcelListType.shipping:
+          case ParcelRegularStatus.shipping:
             state = state.copyWith(shippingParcel: r.data.lock, loading: false);
             break;
-          case ParcelListType.shipped:
+          case ParcelRegularStatus.shipped:
             state = state.copyWith(shippedParcel: r.data.lock, loading: false);
             break;
-          case ParcelListType.dropoff:
+          case ParcelRegularStatus.dropoff:
             state = state.copyWith(dropoffParcel: r.data.lock, loading: false);
             break;
-          case ParcelListType.returns:
+          case ParcelRegularStatus.returns:
             state = state.copyWith(returnParcel: r.data.lock, loading: false);
             break;
-          case ParcelListType.cancel:
+          case ParcelRegularStatus.cancel:
             state = state.copyWith(cancelParcel: r.data.lock, loading: false);
             break;
           default:
@@ -163,5 +170,23 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
         }
       },
     );
+  }
+}
+
+@riverpod
+class SingleParcel extends _$SingleParcel {
+  final repo = ParcelRepo();
+
+  Future<ParcelModel> _fetch(String id) async {
+    final data = await repo.fetchSingleParcel(id);
+    return data.fold((l) {
+      showErrorToast(l.error.message);
+      return ParcelModel.init();
+    }, (r) => r.data);
+  }
+
+  @override
+  Future<ParcelModel> build(String id) {
+    return _fetch(id);
   }
 }

@@ -2,27 +2,66 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import 'package:courier_merchent_app/domain/auth/model/hub_model.dart';
+
 import 'customer_info_model.dart';
 import 'merchant_info_model.dart';
 import 'regular_charge_model.dart';
 import 'regular_parcel_info_model.dart';
 
+enum ParcelRegularStatus {
+  all,
+  pending,
+  pickup,
+  shipping,
+  shipped,
+  dropoff,
+  partial,
+  returns,
+  cancel
+}
+
+extension ParcelListTypeExt on ParcelRegularStatus {
+  String get value {
+    switch (this) {
+      case ParcelRegularStatus.all:
+        return "all";
+      case ParcelRegularStatus.pending:
+        return "pending";
+      case ParcelRegularStatus.pickup:
+        return "pickup";
+      case ParcelRegularStatus.shipping:
+        return "shipping";
+      case ParcelRegularStatus.shipped:
+        return "shipped";
+      case ParcelRegularStatus.dropoff:
+        return "dropoff";
+      case ParcelRegularStatus.partial:
+        return "partial";
+      case ParcelRegularStatus.returns:
+        return "return";
+      case ParcelRegularStatus.cancel:
+        return "cancel";
+    }
+  }
+}
+
 class ParcelModel extends Equatable {
-  final MerchantInfoModel merchantInfo;//
-  final RegularParcelInfoModel regularParcelInfo;//
-  final RegularParcelInfoModel exchangeParcelInfo;//
-  final RegularPaymentModel regularPayment;//
-  final RegularPaymentModel exchangePayment;//
+  final MerchantInfoModel merchantInfo; //
+  final RegularParcelInfoModel regularParcelInfo; //
+  final RegularParcelInfoModel exchangeParcelInfo; //
+  final RegularPaymentModel regularPayment; //
+  final RegularPaymentModel exchangePayment; //
   final String createdBy;
   final String merchantId;
   final String parcelType;
   final String pickupStatus;
   final bool isTransferMode;
-  final String regularStatus;
+  final ParcelRegularStatus regularStatus;
   final String exchangeStatus;
   final int merchantUpdate;
   final String id;
-  final CustomerInfoModel customerInfo;//
+  final CustomerInfoModel customerInfo; //
   final String sourceHubId;
   final String currentHubId;
   final String destinationHubId;
@@ -33,6 +72,7 @@ class ParcelModel extends Equatable {
   final List<dynamic> exchangeStatusLogs;
   final String createdAt;
   final String updatedAt;
+  final HubModel sourceHub;
 
   const ParcelModel({
     required this.merchantInfo,
@@ -60,7 +100,37 @@ class ParcelModel extends Equatable {
     required this.exchangeStatusLogs,
     required this.createdAt,
     required this.updatedAt,
+    required this.sourceHub,
   });
+
+  factory ParcelModel.init() => ParcelModel(
+        merchantInfo: MerchantInfoModel.init(),
+        regularParcelInfo: RegularParcelInfoModel.init(),
+        exchangeParcelInfo: RegularParcelInfoModel.init(),
+        regularPayment: RegularPaymentModel.init(),
+        exchangePayment: RegularPaymentModel.init(),
+        createdBy: '',
+        merchantId: '',
+        parcelType: '',
+        pickupStatus: '',
+        isTransferMode: false,
+        regularStatus: ParcelRegularStatus.all,
+        exchangeStatus: '',
+        merchantUpdate: 0,
+        id: '',
+        customerInfo: CustomerInfoModel.init(),
+        sourceHubId: '',
+        currentHubId: '',
+        destinationHubId: '',
+        regularStatusLogs: const [],
+        adminLogs: const [],
+        serialId: '',
+        qrCode: '',
+        exchangeStatusLogs: const [],
+        createdAt: '',
+        updatedAt: '',
+        sourceHub: HubModel.init(),
+      );
 
   ParcelModel copyWith({
     MerchantInfoModel? merchantInfo,
@@ -73,7 +143,7 @@ class ParcelModel extends Equatable {
     String? parcelType,
     String? pickupStatus,
     bool? isTransferMode,
-    String? regularStatus,
+    ParcelRegularStatus? regularStatus,
     String? exchangeStatus,
     int? merchantUpdate,
     String? id,
@@ -88,6 +158,7 @@ class ParcelModel extends Equatable {
     List<dynamic>? exchangeStatusLogs,
     String? createdAt,
     String? updatedAt,
+    HubModel? sourceHub,
   }) {
     return ParcelModel(
       merchantInfo: merchantInfo ?? this.merchantInfo,
@@ -115,6 +186,7 @@ class ParcelModel extends Equatable {
       exchangeStatusLogs: exchangeStatusLogs ?? this.exchangeStatusLogs,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      sourceHub: sourceHub ?? this.sourceHub,
     );
   }
 
@@ -130,7 +202,7 @@ class ParcelModel extends Equatable {
       'parcelType': parcelType,
       'pickupStatus': pickupStatus,
       'isTransferMode': isTransferMode,
-      'regularStatus': regularStatus,
+      'regularStatus': regularStatus.value,
       'exchangeStatus': exchangeStatus,
       'merchantUpdate': merchantUpdate,
       '_id': id,
@@ -145,6 +217,7 @@ class ParcelModel extends Equatable {
       'exchangeStatusLogs': exchangeStatusLogs,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'sourceHub': sourceHub.toMap(),
     };
   }
 
@@ -170,7 +243,8 @@ class ParcelModel extends Equatable {
       parcelType: map['parcelType'] ?? '',
       pickupStatus: map['pickupStatus'] ?? '',
       isTransferMode: map['isTransferMode'] ?? false,
-      regularStatus: map['regularStatus'] ?? '',
+      regularStatus: ParcelRegularStatus.values
+          .firstWhere((e) => e.value == map['regularStatus']),
       exchangeStatus: map['exchangeStatus'] ?? '',
       merchantUpdate: map['merchantUpdate']?.toInt() ?? 0,
       id: map['_id'] ?? '',
@@ -187,11 +261,13 @@ class ParcelModel extends Equatable {
           map['adminLogs']?.map((x) => StatusLog.fromMap(x)) ?? const []),
       serialId: map['serialId'] ?? '',
       qrCode: map['qrCode'] ?? '',
-      exchangeStatusLogs: List<StatusLog>.from(
-          map['exchangeStatusLogs']?.map((x) => StatusLog.fromMap(x)) ??
-              const []),
+      exchangeStatusLogs:
+          List<StatusLog>.from(map['exchangeStatusLogs'] ?? const []),
       createdAt: map['createdAt'] ?? '',
       updatedAt: map['updatedAt'] ?? '',
+      sourceHub: map['sourceHub'] != null
+          ? HubModel.fromMap(map['sourceHub'])
+          : HubModel.init(),
     );
   }
 
@@ -202,7 +278,7 @@ class ParcelModel extends Equatable {
 
   @override
   String toString() {
-    return 'Data(merchantInfo: $merchantInfo, regularParcelInfo: $regularParcelInfo, exchangeParcelInfo: $exchangeParcelInfo, regularPayment: $regularPayment, exchangePayment: $exchangePayment, createdBy: $createdBy, merchantId: $merchantId, parcelType: $parcelType, pickupStatus: $pickupStatus, isTransferMode: $isTransferMode, regularStatus: $regularStatus, exchangeStatus: $exchangeStatus, merchantUpdate: $merchantUpdate, _id: $id, customerInfo: $customerInfo, sourceHubId: $sourceHubId, currentHubId: $currentHubId, destinationHubId: $destinationHubId, regularStatusLogs: $regularStatusLogs, adminLogs: $adminLogs, serialId: $serialId, qrCode: $qrCode, exchangeStatusLogs: $exchangeStatusLogs, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'ParcelModel(merchantInfo: $merchantInfo, regularParcelInfo: $regularParcelInfo, exchangeParcelInfo: $exchangeParcelInfo, regularPayment: $regularPayment, exchangePayment: $exchangePayment, createdBy: $createdBy, merchantId: $merchantId, parcelType: $parcelType, pickupStatus: $pickupStatus, isTransferMode: $isTransferMode, regularStatus: $regularStatus, exchangeStatus: $exchangeStatus, merchantUpdate: $merchantUpdate, id: $id, customerInfo: $customerInfo, sourceHubId: $sourceHubId, currentHubId: $currentHubId, destinationHubId: $destinationHubId, regularStatusLogs: $regularStatusLogs, adminLogs: $adminLogs, serialId: $serialId, qrCode: $qrCode, exchangeStatusLogs: $exchangeStatusLogs, createdAt: $createdAt, updatedAt: $updatedAt, sourceHub: $sourceHub)';
   }
 
   @override
@@ -233,6 +309,7 @@ class ParcelModel extends Equatable {
       exchangeStatusLogs,
       createdAt,
       updatedAt,
+      sourceHub,
     ];
   }
 }

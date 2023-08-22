@@ -1,10 +1,10 @@
 import 'package:courier_merchent_app/domain/parcel/create_parcel_body.dart';
-import 'package:courier_merchent_app/domain/parcel/fetch_all_parcel_reponse.dart';
+import 'package:courier_merchent_app/domain/parcel/fetch_all_parcel_response.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
-import 'package:courier_merchent_app/presentation/parcel/parcel_list_screen.dart';
 
-import '../domain/parcel/create_parcel_response.dart';
+import '../domain/parcel/parcel_response.dart';
 import '../domain/parcel/get_area_model_response.dart';
+import '../domain/parcel/model/parcel_model.dart';
 import '../domain/parcel/parcel_category_model_response.dart';
 import '../utils/utils.dart';
 
@@ -53,11 +53,11 @@ class ParcelRepo {
     return data;
   }
 
-  Future<Either<CleanFailure, CreateParcelResponse>> createParcel(
+  Future<Either<CleanFailure, ParcelResponse>> createParcel(
       CreateParcelBody body) async {
     final data = await api.post(
       body: body.toMap(),
-      fromData: (json) => CreateParcelResponse.fromMap(json),
+      fromData: (json) => ParcelResponse.fromMap(json),
       endPoint: APIRoute.PARCEL_CREATE,
       withToken: true,
     );
@@ -65,11 +65,11 @@ class ParcelRepo {
     return data;
   }
 
-  Future<Either<CleanFailure, CreateParcelResponse>> updateParcel(
+  Future<Either<CleanFailure, ParcelResponse>> updateParcel(
       String parcelId, CreateParcelBody body) async {
     final data = await api.patch(
       body: body.toMap(),
-      fromData: (json) => CreateParcelResponse.fromMap(json),
+      fromData: (json) => ParcelResponse.fromMap(json),
       endPoint: APIRoute.PARCEL_UPDATE + parcelId,
       withToken: true,
     );
@@ -78,7 +78,7 @@ class ParcelRepo {
   }
 
   Future<Either<CleanFailure, FetchAllParcelResponse>> fetchParcelList({
-    ParcelListType type = ParcelListType.all,
+    ParcelRegularStatus type = ParcelRegularStatus.all,
     int page = 1,
     int limit = 10,
   }) async {
@@ -86,6 +86,17 @@ class ParcelRepo {
       body: {"status": type.value},
       fromData: (json) => FetchAllParcelResponse.fromMap(json),
       endPoint: "${APIRoute.FETCH_ALL_PARCEL}page=$page&limit=$limit",
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, ParcelResponse>> fetchSingleParcel(
+      String id) async {
+    final data = await api.get(
+      fromData: (json) => ParcelResponse.fromMap(json),
+      endPoint: APIRoute.SINGLE_PARCEL + id,
       withToken: true,
     );
 

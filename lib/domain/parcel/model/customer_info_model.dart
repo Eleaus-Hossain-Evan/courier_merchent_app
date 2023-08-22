@@ -2,12 +2,16 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import 'package:courier_merchent_app/domain/auth/model/area_model.dart';
+
 class CustomerInfoModel extends Equatable {
   final String name;
   final String phone;
   final String address;
   final String districtId;
   final String areaId;
+  final AreaModel? district;
+  final AreaModel? area;
 
   const CustomerInfoModel({
     required this.name,
@@ -15,10 +19,19 @@ class CustomerInfoModel extends Equatable {
     required this.address,
     required this.districtId,
     required this.areaId,
+    this.district,
+    this.area,
   });
 
-  factory CustomerInfoModel.init() => const CustomerInfoModel(
-      name: '', phone: '', address: '', districtId: '', areaId: '');
+  factory CustomerInfoModel.init() => CustomerInfoModel(
+        name: '',
+        phone: '',
+        address: '',
+        districtId: '',
+        areaId: '',
+        area: AreaModel.init(),
+        district: AreaModel.init(),
+      );
 
   CustomerInfoModel copyWith({
     String? name,
@@ -26,6 +39,8 @@ class CustomerInfoModel extends Equatable {
     String? address,
     String? districtId,
     String? areaId,
+    AreaModel? district,
+    AreaModel? area,
   }) {
     return CustomerInfoModel(
       name: name ?? this.name,
@@ -33,10 +48,24 @@ class CustomerInfoModel extends Equatable {
       address: address ?? this.address,
       districtId: districtId ?? this.districtId,
       areaId: areaId ?? this.areaId,
+      district: district ?? this.district,
+      area: area ?? this.area,
     );
   }
 
   Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'phone': phone,
+      'address': address,
+      'districtId': districtId,
+      'areaId': areaId,
+      'district': district?.toMap(),
+      'area': area?.toMap(),
+    };
+  }
+
+  Map<String, dynamic> toUpdateMap() {
     return {
       'name': name,
       'phone': phone,
@@ -53,6 +82,12 @@ class CustomerInfoModel extends Equatable {
       address: map['address'] ?? '',
       districtId: map['districtId'] ?? '',
       areaId: map['areaId'] ?? '',
+      district: map['district'] != null
+          ? AreaModel.fromMap(map['district'])
+          : AreaModel.init(),
+      area: map['area'] != null
+          ? AreaModel.fromMap(map['area'])
+          : AreaModel.init(),
     );
   }
 
@@ -63,7 +98,7 @@ class CustomerInfoModel extends Equatable {
 
   @override
   String toString() {
-    return 'CustomerInfo(name: $name, phone: $phone, address: $address, districtId: $districtId, areaId: $areaId)';
+    return 'CustomerInfoModel(name: $name, phone: $phone, address: $address, districtId: $districtId, areaId: $areaId, district: $district, area: $area)';
   }
 
   @override

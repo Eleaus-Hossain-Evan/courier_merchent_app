@@ -32,5 +32,20 @@ class RecentParcelSection extends HookConsumerWidget {
         thickness: 2.2.h,
       ),
     ).box.white.roundedSM.make();
+
+    // return GroupedListView<ParcelModel, String>(
+    //   elements: state.parcelList.unlock,
+    //   groupBy: (element) => element.merchantId,
+    //   groupSeparatorBuilder: (String groupByValue) => Text(groupByValue),
+    //   itemBuilder: (context, element) => DeliveryListTile(parcel: element),
+    //   itemComparator: (item1, item2) =>
+    //       item1.id.compareTo(item2.id), // optional
+    //   // useStickyGroupSeparators: true, // optional
+    //   // floatingHeader: true, // optional
+    //   // order: GroupedListOrder.ASC, // optional
+
+    //   shrinkWrap: true,
+    //   physics: const NeverScrollableScrollPhysics(),
+    // );
   }
 }
