@@ -43,7 +43,14 @@ class AuthState extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props => [user, loading, failure, language];
+  List<Object> get props {
+    return [
+      user,
+      loading,
+      failure,
+      language,
+    ];
+  }
 
   @override
   String toString() {

@@ -1,4 +1,4 @@
-import 'package:courier_merchent_app/presentation/parcel/add_parcel_screen.dart';
+import 'package:courier_merchent_app/presentation/parcel/add_parcel/add_parcel_screen.dart';
 import 'package:courier_merchent_app/presentation/widgets/k_inkwell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

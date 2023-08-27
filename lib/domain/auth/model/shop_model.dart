@@ -2,26 +2,48 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import 'area_model.dart';
+
 class MyShopModel extends Equatable {
   final String id;
   final String shopName;
   final String address;
-
+  final String createdAt;
+  final AreaModel district;
+  final AreaModel area;
   const MyShopModel({
     required this.id,
     required this.shopName,
     required this.address,
+    required this.createdAt,
+    required this.district,
+    required this.area,
   });
+
+  factory MyShopModel.init() => MyShopModel(
+        id: '',
+        shopName: '',
+        address: '',
+        createdAt: '',
+        district: AreaModel.init(),
+        area: AreaModel.init(),
+      );
 
   MyShopModel copyWith({
     String? id,
     String? shopName,
     String? address,
+    String? createdAt,
+    AreaModel? district,
+    AreaModel? area,
   }) {
     return MyShopModel(
       id: id ?? this.id,
       shopName: shopName ?? this.shopName,
       address: address ?? this.address,
+      createdAt: createdAt ?? this.createdAt,
+      district: district ?? this.district,
+      area: area ?? this.area,
     );
   }
 
@@ -30,13 +52,9 @@ class MyShopModel extends Equatable {
       '_id': id,
       'shopName': shopName,
       'address': address,
-    };
-  }
-
-  Map<String, dynamic> toUpdateMap() {
-    return {
-      'shopName': shopName,
-      'address': address,
+      'createdAt': createdAt,
+      'district': district.toMap(),
+      'area': area.toMap(),
     };
   }
 
@@ -45,6 +63,13 @@ class MyShopModel extends Equatable {
       id: map['_id'] ?? '',
       shopName: map['shopName'] ?? '',
       address: map['address'] ?? '',
+      createdAt: map['createdAt'] ?? '',
+      district: map['district'] != null
+          ? AreaModel.fromMap(map['district'])
+          : AreaModel.init(),
+      area: map['area'] != null
+          ? AreaModel.fromMap(map['area'])
+          : AreaModel.init(),
     );
   }
 
@@ -54,9 +79,19 @@ class MyShopModel extends Equatable {
       MyShopModel.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'MyShop(_id: $id, shopName: $shopName, address: $address)';
+  String toString() {
+    return 'MyShopModel(_id: $id, shopName: $shopName, address: $address, createdAt: $createdAt, district: $district, area: $area)';
+  }
 
   @override
-  List<Object> get props => [id, shopName, address];
+  List<Object> get props {
+    return [
+      id,
+      shopName,
+      address,
+      createdAt,
+      district,
+      area,
+    ];
+  }
 }

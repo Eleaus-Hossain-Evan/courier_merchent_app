@@ -23,7 +23,7 @@ class UserModel extends Equatable {
   final String phone;
   final BankAccountModel bankAccount;
   final OthersAccountModel othersAccount;
-  final List<MyShopModel> myShops;
+  final List<String> myShops;
   final String createdAt;
   final String updatedAt;
   final bool isApproved;
@@ -97,7 +97,7 @@ class UserModel extends Equatable {
     String? phone,
     BankAccountModel? bankAccount,
     OthersAccountModel? othersAccount,
-    List<MyShopModel>? myShops,
+    List<String>? myShops,
     String? createdAt,
     String? updatedAt,
     bool? isApproved,
@@ -148,7 +148,7 @@ class UserModel extends Equatable {
       'phone': phone,
       'bankAccount': bankAccount.toMap(),
       'othersAccount': othersAccount.toMap(),
-      'myShops': myShops.map((x) => x.toMap()).toList(),
+      'myShops': myShops,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'isApproved': isApproved,
@@ -174,7 +174,7 @@ class UserModel extends Equatable {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['_id'] ?? '',
+      id: map['id'] ?? '',
       serialId: map['serialId'] ?? '',
       address: map['address'] ?? '',
       image: map['image'] ?? '',
@@ -186,24 +186,15 @@ class UserModel extends Equatable {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       phone: map['phone'] ?? '',
-      bankAccount: map['bankAccount'] != null
-          ? BankAccountModel.fromMap(map['bankAccount'])
-          : BankAccountModel.init(),
-      othersAccount: map['othersAccount'] != null
-          ? OthersAccountModel.fromMap(map['othersAccount'])
-          : OthersAccountModel.init(),
-      myShops: List<MyShopModel>.from(
-          map['myShops']?.map((x) => MyShopModel.fromMap(x)) ?? const []),
+      bankAccount: BankAccountModel.fromMap(map['bankAccount']),
+      othersAccount: OthersAccountModel.fromMap(map['othersAccount']),
+      myShops: List<String>.from(map['myShops'] ?? const []),
       createdAt: map['createdAt'] ?? '',
       updatedAt: map['updatedAt'] ?? '',
       isApproved: map['isApproved'] ?? false,
-      hub: map['hub'] != null ? HubModel.fromMap(map['hub']) : HubModel.init(),
-      regularCharge: map['regularCharge'] != null
-          ? ChargeModel.fromMap(map['regularCharge'])
-          : ChargeModel.init(),
-      returnCharge: map['returnCharge'] != null
-          ? ChargeModel.fromMap(map['returnCharge'])
-          : ChargeModel.init(),
+      hub: HubModel.fromMap(map['hub']),
+      regularCharge: ChargeModel.fromMap(map['regularCharge']),
+      returnCharge: ChargeModel.fromMap(map['returnCharge']),
       token: map['token'] ?? '',
     );
   }
@@ -215,7 +206,7 @@ class UserModel extends Equatable {
 
   @override
   String toString() {
-    return 'UserModel(_id: $id, serialId: $serialId, address: $address, image: $image, pickupStyle: $pickupStyle, defaultPayment: $defaultPayment, paymentStyle: $paymentStyle, isDisabled: $isDisabled, role: $role, name: $name, email: $email, phone: $phone, bankAccount: $bankAccount, othersAccount: $othersAccount, myShops: $myShops, createdAt: $createdAt, updatedAt: $updatedAt, isApproved: $isApproved, hub: $hub, regularCharge: $regularCharge, returnCharge: $returnCharge, token: $token)';
+    return 'UserModel(id: $id, serialId: $serialId, address: $address, image: $image, pickupStyle: $pickupStyle, defaultPayment: $defaultPayment, paymentStyle: $paymentStyle, isDisabled: $isDisabled, role: $role, name: $name, email: $email, phone: $phone, bankAccount: $bankAccount, othersAccount: $othersAccount, myShops: $myShops, createdAt: $createdAt, updatedAt: $updatedAt, isApproved: $isApproved, hub: $hub, regularCharge: $regularCharge, returnCharge: $returnCharge, token: $token)';
   }
 
   @override

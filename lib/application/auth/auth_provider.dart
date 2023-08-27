@@ -1,7 +1,6 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
-import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
 import 'package:courier_merchent_app/route/go_router.dart';
 import 'package:courier_merchent_app/utils/network_util/network_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -172,74 +171,5 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
 
     return success;
-  }
-
-  Future<void> addMyShop(AddShopBody body) async {
-    state = state.copyWith(loading: true);
-    final result = await repo.addMyShop(body);
-
-    state = result.fold(
-      (l) {
-        showErrorToast(l.error.message);
-        return state = state.copyWith(failure: l, loading: false);
-      },
-      (r) {
-        return state.copyWith(user: r.data, loading: false);
-      },
-    );
-  }
-
-  Future<bool> updateShop(MyShopModel model) async {
-    bool success = false;
-    state = state.copyWith(loading: true);
-    final result = await repo.updateShop(model);
-
-    state = result.fold(
-      (l) {
-        showErrorToast(l.error.message);
-        return state = state.copyWith(failure: l, loading: false);
-      },
-      (r) {
-        success = r.success;
-        return state.copyWith(user: r.data, loading: false);
-      },
-    );
-
-    return success;
-  }
-
-  Future<bool> deleteShop(String id) async {
-    bool success = false;
-    state = state.copyWith(loading: true);
-    final result = await repo.deleteShop(id);
-
-    state = result.fold(
-      (l) {
-        showErrorToast(l.error.message);
-        return state = state.copyWith(failure: l, loading: false);
-      },
-      (r) {
-        success = r.success;
-        return state.copyWith(user: r.data, loading: false);
-      },
-    );
-
-    return success;
-  }
-
-  void getMyShop() async {
-    state = state.copyWith(loading: true);
-    final result = await repo.getMyShop();
-
-    state = result.fold(
-      (l) {
-        showErrorToast(l.error.message);
-        return state = state.copyWith(failure: l, loading: false);
-      },
-      (r) {
-        return state.copyWith(
-            user: state.user.copyWith(myShops: r.data), loading: false);
-      },
-    );
   }
 }

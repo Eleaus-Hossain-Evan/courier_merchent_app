@@ -7,7 +7,7 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../domain/parcel/model/parcel_model.dart';
 import '../../utils/utils.dart';
-import '../parcel/add_parcel_screen.dart';
+import '../parcel/add_parcel/add_parcel_screen.dart';
 import '../parcel/parcel_detail_screen.dart';
 
 class DeliveryListTile extends StatelessWidget {

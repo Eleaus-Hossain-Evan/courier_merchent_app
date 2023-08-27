@@ -5,7 +5,7 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:courier_merchent_app/presentation/widgets/k_inkwell.dart';
 import 'package:courier_merchent_app/utils/color_palate.dart';
 import 'package:courier_merchent_app/utils/extensions/extensions.dart';
-import 'package:courier_merchent_app/utils/ui_constant.dart';
+import 'package:courier_merchent_app/utils/constant/ui_constant.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({
@@ -44,7 +44,7 @@ class EventCard extends StatelessWidget {
               .color(ColorPalate.black500)
               .make(),
           gap2,
-          subTitle.text.xl.letterSpacing(.6).maxLines(1).ellipsis.make(),
+          subTitle.text.xl.letterSpacing(.6).make(),
         ],
       ).p8(),
     ).p8().box.color(getColor()).make().pOnly(left: 8.w);

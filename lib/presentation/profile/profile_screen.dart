@@ -1,11 +1,11 @@
 import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
-import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../application/auth/auth_provider.dart';
@@ -29,14 +29,17 @@ class ProfileScreen extends HookConsumerWidget {
     // final isLoggedIn = ref.watch(loggedInProvider).loggedIn;
 
     final isEditable = useState(!state.user.isApproved);
-    final refreshController = EasyRefreshController(controlFinishRefresh: true);
+    final refreshController = useMemoized(
+        () => RefreshController(initialLoadStatus: LoadStatus.canLoading));
 
     return Scaffold(
       appBar: const KAppBar(titleText: AppStrings.profile),
-      body: EasyRefresh(
+      body: SmartRefresher(
         controller: refreshController,
-        onRefresh: () => ref.read(authProvider.notifier).profileView().then(
-            (value) => value ? IndicatorResult.success : IndicatorResult.fail),
+        enablePullDown: true,
+        enablePullUp: true,
+        onRefresh: () => ref.refresh(authProvider.notifier).profileView().then(
+            (_) => refreshController.refreshCompleted(resetFooterState: true)),
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(

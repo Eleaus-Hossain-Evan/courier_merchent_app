@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../utils/api_routes.dart';
+import '../../utils/constant/api_routes.dart';
 
 class KCachedNetworkImageNoBase extends StatelessWidget {
   const KCachedNetworkImageNoBase(

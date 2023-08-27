@@ -8,8 +8,9 @@ import '../domain/auth/get_all_shop_response.dart';
 import '../domain/auth/login_body.dart';
 import '../domain/auth/auth_response.dart';
 import '../domain/auth/model/user_model.dart';
+import '../domain/auth/shop_update_response.dart';
 import '../domain/auth/signUp_body.dart';
-import '../utils/api_routes.dart';
+import '../utils/constant/api_routes.dart';
 import '../utils/network_util/network_handler.dart';
 
 class AuthRepo {
@@ -93,10 +94,10 @@ class AuthRepo {
     return data;
   }
 
-  Future<Either<CleanFailure, AuthResponse>> addMyShop(AddShopBody body) async {
+  Future<Either<CleanFailure, ShopResponse>> addMyShop(AddShopBody body) async {
     final data = await api.post(
       body: body.toMap(),
-      fromData: (json) => AuthResponse.fromMap(json),
+      fromData: (json) => ShopResponse.fromMap(json),
       endPoint: APIRoute.ADD_SHOP,
       withToken: true,
     );
@@ -114,12 +115,12 @@ class AuthRepo {
     return data;
   }
 
-  Future<Either<CleanFailure, AuthResponse>> updateShop(
-      MyShopModel body) async {
+  Future<Either<CleanFailure, ShopResponse>> updateShop(
+      AddShopBody body, String id) async {
     final data = await api.patch(
-      body: body.toUpdateMap(),
-      fromData: (json) => AuthResponse.fromMap(json),
-      endPoint: APIRoute.UPDATE_SHOP + body.id,
+      body: body.toMap(),
+      fromData: (json) => ShopResponse.fromMap(json),
+      endPoint: APIRoute.UPDATE_SHOP + id,
       withToken: true,
     );
 

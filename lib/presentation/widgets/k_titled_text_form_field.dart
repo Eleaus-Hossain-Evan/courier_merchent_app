@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../utils/ui_constant.dart';
+import '../../utils/constant/ui_constant.dart';
 import 'k_text_form_field.dart';
 import 'k_title_text.dart';
 

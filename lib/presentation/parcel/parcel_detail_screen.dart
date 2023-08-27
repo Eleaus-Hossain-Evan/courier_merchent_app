@@ -69,47 +69,35 @@ class ParcelDetailScreen extends HookConsumerWidget {
               )
               .toList();
 
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                Text.rich('Tracking ID: '.textSpan.withChildren([
-                  data.serialId.textSpan
-                      .color(ColorPalate.black600)
-                      .semiBold
-                      .make(),
-                ]).make())
-                    .p16(),
-                // Timeline(
-                //   children: items,
-                //   position: TimelinePosition.Left,
-                //   shrinkWrap: true,
-                //   physics: const NeverScrollableScrollPhysics(),
-                // )
-                ...data.regularStatusLogs
-                    .mapIndexed((currentValue, index) => MyTimeLineTile(
-                          isFirst: data.regularStatusLogs.isFirst(currentValue),
-                          isLast: data.regularStatusLogs.isLast(currentValue),
-                          isPast: data.regularStatusLogs.isLast(currentValue),
-                          log: currentValue,
-                          onTap: (v) {
-                            scaffoldKey.currentState?.openEndDrawer();
-                            log(v.toJson());
-                          },
-                        ))
-                    .toList()
-
-                // VxTimeline(
-                //   timelineList: timelineList,
-                //   showTrailing: true,
-                //   onItemTap: (value) {},
-                // ),
-
-                // VxTimelineState()
-                // TrackCard(),
-                // ParcelDetailHeader(),
-                // ParcelDetailBody(),
-              ],
-            ),
+          return Column(
+            children: [
+              Text.rich('Tracking ID: '.textSpan.withChildren([
+                data.serialId.textSpan
+                    .color(ColorPalate.black600)
+                    .semiBold
+                    .make(),
+              ]).make())
+                  .p16(),
+              // Timeline(
+              //   children: items,
+              //   position: TimelinePosition.Left,
+              //   shrinkWrap: true,
+              //   physics: const NeverScrollableScrollPhysics(),
+              // ),
+              // ...data.regularStatusLogs
+              //     .mapIndexed((currentValue, index) => MyTimeLineTile(
+              //           isFirst: data.regularStatusLogs.isFirst(currentValue),
+              //           isLast: data.regularStatusLogs.isLast(currentValue),
+              //           isPast: data.regularStatusLogs.isLast(currentValue),
+              //           log: currentValue,
+              //           onTap: (v) {
+              //             scaffoldKey.currentState?.openEndDrawer();
+              //             log(v.toJson());
+              //           },
+              //         ))
+              //     .toList()
+              Expanded(child: TimelineDelivery(data: data.regularStatusLogs))
+            ],
           );
         },
         // data: (data) => const ParcelDetailShimmer(),
@@ -119,6 +107,8 @@ class ParcelDetailScreen extends HookConsumerWidget {
     );
   }
 }
+
+
 
 class ParcelDetailShimmer extends StatelessWidget {
   const ParcelDetailShimmer({super.key});

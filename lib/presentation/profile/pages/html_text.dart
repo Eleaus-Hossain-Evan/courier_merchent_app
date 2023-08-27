@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../utils/ui_constant.dart';
+import '../../../utils/constant/ui_constant.dart';
 import '../../widgets/widgets.dart';
 
 class HtmlTextScreen extends HookConsumerWidget {

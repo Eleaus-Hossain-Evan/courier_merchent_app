@@ -1,6 +1,6 @@
 import 'package:courier_merchent_app/application/auth/auth_provider.dart';
 import 'package:courier_merchent_app/presentation/widgets/k_cached_network_image.dart';
-import 'package:courier_merchent_app/utils/ui_constant.dart';
+import 'package:courier_merchent_app/utils/constant/ui_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
