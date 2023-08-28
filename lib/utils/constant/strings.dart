@@ -99,6 +99,7 @@ class AppStrings {
   static const String productPrice = "Product Price";
   static const String productWeight = "Product Weight";
   static const String selectProductWeight = "Select Product Weight";
+  static const String merchantInfo = "Merchant Information";
   static const String invoiceNo = "Invoice no.";
   static const String selectArea = "Select Area";
   static const String selectDistrict = "Select District";

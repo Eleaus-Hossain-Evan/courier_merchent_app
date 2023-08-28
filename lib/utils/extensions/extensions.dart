@@ -11,3 +11,4 @@ part 'num_extension.dart';
 part 'text_style_extension.dart';
 part 'color_extension.dart';
 part 'velocity_extension.dart';
+part 'enum_extension.dart';

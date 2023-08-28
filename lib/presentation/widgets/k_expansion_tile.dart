@@ -27,7 +27,7 @@ class KExpansionTile extends StatefulWidget {
     this.controlAffinity,
     this.trailingIcon1,
     this.trailingIcon2,
-    this.hasBorder = true,
+    this.hasBorder = false,
     this.borderColor,
   })  : assert(
           expandedCrossAxisAlignment != CrossAxisAlignment.baseline,
@@ -214,7 +214,9 @@ class _KExpansionTileState extends State<KExpansionTile>
             ListTileTheme.merge(
               iconColor: _iconColor.value ?? expansionTileTheme.iconColor,
               textColor: _headerColor.value,
-              tileColor: _isExpanded ? Theme.of(context).dividerColor : null,
+              tileColor: _isExpanded
+                  ? null
+                  : Theme.of(context).scaffoldBackgroundColor,
               // dense: true,
               shape: !_isExpanded
                   ? RoundedRectangleBorder(
@@ -272,7 +274,7 @@ class _KExpansionTileState extends State<KExpansionTile>
     _headerColorTween
       ..begin = widget.collapsedTextColor ??
           expansionTileTheme.collapsedTextColor ??
-          theme.textTheme.subtitle1!.color
+          theme.textTheme.titleMedium!.color
       ..end = widget.textColor ??
           expansionTileTheme.textColor ??
           colorScheme.primary;

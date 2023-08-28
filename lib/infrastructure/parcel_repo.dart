@@ -6,6 +6,7 @@ import '../domain/parcel/parcel_response.dart';
 import '../domain/parcel/get_area_model_response.dart';
 import '../domain/parcel/model/parcel_model.dart';
 import '../domain/parcel/parcel_category_model_response.dart';
+import '../domain/parcel/update_parcel_body.dart';
 import '../utils/utils.dart';
 
 class ParcelRepo {
@@ -56,7 +57,7 @@ class ParcelRepo {
   Future<Either<CleanFailure, ParcelResponse>> createParcel(
       CreateParcelBody body) async {
     final data = await api.post(
-      body: body.toMap(),
+      body: body.toUpdateMap(),
       fromData: (json) => ParcelResponse.fromMap(json),
       endPoint: APIRoute.PARCEL_CREATE,
       withToken: true,
@@ -66,7 +67,7 @@ class ParcelRepo {
   }
 
   Future<Either<CleanFailure, ParcelResponse>> updateParcel(
-      String parcelId, CreateParcelBody body) async {
+      String parcelId, UpdateParcelBody body) async {
     final data = await api.patch(
       body: body.toMap(),
       fromData: (json) => ParcelResponse.fromMap(json),

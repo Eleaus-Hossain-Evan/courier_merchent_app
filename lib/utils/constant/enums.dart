@@ -1,4 +1,5 @@
-enum ParcelMaterialType { regular, fragile, liquid }
+enum ParcelMaterialType { regular, fragile, liquid, none }
+
 
 enum DistrictArea {
   inside("642e4713912a102364a618e1"),
@@ -6,4 +7,16 @@ enum DistrictArea {
 
   final String id;
   const DistrictArea(this.id);
+}
+
+enum ParcelRegularStatus {
+  all,
+  pending,
+  pickup,
+  shipping,
+  shipped,
+  dropoff,
+  partial,
+  returns,
+  cancel
 }

@@ -33,25 +33,46 @@ class DeliveryListTile extends StatelessWidget {
     return KInkWell(
       onTap: () =>
           context.push("${ParcelDetailScreen.route}/${parcel.serialId}"),
-      child: Row(
+      child: Column(
         mainAxisSize: mainMin,
+        mainAxisAlignment: mainStart,
+        crossAxisAlignment: crossStart,
         children: [
-          leadingImage
-              .assetImage(
-                height: 80.h,
-                width: 80.w,
-              )
-              .box
-              .colorScaffoldBackground(context)
-              .roundedSM
-              .make(),
-          gap16,
-          Column(
-            crossAxisAlignment: crossStart,
-            mainAxisAlignment: mainSpaceEven,
+          gap12,
+          Text.rich(
+            TextSpan(
+              children: [
+                "Tr. ID: "
+                    .textSpan
+                    .caption(context)
+
+                    // .color(ColorPalate.black1000)
+                    .make(),
+                parcel.serialId.textSpan
+                    .caption(context)
+                    .letterSpacing(.8)
+                    .color(ColorPalate.black500)
+                    .semiBold
+                    .make(),
+              ],
+            ),
+          ).px16(),
+          Row(
+            mainAxisSize: mainMin,
             children: [
-              Row(
-                mainAxisAlignment: mainSpaceBetween,
+              leadingImage
+                  .assetImage(
+                    height: 80.h,
+                    width: 80.w,
+                  )
+                  .box
+                  .colorScaffoldBackground(context)
+                  .roundedSM
+                  .make(),
+              gap16,
+              Column(
+                crossAxisAlignment: crossStart,
+                mainAxisAlignment: mainSpaceAround,
                 children: [
                   parcel.customerInfo.name.text
                       .softWrap(true)
@@ -59,8 +80,59 @@ class DeliveryListTile extends StatelessWidget {
                       .extraBold
                       .ellipsis
                       .maxLines(1)
-                      .make()
-                      .flexible(),
+                      .make(),
+                  gap6,
+                  Row(
+                    children: [
+                      Icon(
+                        BoxIcons.bx_phone,
+                        size: 14.sp,
+                      ),
+                      gap4,
+                      parcel.customerInfo.phone.text.caption(context).make(),
+                    ],
+                  ),
+                  gap6,
+                  Row(
+                    mainAxisAlignment: mainStart,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Bootstrap.currency_exchange,
+                            size: 14.sp,
+                          ),
+                          gap4,
+                          "${parcel.regularPayment.cashCollection}${AppStrings.tkSymbol}"
+                              .text
+                              .caption(context)
+                              .make(),
+                        ],
+                      ),
+                      gap16,
+                      Row(
+                        children: [
+                          Icon(
+                            BoxIcons.bx_money,
+                            size: 14.sp,
+                          ),
+                          gap4,
+                          "${parcel.regularPayment.totalCharge}${AppStrings.tkSymbol}"
+                              .text
+                              // .caption(context)
+
+                              .caption(context)
+                              .make(),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ).flexible(),
+              Column(
+                mainAxisAlignment: mainSpaceAround,
+                mainAxisSize: mainMax,
+                children: [
                   Visibility(
                     visible: parcel.merchantUpdate <= 0,
                     child: SizedBox(
@@ -77,29 +149,6 @@ class DeliveryListTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              // gap8,
-              "Tr. ID: ${parcel.serialId}".text.caption(context).make(),
-              // gap8,
-              Row(
-                mainAxisAlignment: mainStart,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Bootstrap.currency_exchange,
-                        size: 14.sp,
-                      ),
-                      gap4,
-                      "${parcel.regularPayment.cashCollection}${AppStrings.tkSymbol}"
-                          .text
-                          // .caption(context)
-                          .extraBold
-                          .caption(context)
-                          .make(),
-                    ],
                   ),
                   gap16,
                   VxCapsule(
@@ -119,9 +168,9 @@ class DeliveryListTile extends StatelessWidget {
                 ],
               ),
             ],
-          ).flexible(),
+          ).p12(),
         ],
-      ).p12(),
+      ),
     );
   }
 

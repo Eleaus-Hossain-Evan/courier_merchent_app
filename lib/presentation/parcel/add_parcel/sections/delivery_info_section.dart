@@ -1,3 +1,4 @@
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,9 +21,11 @@ class DeliveryInfoSection extends HookConsumerWidget {
     required this.cashFocus,
     required this.selectedMaterialType,
     required this.selectedParcelCategory,
+    required this.selectedWeightText,
     required this.cashController,
     required this.descriptionFocus,
     required this.descriptionController,
+    required this.isEditable,
   });
 
   final TextEditingController invoiceController;
@@ -33,9 +36,11 @@ class DeliveryInfoSection extends HookConsumerWidget {
   final FocusNode cashFocus;
   final ValueNotifier<ParcelMaterialType> selectedMaterialType;
   final ValueNotifier<ParcelCategoryModel?> selectedParcelCategory;
+  final ValueNotifier<String> selectedWeightText;
   final TextEditingController cashController;
   final FocusNode descriptionFocus;
   final TextEditingController descriptionController;
+  final bool isEditable;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -44,6 +49,7 @@ class DeliveryInfoSection extends HookConsumerWidget {
       child: Column(
         children: [
           KTextFormField2(
+            enabled: isEditable,
             hintText: AppStrings.invoiceNo,
             controller: invoiceController,
             focusNode: invoiceFocus,
@@ -54,6 +60,7 @@ class DeliveryInfoSection extends HookConsumerWidget {
           ),
           gap16,
           KDropDownSearchWidget<WeightModel>(
+            enabled: isEditable,
             hintText: AppStrings.productWeight,
             selectedItem: selectedWeight.value,
             asyncItems: (p0) => ref.read(parcelProvider.notifier).getWeight(),
@@ -74,6 +81,7 @@ class DeliveryInfoSection extends HookConsumerWidget {
           ),
           gap16,
           KTextFormField2(
+            enabled: isEditable,
             hintText: AppStrings.productPrice,
             controller: productPriceController,
             focusNode: productPriceFocus,
@@ -85,9 +93,10 @@ class DeliveryInfoSection extends HookConsumerWidget {
           ),
           gap16,
           KDropDownSearchWidget<ParcelMaterialType>(
+            enabled: isEditable,
             hintText: AppStrings.materialType,
             selectedItem: selectedMaterialType.value,
-            items: ParcelMaterialType.values,
+            items: ParcelMaterialType.values.withoutLast().toList(),
             itemAsString: (p0) => p0.name.capitalized,
             compareFn: (p0, p1) => identical(p0.name, p0.name),
             contentPadding:
@@ -105,6 +114,7 @@ class DeliveryInfoSection extends HookConsumerWidget {
           ),
           gap16,
           KDropDownSearchWidget<ParcelCategoryModel>(
+            enabled: isEditable,
             hintText: AppStrings.category,
             selectedItem: selectedParcelCategory.value,
             asyncItems: (p0) =>
@@ -137,6 +147,7 @@ class DeliveryInfoSection extends HookConsumerWidget {
           ),
           gap16,
           KTextFormField2(
+            enabled: isEditable,
             hintText: AppStrings.description,
             controller: descriptionController,
             focusNode: descriptionFocus,

@@ -16,12 +16,14 @@ class AddressInfoSection extends HookConsumerWidget {
     required this.selectedArea,
     required this.addressController,
     required this.addressFocus,
+    required this.isEditable,
   });
 
   final ValueNotifier<AreaModel?> selectedDistrict;
   final ValueNotifier<AreaModel?> selectedArea;
   final TextEditingController addressController;
   final FocusNode addressFocus;
+  final bool isEditable;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -33,6 +35,7 @@ class AddressInfoSection extends HookConsumerWidget {
             children: [
               Flexible(
                 child: KDropDownSearchWidget<AreaModel>(
+                  enabled: isEditable,
                   hintText: AppStrings.selectDistrict,
                   selectedItem: selectedDistrict.value,
                   popupProps: const PopupProps.dialog(
@@ -79,7 +82,7 @@ class AddressInfoSection extends HookConsumerWidget {
                       backgroundColor: ColorPalate.bg200,
                     ),
                   ),
-                  enabled: selectedDistrict.value != null,
+                  enabled: selectedDistrict.value != null && isEditable,
                   asyncItems: (p0) => ref
                       .read(parcelProvider.notifier)
                       .getArea(selectedDistrict.value!.id),
@@ -103,6 +106,7 @@ class AddressInfoSection extends HookConsumerWidget {
           ),
           gap16,
           KTextFormField2(
+            enabled: isEditable,
             hintText: AppStrings.address,
             controller: addressController,
             focusNode: addressFocus,

@@ -58,13 +58,18 @@ class WeightModelResponse extends Equatable {
 class WeightModel extends Equatable {
   final String id;
   final String name;
-  final int price;
+  final double insidePrice;
+  final double subSidePrice;
+  final double outSidePrice;
   final String createdAt;
   final String updatedAt;
+
   const WeightModel({
     required this.id,
     required this.name,
-    required this.price,
+    required this.insidePrice,
+    required this.subSidePrice,
+    required this.outSidePrice,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -72,14 +77,18 @@ class WeightModel extends Equatable {
   WeightModel copyWith({
     String? id,
     String? name,
-    int? price,
+    double? insidePrice,
+    double? subSidePrice,
+    double? outSidePrice,
     String? createdAt,
     String? updatedAt,
   }) {
     return WeightModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      price: price ?? this.price,
+      insidePrice: insidePrice ?? this.insidePrice,
+      subSidePrice: subSidePrice ?? this.subSidePrice,
+      outSidePrice: outSidePrice ?? this.outSidePrice,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -89,7 +98,9 @@ class WeightModel extends Equatable {
     return {
       '_id': id,
       'name': name,
-      'price': price,
+      'insidePrice': insidePrice,
+      'subSidePrice': subSidePrice,
+      'outSidePrice': outSidePrice,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
@@ -99,7 +110,9 @@ class WeightModel extends Equatable {
     return WeightModel(
       id: map['_id'] ?? '',
       name: map['name'] ?? '',
-      price: map['price']?.toInt() ?? 0,
+      insidePrice: map['insidePrice']?.toDouble() ?? 0,
+      subSidePrice: map['subSidePrice']?.toDouble() ?? 0,
+      outSidePrice: map['outSidePrice']?.toDouble() ?? 0,
       createdAt: map['createdAt'] ?? '',
       updatedAt: map['updatedAt'] ?? '',
     );
@@ -112,7 +125,7 @@ class WeightModel extends Equatable {
 
   @override
   String toString() {
-    return 'Data(_id: $id, name: $name, price: $price, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'WeightModel(_id: $id, name: $name, insidePrice: $insidePrice, subSidePrice: $subSidePrice, outSidePrice: $outSidePrice, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -120,7 +133,9 @@ class WeightModel extends Equatable {
     return [
       id,
       name,
-      price,
+      insidePrice,
+      subSidePrice,
+      outSidePrice,
       createdAt,
       updatedAt,
     ];

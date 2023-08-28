@@ -4,55 +4,67 @@ import 'package:equatable/equatable.dart';
 
 class MerchantInfoModel extends Equatable {
   final String address;
-  final String shopAddress;
   final String name;
   final String phone;
   final String shopName;
+  final String districtId;
+  final String areaId;
 
   const MerchantInfoModel({
     required this.address,
-    required this.shopAddress,
     required this.name,
     required this.phone,
     required this.shopName,
+    required this.districtId,
+    required this.areaId,
   });
 
   factory MerchantInfoModel.init() => const MerchantInfoModel(
-      address: '', shopAddress: '', name: '', phone: '', shopName: '');
+        address: '',
+        name: '',
+        phone: '',
+        shopName: '',
+        districtId: '',
+        areaId: '',
+      );
 
   MerchantInfoModel copyWith({
     String? address,
-    String? shopAddress,
     String? name,
     String? phone,
     String? shopName,
+    String? districtId,
+    String? areaId,
   }) {
     return MerchantInfoModel(
       address: address ?? this.address,
-      shopAddress: shopAddress ?? this.shopAddress,
       name: name ?? this.name,
       phone: phone ?? this.phone,
       shopName: shopName ?? this.shopName,
+      districtId: districtId ?? this.districtId,
+      areaId: areaId ?? this.areaId,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'address': address,
-      'shopAddress': shopAddress,
       'name': name,
       'phone': phone,
       'shopName': shopName,
+      'districtId': districtId,
+      'areaId': areaId,
     };
   }
 
   factory MerchantInfoModel.fromMap(Map<String, dynamic> map) {
     return MerchantInfoModel(
       address: map['address'] ?? '',
-      shopAddress: map['shopAddress'] ?? '',
       name: map['name'] ?? '',
       phone: map['phone'] ?? '',
       shopName: map['shopName'] ?? '',
+      districtId: map['districtId'] ?? '',
+      areaId: map['areaId'] ?? '',
     );
   }
 
@@ -63,17 +75,18 @@ class MerchantInfoModel extends Equatable {
 
   @override
   String toString() {
-    return 'MerchantInfo(address: $address, shopAddress: $shopAddress, name: $name, phone: $phone, shopName: $shopName)';
+    return 'MerchantInfoModel(address: $address, name: $name, phone: $phone, shopName: $shopName, districtId: $districtId, areaId: $areaId)';
   }
 
   @override
   List<Object> get props {
     return [
       address,
-      shopAddress,
       name,
       phone,
       shopName,
+      districtId,
+      areaId,
     ];
   }
 }

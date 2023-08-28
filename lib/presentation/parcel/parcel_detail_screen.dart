@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:courier_merchent_app/presentation/parcel/widgets/event_card.dart';
-import 'package:courier_merchent_app/presentation/parcel/widgets/my_timeline_tile.dart';
 import 'package:courier_merchent_app/presentation/widgets/widgets.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
@@ -36,16 +33,6 @@ class ParcelDetailScreen extends HookConsumerWidget {
       appBar: const KAppBar(titleText: 'TRACK PARCEL'),
       body: parcel.when(
         data: (data) {
-          final timelineList = data.regularStatusLogs
-              .mapIndexed((currentValue, index) => MyTimeLineTile(
-                    isFirst: data.regularStatusLogs.isFirst(currentValue),
-                    isLast: data.regularStatusLogs.isLast(currentValue),
-                    isPast: data.regularStatusLogs.isLast(currentValue),
-                    log: currentValue,
-                    onTap: (v) => scaffoldKey.currentState!.openDrawer(),
-                  ))
-              .toList();
-
           List<TimelineModel> items = data.regularStatusLogs
               .mapIndexed(
                 (currentValue, index) => TimelineModel(
@@ -58,46 +45,43 @@ class ParcelDetailScreen extends HookConsumerWidget {
                   iconBackground: data.regularStatusLogs.isLast(currentValue)
                       ? context.colors.primary.withOpacity(.2)
                       : context.colors.primary,
-                  icon: !data.regularStatusLogs.isLast(currentValue)
-                      ? Icon(
-                          Icons.check,
-                          size: 8.sp,
-                        )
-                      : null,
+                  icon: Icon(
+                    Icons.check,
+                    color: data.regularStatusLogs.isLast(currentValue)
+                        ? context.colors.primary.withOpacity(.05)
+                        : null,
+                  ),
                   onTap: () {},
                 ),
               )
               .toList();
 
-          return Column(
-            children: [
-              Text.rich('Tracking ID: '.textSpan.withChildren([
-                data.serialId.textSpan
-                    .color(ColorPalate.black600)
-                    .semiBold
-                    .make(),
-              ]).make())
-                  .p16(),
-              // Timeline(
-              //   children: items,
-              //   position: TimelinePosition.Left,
-              //   shrinkWrap: true,
-              //   physics: const NeverScrollableScrollPhysics(),
-              // ),
-              // ...data.regularStatusLogs
-              //     .mapIndexed((currentValue, index) => MyTimeLineTile(
-              //           isFirst: data.regularStatusLogs.isFirst(currentValue),
-              //           isLast: data.regularStatusLogs.isLast(currentValue),
-              //           isPast: data.regularStatusLogs.isLast(currentValue),
-              //           log: currentValue,
-              //           onTap: (v) {
-              //             scaffoldKey.currentState?.openEndDrawer();
-              //             log(v.toJson());
-              //           },
-              //         ))
-              //     .toList()
-              Expanded(child: TimelineDelivery(data: data.regularStatusLogs))
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: crossStart,
+              children: [
+                Text.rich('Tracking ID: '.textSpan.withChildren([
+                  data.serialId.textSpan
+                      .color(ColorPalate.black600)
+                      .semiBold
+                      .make(),
+                ]).make())
+                    .p16(),
+                KExpansionTile(
+                  title: "Reguler Status log".text.make(),
+                  initiallyExpanded: true,
+                  children: [
+                    Timeline(
+                      children: items,
+                      iconSize: 14.sp,
+                      position: TimelinePosition.Left,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                    ).p12()
+                  ],
+                ),
+              ],
+            ),
           );
         },
         // data: (data) => const ParcelDetailShimmer(),
@@ -107,8 +91,6 @@ class ParcelDetailScreen extends HookConsumerWidget {
     );
   }
 }
-
-
 
 class ParcelDetailShimmer extends StatelessWidget {
   const ParcelDetailShimmer({super.key});

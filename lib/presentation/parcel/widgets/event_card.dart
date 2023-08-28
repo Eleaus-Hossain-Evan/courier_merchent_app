@@ -44,9 +44,9 @@ class EventCard extends StatelessWidget {
               .color(ColorPalate.black500)
               .make(),
           gap2,
-          subTitle.text.xl.letterSpacing(.6).make(),
+          subTitle.text.lg.letterSpacing(.6).make(),
         ],
       ).p8(),
-    ).p8().box.color(getColor()).make().pOnly(left: 8.w);
+    ).p8().box.color(getColor()).roundedSM.make().pOnly(left: 8.w);
   }
 }

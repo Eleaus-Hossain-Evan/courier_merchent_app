@@ -6,17 +6,19 @@ import '../../../widgets/widgets.dart';
 
 class CustomerInfoSection extends StatelessWidget {
   const CustomerInfoSection({
-    super.key,
+    Key? key,
     required this.nameController,
     required this.nameFocus,
     required this.phoneFocus,
     required this.phoneController,
-  });
+    required this.isEditable,
+  }) : super(key: key);
 
   final TextEditingController nameController;
   final FocusNode nameFocus;
   final FocusNode phoneFocus;
   final TextEditingController phoneController;
+  final bool isEditable;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class CustomerInfoSection extends StatelessWidget {
       child: Column(
         children: [
           KTextFormField2(
+            enabled: isEditable,
             hintText: AppStrings.name,
             controller: nameController,
             focusNode: nameFocus,

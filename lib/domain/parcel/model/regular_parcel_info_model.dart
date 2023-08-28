@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:courier_merchent_app/utils/utils.dart';
 import 'package:equatable/equatable.dart';
+
+import 'package:courier_merchent_app/utils/utils.dart';
 
 class RegularParcelInfoModel extends Equatable {
   final String invoiceId;
@@ -10,6 +11,7 @@ class RegularParcelInfoModel extends Equatable {
   final ParcelMaterialType materialType;
   final String category;
   final String details;
+  final String instruction;
 
   const RegularParcelInfoModel({
     required this.invoiceId,
@@ -18,15 +20,18 @@ class RegularParcelInfoModel extends Equatable {
     required this.materialType,
     required this.category,
     required this.details,
+    required this.instruction,
   });
 
   factory RegularParcelInfoModel.init() => const RegularParcelInfoModel(
-      invoiceId: '',
-      weight: '',
-      productPrice: 0,
-      materialType: ParcelMaterialType.regular,
-      category: '',
-      details: '');
+        invoiceId: '',
+        weight: '',
+        productPrice: 0,
+        materialType: ParcelMaterialType.regular,
+        category: '',
+        details: '',
+        instruction: '',
+      );
 
   RegularParcelInfoModel copyWith({
     String? invoiceId,
@@ -35,6 +40,7 @@ class RegularParcelInfoModel extends Equatable {
     ParcelMaterialType? materialType,
     String? category,
     String? details,
+    String? instruction,
   }) {
     return RegularParcelInfoModel(
       invoiceId: invoiceId ?? this.invoiceId,
@@ -43,6 +49,7 @@ class RegularParcelInfoModel extends Equatable {
       materialType: materialType ?? this.materialType,
       category: category ?? this.category,
       details: details ?? this.details,
+      instruction: instruction ?? this.instruction,
     );
   }
 
@@ -51,9 +58,10 @@ class RegularParcelInfoModel extends Equatable {
       'invoiceId': invoiceId,
       'weight': weight,
       'productPrice': productPrice,
-      'materialType': materialType.name,
+      'materialType': materialType.value,
       'category': category,
       'details': details,
+      'instruction': instruction,
     };
   }
 
@@ -62,9 +70,10 @@ class RegularParcelInfoModel extends Equatable {
       invoiceId: map['invoiceId'] ?? '',
       weight: map['weight'] ?? '',
       productPrice: map['productPrice']?.toInt() ?? 0,
-      materialType: ParcelMaterialType.values.byName(map['materialType']),
+      materialType: ParcelMaterialType.values .firstWhere((e) => e.value ==map['materialType']),
       category: map['category'] ?? '',
       details: map['details'] ?? '',
+      instruction: map['instruction'] ?? '',
     );
   }
 
@@ -75,7 +84,7 @@ class RegularParcelInfoModel extends Equatable {
 
   @override
   String toString() {
-    return 'RegularParcelInfo(invoiceId: $invoiceId, weight: $weight, productPrice: $productPrice, materialType: $materialType, category: $category, details: $details)';
+    return 'RegularParcelInfoModel(invoiceId: $invoiceId, weight: $weight, productPrice: $productPrice, materialType: $materialType, category: $category, details: $details, instruction: $instruction)';
   }
 
   @override
@@ -87,6 +96,7 @@ class RegularParcelInfoModel extends Equatable {
       materialType,
       category,
       details,
+      instruction,
     ];
   }
 }

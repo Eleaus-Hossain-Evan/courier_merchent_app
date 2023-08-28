@@ -48,6 +48,7 @@ class CreateParcelBody extends Equatable {
       'customerInfo': customerInfo.toUpdateMap(),
       'regularParcelInfo': regularParcelInfo.toMap(),
       'regularPayment': regularPayment.toMap(),
+      'date': DateTime.now().toIso8601String(),
     };
   }
 

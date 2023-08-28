@@ -157,7 +157,20 @@ class CreateParcelEndDrawer extends HookConsumerWidget {
                                 scaffoldKey.currentState!.closeEndDrawer();
                               },
                               title: shop.shopName.text.semiBold.make(),
-                              subtitle: shop.address.text.make(),
+                              subtitle: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    shop.address.textSpan.make(),
+                                    ", ".textSpan.make(),
+                                    shop.area.name.textSpan.make(),
+                                    shop.area.name.isNotEmptyAndNotNull
+                                        ? ", ".textSpan.make()
+                                        : const WidgetSpan(
+                                            child: SizedBox.shrink()),
+                                    shop.district.name.textSpan.make(),
+                                  ],
+                                ),
+                              ),
                               // dense: true,
                               style: ListTileStyle.list,
                               shape: RoundedRectangleBorder(

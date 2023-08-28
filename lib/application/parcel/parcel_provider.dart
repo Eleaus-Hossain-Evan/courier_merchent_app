@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../application/home/home_provider.dart';
 import '../../application/parcel/parcel_state.dart';
 import '../../domain/parcel/parcel_category_model_response.dart';
+import '../../domain/parcel/update_parcel_body.dart';
 import '../../domain/parcel/weight_model_response.dart';
 import '../../infrastructure/parcel_repo.dart';
 
@@ -77,26 +78,24 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
     );
   }
 
-  Future<bool> createParcel(CreateParcelBody body) async {
-    bool success = false;
+  Future<String> createParcel(CreateParcelBody body) async {
     state = state.copyWith(loading: true);
 
     final result = await repo.createParcel(body);
 
     ref.read(homeProvider.notifier).getRecentParcelList();
 
-    result.fold((l) {
+    return result.fold((l) {
       showErrorToast(l.error.message);
       state = state.copyWith(loading: false);
+      return '';
     }, (r) {
-      success = r.success;
       state = state.copyWith(loading: false);
+      return r.data.serialId;
     });
-
-    return success;
   }
 
-  Future<bool> updateParcel(String parcelId, CreateParcelBody body) async {
+  Future<bool> updateParcel(String parcelId, UpdateParcelBody body) async {
     bool success = false;
     state = state.copyWith(loading: true);
 

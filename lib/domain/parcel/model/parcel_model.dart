@@ -4,47 +4,11 @@ import 'package:equatable/equatable.dart';
 
 import 'package:courier_merchent_app/domain/auth/model/hub_model.dart';
 
+import '../../../utils/utils.dart';
 import 'customer_info_model.dart';
 import 'merchant_info_model.dart';
 import 'regular_charge_model.dart';
 import 'regular_parcel_info_model.dart';
-
-enum ParcelRegularStatus {
-  all,
-  pending,
-  pickup,
-  shipping,
-  shipped,
-  dropoff,
-  partial,
-  returns,
-  cancel
-}
-
-extension ParcelListTypeExt on ParcelRegularStatus {
-  String get value {
-    switch (this) {
-      case ParcelRegularStatus.all:
-        return "all";
-      case ParcelRegularStatus.pending:
-        return "pending";
-      case ParcelRegularStatus.pickup:
-        return "pickup";
-      case ParcelRegularStatus.shipping:
-        return "shipping";
-      case ParcelRegularStatus.shipped:
-        return "shipped";
-      case ParcelRegularStatus.dropoff:
-        return "dropoff";
-      case ParcelRegularStatus.partial:
-        return "partial";
-      case ParcelRegularStatus.returns:
-        return "return";
-      case ParcelRegularStatus.cancel:
-        return "cancel";
-    }
-  }
-}
 
 class ParcelModel extends Equatable {
   final MerchantInfoModel merchantInfo; //
