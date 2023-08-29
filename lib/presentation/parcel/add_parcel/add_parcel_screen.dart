@@ -152,7 +152,7 @@ class AddParcelScreen extends HookConsumerWidget {
     Future<void> setDistrict() async {
       final districts = await ref.read(parcelProvider.notifier).getDistrict();
       selectedDistrict.value = districts.lock
-          .where((e) => e.id == parcel!.customerInfo.district?.id)
+          .where((e) => e.id == parcel!.customerInfo.district.id)
           .firstOption
           .toNullable();
     }
@@ -160,9 +160,9 @@ class AddParcelScreen extends HookConsumerWidget {
     Future<void> setArea() async {
       final areas = await ref
           .read(parcelProvider.notifier)
-          .getArea(parcel!.customerInfo.district!.id);
+          .getArea(parcel!.customerInfo.district.id);
       selectedArea.value = areas.lock
-          .where((e) => e.id == parcel!.customerInfo.area?.id)
+          .where((e) => e.id == parcel!.customerInfo.area.id)
           .firstOption
           .toNullable();
     }
@@ -382,6 +382,8 @@ class AddParcelScreen extends HookConsumerWidget {
                                 shopName: selectedShop.value?.shopName ?? "",
                                 districtId: selectedDistrict.value?.id ?? '',
                                 areaId: selectedArea.value?.id ?? '',
+                                area: AreaModel.init(),
+                                district: AreaModel.init(),
                               ),
                               customerInfo: CustomerInfoModel(
                                 name: nameController.text,
@@ -389,6 +391,8 @@ class AddParcelScreen extends HookConsumerWidget {
                                 address: addressController.text,
                                 districtId: selectedDistrict.value?.id ?? "",
                                 areaId: selectedArea.value?.id ?? "",
+                                district: AreaModel.init(),
+                                area: AreaModel.init(),
                               ),
                               regularParcelInfo: RegularParcelInfoModel(
                                 invoiceId: invoiceController.text,

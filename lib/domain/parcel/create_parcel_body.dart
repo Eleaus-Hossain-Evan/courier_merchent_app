@@ -44,7 +44,7 @@ class CreateParcelBody extends Equatable {
 
   Map<String, dynamic> toUpdateMap() {
     return {
-      'merchantInfo': merchantInfo.toMap(),
+      'merchantInfo': merchantInfo.toUpdateMap(),
       'customerInfo': customerInfo.toUpdateMap(),
       'regularParcelInfo': regularParcelInfo.toMap(),
       'regularPayment': regularPayment.toMap(),

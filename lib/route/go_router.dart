@@ -15,7 +15,7 @@ import '../presentation/home/home_screen.dart';
 import '../presentation/main_nav/main_nav.dart';
 import '../presentation/notification/notification_screen.dart';
 import '../presentation/parcel/invoice_screen.dart';
-import '../presentation/parcel/parcel_detail_screen.dart';
+import '../presentation/parcel/parcel_detail/parcel_detail_screen.dart';
 import '../presentation/profile/pages/change_password_screen.dart';
 import '../presentation/profile/pages/edit_profile/profile_detail_screen.dart';
 import '../presentation/profile/pages/html_text.dart';
@@ -169,10 +169,10 @@ class RouterNotifier extends ChangeNotifier {
           ),
         ),
         GoRoute(
-          path: "${InvoiceScreen.route}/:id",
+          path: InvoiceScreen.route,
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
-            child: InvoiceScreen(serialId: state.pathParameters["id"]!),
+            child: InvoiceScreen(parcelModel: state.extra! as ParcelModel),
           ),
         ),
       ];

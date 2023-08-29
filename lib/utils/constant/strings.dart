@@ -88,6 +88,7 @@ class AppStrings {
   //#----------------  Parcel ----------------
   static const String parcel = "Parcel";
   static const String deliveryInformation = "Delivery Information";
+  static const String parcelInformation = "Parcel Information";
   static const String createParcel = "Create Parcel";
   static const String updateParcel = "Update Parcel";
   static const String description = "Description";
@@ -100,6 +101,7 @@ class AppStrings {
   static const String productWeight = "Product Weight";
   static const String selectProductWeight = "Select Product Weight";
   static const String merchantInfo = "Merchant Information";
+  static const String shop = "Shop";
   static const String invoiceNo = "Invoice no.";
   static const String selectArea = "Select Area";
   static const String selectDistrict = "Select District";

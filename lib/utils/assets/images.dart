@@ -19,4 +19,5 @@ class Images {
   static const String truck = 'assets/images/truck.png';
   static const String iconFacebook = 'assets/icons/facebook.png';
   static const String iconGoogle = 'assets/icons/google.png';
+  static const String svgCheck = 'assets/svg/check.svg';
 }

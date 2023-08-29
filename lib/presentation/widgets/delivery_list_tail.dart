@@ -8,7 +8,8 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../domain/parcel/model/parcel_model.dart';
 import '../../utils/utils.dart';
 import '../parcel/add_parcel/add_parcel_screen.dart';
-import '../parcel/parcel_detail_screen.dart';
+import '../parcel/parcel_detail/parcel_detail_screen.dart';
+import 'widgets.dart';
 
 class DeliveryListTile extends StatelessWidget {
   const DeliveryListTile({
@@ -22,14 +23,6 @@ class DeliveryListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color getColor() {
-      return parcel.regularStatus == ParcelRegularStatus.pending
-          ? context.colors.secondary
-          : parcel.regularStatus == ParcelRegularStatus.cancel
-              ? context.colors.error
-              : context.colors.primary;
-    }
-
     return KInkWell(
       onTap: () =>
           context.push("${ParcelDetailScreen.route}/${parcel.serialId}"),
@@ -151,20 +144,7 @@ class DeliveryListTile extends StatelessWidget {
                     ),
                   ),
                   gap16,
-                  VxCapsule(
-                    width: 72.w,
-                    height: 24.h,
-                    backgroundColor: getColor().withOpacity(.1),
-                    border: Border.all(color: getColor().withOpacity(.2)),
-                    child: parcel.regularStatus.value.text.xs
-                        .letterSpacing(1)
-                        .medium
-                        .color(getColor())
-                        .bold
-                        .capitalize
-                        .make()
-                        .centered(),
-                  ),
+                  ParcelStatusWidget(status: parcel.regularStatus),
                 ],
               ),
             ],
@@ -190,7 +170,6 @@ class DeliveryListTile extends StatelessWidget {
         parcel: parcel,
       );
 }
-
 
 // KInkWell(
 //       onTap: () {},

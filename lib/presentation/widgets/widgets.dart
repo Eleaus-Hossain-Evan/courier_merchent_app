@@ -29,3 +29,4 @@ export 'container_bg_white.dart';
 export 'delivery_list_tail.dart';
 export 'individual_section.dart';
 export 'k_shimmer_container.dart';
+export 'parcel_status_widget.dart';

@@ -66,7 +66,7 @@ class MyShopScreen extends HookConsumerWidget {
           child: Column(
             children: [
               state.when(
-                data: (data) => ContainerBGWhite(
+                data: (data) => ContainerBGWhiteSlideFromRight(
                   child: Column(
                     children: [
                       Row(

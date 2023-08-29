@@ -50,7 +50,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
         key: formKey,
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w).copyWith(top: 160.h),
-          child: ContainerBGWhite(
+          child: ContainerBGWhiteSlideFromRight(
             padding: paddingV20,
             child: Column(
               children: [

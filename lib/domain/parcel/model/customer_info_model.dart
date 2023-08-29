@@ -10,8 +10,8 @@ class CustomerInfoModel extends Equatable {
   final String address;
   final String districtId;
   final String areaId;
-  final AreaModel? district;
-  final AreaModel? area;
+  final AreaModel district;
+  final AreaModel area;
 
   const CustomerInfoModel({
     required this.name,
@@ -19,8 +19,8 @@ class CustomerInfoModel extends Equatable {
     required this.address,
     required this.districtId,
     required this.areaId,
-    this.district,
-    this.area,
+    required this.district,
+    required this.area,
   });
 
   factory CustomerInfoModel.init() => CustomerInfoModel(
@@ -60,8 +60,8 @@ class CustomerInfoModel extends Equatable {
       'address': address,
       'districtId': districtId,
       'areaId': areaId,
-      'district': district?.toMap(),
-      'area': area?.toMap(),
+      'district': district.toMap(),
+      'area': area.toMap(),
     };
   }
 

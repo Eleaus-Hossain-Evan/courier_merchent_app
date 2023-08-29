@@ -34,7 +34,7 @@ class ProfileSection extends StatelessWidget {
           ],
         ),
         gap8,
-        ContainerBGWhite(
+        ContainerBGWhiteSlideFromRight(
           padding: containerPadding,
           child: Visibility(
             visible: visible,

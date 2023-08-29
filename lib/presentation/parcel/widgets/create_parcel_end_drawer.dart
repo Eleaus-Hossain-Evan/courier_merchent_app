@@ -45,7 +45,7 @@ class CreateParcelEndDrawer extends HookConsumerWidget {
               children: [
                 "Merchant Information".text.xl.semiBold.make(),
                 gap32,
-                ContainerBGWhite(
+                ContainerBGWhiteSlideFromRight(
                   child: Column(
                     children: [
                       Row(
@@ -92,7 +92,7 @@ class CreateParcelEndDrawer extends HookConsumerWidget {
                   ),
                 ),
                 gap16,
-                ContainerBGWhite(
+                ContainerBGWhiteSlideFromRight(
                   child: Column(
                     children: [
                       Row(

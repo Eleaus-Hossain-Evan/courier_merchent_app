@@ -38,5 +38,7 @@ groups:
           # - assets/svg
       - path: assets/icons
         prefix: icon
+      - path: assets/svg
+        prefix: svg
       # - path: assets/animations
       #   prefix: anim

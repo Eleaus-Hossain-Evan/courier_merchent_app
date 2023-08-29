@@ -62,11 +62,16 @@ dependencies:
   velocity_x: ^4.1.1
   dropdown_search: ^5.0.6
   pull_to_refresh: ^2.0.0
-  
+  flutter_svg: ^2.0.7
+  timeline_list: ^0.0.6
+
    #code gen
   riverpod_annotation:
   shimmer: ^3.0.0
-  timeline_list: ^0.0.6
+
+  #pdf
+  pdf:
+  printing:
 
 
 dev_dependencies:

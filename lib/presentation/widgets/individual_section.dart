@@ -15,6 +15,7 @@ class IndividualSection extends StatelessWidget {
     this.replacement,
     this.containerPadding,
     this.action,
+    this.bgColor = ColorPalate.bg100,
   }) : super(key: key);
 
   final String title;
@@ -23,11 +24,13 @@ class IndividualSection extends StatelessWidget {
   final Widget child;
   final Widget? replacement;
   final EdgeInsetsGeometry? containerPadding;
+  final Color bgColor;
 
   @override
   Widget build(BuildContext context) {
-    return ContainerBGWhite(
+    return ContainerBGWhiteSlideFromRight(
       padding: containerPadding,
+      bgColor: bgColor,
       child: Column(
         children: [
           Row(
