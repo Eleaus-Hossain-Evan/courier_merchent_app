@@ -205,30 +205,30 @@ class ProfileDetailScreen extends HookConsumerWidget {
 
                 //  Hub ----------------
 
-                ProfileSection(
-                  title: AppStrings.hubDetail,
-                  leading: Icon(
-                    FontAwesome.map_location_dot,
-                    size: 18.sp,
-                    color: ColorPalate.secondary,
-                  ),
-                  visible: state.user.hub == HubModel.init(),
-                  containerPadding: paddingV20,
-                  replacement: Column(
-                    children: [
-                      BankDetailItem(
-                        title: "Hub Name",
-                        value: state.user.hub.name,
-                      ),
-                      gap16,
-                      BankDetailItem(
-                        title: "Hub Address",
-                        value: state.user.hub.address,
-                      ),
-                    ],
-                  ).px16(),
-                  child: "No Hub assigned!".text.make(),
-                ),
+                // ProfileSection(
+                //   title: AppStrings.hubDetail,
+                //   leading: Icon(
+                //     FontAwesome.map_location_dot,
+                //     size: 18.sp,
+                //     color: ColorPalate.secondary,
+                //   ),
+                //   visible: state.user.hub == HubModel.init(),
+                //   containerPadding: paddingV20,
+                //   replacement: Column(
+                //     children: [
+                //       BankDetailItem(
+                //         title: "Hub Name",
+                //         value: state.user.hub.name,
+                //       ),
+                //       gap16,
+                //       BankDetailItem(
+                //         title: "Hub Address",
+                //         value: state.user.hub.address,
+                //       ),
+                //     ],
+                //   ).px16(),
+                //   child: "No Hub assigned!".text.make(),
+                // ),
 
                 // PICKUP Style---------------
 

@@ -172,7 +172,7 @@ class RouterNotifier extends ChangeNotifier {
           path: InvoiceScreen.route,
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
-            child: InvoiceScreen(parcelModel: state.extra! as ParcelModel),
+            child: InvoiceScreen(parcel: state.extra! as ParcelModel),
           ),
         ),
       ];

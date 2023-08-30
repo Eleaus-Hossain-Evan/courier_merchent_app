@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import 'package:courier_merchent_app/domain/auth/model/hub_model.dart';
+
 import 'bank_account_model.dart';
 import 'charge_model.dart';
-import 'hub_model.dart';
 import 'other_account_model.dart';
-import 'shop_model.dart';
 
 class UserModel extends Equatable {
   final String id;
@@ -27,10 +27,13 @@ class UserModel extends Equatable {
   final String createdAt;
   final String updatedAt;
   final bool isApproved;
-  final HubModel hub;
   final ChargeModel regularCharge;
   final ChargeModel returnCharge;
   final String token;
+  final int codCharge;
+  final bool isPaymentUpdate;
+  final HubModel hub;
+  final String createdBy;
 
   const UserModel({
     required this.id,
@@ -51,10 +54,13 @@ class UserModel extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     required this.isApproved,
-    required this.hub,
     required this.regularCharge,
     required this.returnCharge,
     required this.token,
+    required this.codCharge,
+    required this.isPaymentUpdate,
+    required this.hub,
+    required this.createdBy,
   });
 
   factory UserModel.init() => UserModel(
@@ -76,10 +82,13 @@ class UserModel extends Equatable {
         createdAt: '',
         updatedAt: '',
         isApproved: false,
-        hub: HubModel.init(),
         regularCharge: ChargeModel.init(),
         returnCharge: ChargeModel.init(),
         token: '',
+        codCharge: 0,
+        createdBy: '',
+        hub: HubModel.init(),
+        isPaymentUpdate: false,
       );
 
   UserModel copyWith({
@@ -101,10 +110,13 @@ class UserModel extends Equatable {
     String? createdAt,
     String? updatedAt,
     bool? isApproved,
-    HubModel? hub,
     ChargeModel? regularCharge,
     ChargeModel? returnCharge,
     String? token,
+    int? codCharge,
+    bool? isPaymentUpdate,
+    HubModel? hub,
+    String? createdBy,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -125,10 +137,13 @@ class UserModel extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       isApproved: isApproved ?? this.isApproved,
-      hub: hub ?? this.hub,
       regularCharge: regularCharge ?? this.regularCharge,
       returnCharge: returnCharge ?? this.returnCharge,
       token: token ?? this.token,
+      codCharge: codCharge ?? this.codCharge,
+      isPaymentUpdate: isPaymentUpdate ?? this.isPaymentUpdate,
+      hub: hub ?? this.hub,
+      createdBy: createdBy ?? this.createdBy,
     );
   }
 
@@ -152,10 +167,13 @@ class UserModel extends Equatable {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'isApproved': isApproved,
-      'hub': hub.toMap(),
       'regularCharge': regularCharge.toMap(),
       'returnCharge': returnCharge.toMap(),
       'token': token,
+      'codCharge': codCharge,
+      'isPaymentUpdate': isPaymentUpdate,
+      'hub': hub.toMap(),
+      'createdBy': createdBy,
     };
   }
 
@@ -174,7 +192,7 @@ class UserModel extends Equatable {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'] ?? '',
+      id: map['_id'] ?? '',
       serialId: map['serialId'] ?? '',
       address: map['address'] ?? '',
       image: map['image'] ?? '',
@@ -186,16 +204,27 @@ class UserModel extends Equatable {
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       phone: map['phone'] ?? '',
-      bankAccount: BankAccountModel.fromMap(map['bankAccount']),
-      othersAccount: OthersAccountModel.fromMap(map['othersAccount']),
+      bankAccount: map['bankAccount'] != null
+          ? BankAccountModel.fromMap(map['bankAccount'])
+          : BankAccountModel.init(),
+      othersAccount: map['othersAccount'] != null
+          ? OthersAccountModel.fromMap(map['othersAccount'])
+          : OthersAccountModel.init(),
       myShops: List<String>.from(map['myShops'] ?? const []),
       createdAt: map['createdAt'] ?? '',
       updatedAt: map['updatedAt'] ?? '',
       isApproved: map['isApproved'] ?? false,
-      hub: HubModel.fromMap(map['hub']),
-      regularCharge: ChargeModel.fromMap(map['regularCharge']),
-      returnCharge: ChargeModel.fromMap(map['returnCharge']),
+      regularCharge: map['regularCharge'] != null
+          ? ChargeModel.fromMap(map['regularCharge'])
+          : ChargeModel.init(),
+      returnCharge: map['returnCharge'] != null
+          ? ChargeModel.fromMap(map['returnCharge'])
+          : ChargeModel.init(),
       token: map['token'] ?? '',
+      codCharge: map['codCharge']?.toInt() ?? 0,
+      isPaymentUpdate: map['isPaymentUpdate'] ?? false,
+      hub: map['hub'] != null ? HubModel.fromMap(map['hub']) : HubModel.init(),
+      createdBy: map['createdBy'] ?? '',
     );
   }
 
@@ -206,7 +235,7 @@ class UserModel extends Equatable {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, serialId: $serialId, address: $address, image: $image, pickupStyle: $pickupStyle, defaultPayment: $defaultPayment, paymentStyle: $paymentStyle, isDisabled: $isDisabled, role: $role, name: $name, email: $email, phone: $phone, bankAccount: $bankAccount, othersAccount: $othersAccount, myShops: $myShops, createdAt: $createdAt, updatedAt: $updatedAt, isApproved: $isApproved, hub: $hub, regularCharge: $regularCharge, returnCharge: $returnCharge, token: $token)';
+    return 'UserModel(id: $id, serialId: $serialId, address: $address, image: $image, pickupStyle: $pickupStyle, defaultPayment: $defaultPayment, paymentStyle: $paymentStyle, isDisabled: $isDisabled, role: $role, name: $name, email: $email, phone: $phone, bankAccount: $bankAccount, othersAccount: $othersAccount, myShops: $myShops, createdAt: $createdAt, updatedAt: $updatedAt, isApproved: $isApproved, regularCharge: $regularCharge, returnCharge: $returnCharge, token: $token, codCharge: $codCharge, isPaymentUpdate: $isPaymentUpdate, hub: $hub, createdBy: $createdBy)';
   }
 
   @override
@@ -230,10 +259,13 @@ class UserModel extends Equatable {
       createdAt,
       updatedAt,
       isApproved,
-      hub,
       regularCharge,
       returnCharge,
       token,
+      codCharge,
+      isPaymentUpdate,
+      hub,
+      createdBy,
     ];
   }
 }
