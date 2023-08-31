@@ -10,8 +10,8 @@ import '../../../../utils/utils.dart';
 import '../../../widgets/widgets.dart';
 import '../../widgets/event_card.dart';
 
-class ParcelRegularLodSection extends StatelessWidget {
-  const ParcelRegularLodSection({
+class ParcelRegularLogSection extends StatelessWidget {
+  const ParcelRegularLogSection({
     super.key,
     required this.data,
   });

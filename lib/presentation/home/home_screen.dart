@@ -40,52 +40,43 @@ class HomeScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: const HomeAppBar(),
-      // body: SizedBox(
-      //   height: 1.sh,
-      //   width: 1.sw,
-      //   child: SmartRefresher(
-      //     controller: refreshController,
-      //     enablePullDown: true,
-      //     // enablePullUp: true,
-      //     onRefresh: () => ref
-      //         .refresh(homeProvider.notifier)
-      //         .getRecentParcelList()
-      //         .then((value) =>
-      //             refreshController.refreshCompleted(resetFooterState: true)),
+      body: SizedBox(
+        height: 1.sh,
+        width: 1.sw,
+        child: SmartRefresher(
+          controller: refreshController,
+          enablePullDown: true,
+          // enablePullUp: true,
+          onRefresh: () => ref
+              .refresh(homeProvider.notifier)
+              .getRecentParcelList()
+              .then((value) =>
+                  refreshController.refreshCompleted(resetFooterState: true)),
 
-      //     // header: const MaterialHeader(),
-      //     child: SingleChildScrollView(
-      //       padding: padding16,
-      //       child: Column(
-      //         crossAxisAlignment: crossStart,
-      //         children: [
-      //           const SearchDelivery(),
-      //           gap32,
+          // header: const MaterialHeader(),
+          child: SingleChildScrollView(
+            padding: padding16,
+            child: Column(
+              crossAxisAlignment: crossStart,
+              children: [
+                const SearchDelivery(),
+                gap32,
 
-      //           //?  Services section ---------------------
+                //?  Services section ---------------------
 
-      //           "Our Services".text.lg.bold.make(),
-      //           gap16,
-      //           const ServiceSection(),
-      //           gap32,
+                "Our Services".text.lg.bold.make(),
+                gap16,
+                const ServiceSection(),
+                gap32,
 
-      //           //?  recent parcel section ----------------
-      //           "Recent Parcels".text.lg.bold.make(),
-      //           gap16,
-      //           const RecentParcelSection(),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
-      body: PdfPreview(
-        build: (context) => makePdf(parcel),
-        dynamicLayout: false,
-        canDebug: false,
-        canChangeOrientation: false,
-        initialPageFormat: PdfPageFormat.a4,
-        // pdfFileName: parcel.serialId,
-        maxPageWidth: 1.sw,
+                //?  recent parcel section ----------------
+                "Recent Parcels".text.lg.bold.make(),
+                gap16,
+                const RecentParcelSection(),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

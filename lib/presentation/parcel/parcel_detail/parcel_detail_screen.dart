@@ -77,7 +77,7 @@ class ParcelDetailScreen extends HookConsumerWidget {
                   ],
                 ),
                 gap6,
-                ParcelRegularLodSection(data: data),
+                ParcelRegularLogSection(data: data),
                 gap16,
                 CustomerInfoSection(data: data),
                 gap16,

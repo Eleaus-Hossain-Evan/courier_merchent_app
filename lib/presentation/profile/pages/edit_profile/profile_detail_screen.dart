@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:courier_merchent_app/domain/auth/model/hub_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -13,12 +12,11 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../../../application/auth/auth_provider.dart';
 import '../../../../application/auth/auth_state.dart';
-import '../../../../application/global.dart';
 import '../../../../domain/auth/profile_update_body.dart';
 import '../../../../utils/utils.dart';
 import '../../../widgets/widgets.dart';
+import '../bank_details_screen.dart';
 import 'widgets/profile_section.dart';
-import 'widgets/view_only.dart';
 
 enum PickUpStyle { perRequest, daily }
 
@@ -30,8 +28,6 @@ class ProfileDetailScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authProvider);
-
-    final isEditable = useState(!state.user.isApproved);
 
     final isLoading = useState(false);
 
@@ -49,6 +45,11 @@ class ProfileDetailScreen extends HookConsumerWidget {
 
     final selectedPickUpStyle = useState<PickUpStyle?>(
         PickUpStyle.values.byName(state.user.pickupStyle));
+
+    final selectedDefaultPayment = useState<DefaultPayment>(
+        DefaultPayment.values.byName(state.user.defaultPayment));
+    final selectedPaymentStyle =
+        useState(PaymentStyle.values.byName(state.user.paymentStyle));
 
     ref.listen<AuthState>(
       authProvider,
@@ -88,10 +89,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
             // ),
             child: IconButton(
               onPressed: () {
-                isEditable.value
-                    ? isUpdate.value = !isUpdate.value
-                    : showToast(
-                        "You can't edit details now,\nPlease, contact with admin.");
+                isUpdate.value = !isUpdate.value;
               },
               icon: const Icon(FontAwesome.pen_to_square)
                   .iconColor(ColorPalate.white)
@@ -132,16 +130,14 @@ class ProfileDetailScreen extends HookConsumerWidget {
                           size: 68.sp,
                           color: context.colors.secondaryContainer,
                         ),
-                        editIcon: isEditable.value ? isUpdate.value : true,
-                        onTapUploadImage: isEditable.value
-                            ? null
-                            : (file) async {
-                                Logger.w(file);
-                                final success = await ref
-                                    .read(authProvider.notifier)
-                                    .uploadImage(file);
-                                if (success) imageFile.value = null;
-                              },
+                        editIcon: isUpdate.value,
+                        onTapUploadImage: (file) async {
+                          Logger.w(file);
+                          final success = await ref
+                              .read(authProvider.notifier)
+                              .uploadImage(file);
+                          if (success) imageFile.value = null;
+                        },
                       ),
                       gap24,
                       KTextFormField2(
@@ -187,12 +183,19 @@ class ProfileDetailScreen extends HookConsumerWidget {
                     size: 18,
                     color: ColorPalate.secondary,
                   ),
-                  visible: isEditable.value,
+                  visible: isUpdate.value,
                   containerPadding: paddingV20,
                   replacement: Row(
                     children: [
                       gap16,
-                      state.user.address.text.lg.make().flexible(),
+                      Visibility(
+                        visible: state.user.address.isNotBlank,
+                        replacement: "No address added yet..."
+                            .text
+                            .caption(context)
+                            .make(),
+                        child: state.user.address.text.lg.make().flexible(),
+                      ),
                     ],
                   ).px16(),
                   child: KTextFormField2(
@@ -203,33 +206,70 @@ class ProfileDetailScreen extends HookConsumerWidget {
                   ),
                 ),
 
-                //  Hub ----------------
+                ProfileSection(
+                  title: AppStrings.paymentStyle,
+                  leading: Icon(
+                    BoxIcons.bx_money_withdraw,
+                    size: 18.sp,
+                    color: ColorPalate.secondary,
+                  ),
+                  visible: isUpdate.value,
+                  containerPadding: paddingV20,
+                  replacement: Row(
+                    children: [
+                      " ${state.user.paymentStyle.toWordTitleCase()}"
+                          .text
+                          .lg
+                          .make()
+                          .flexible(),
+                    ],
+                  ).px16(),
+                  child: KDropDownSearchWidget<PaymentStyle>(
+                    enabled: isUpdate.value,
+                    hintText: AppStrings.paymentOptions,
+                    selectedItem: selectedPaymentStyle.value,
+                    items: PaymentStyle.values,
+                    itemAsString: (p0) => p0.name.capitalized,
+                    compareFn: (p0, p1) => identical(p0.name, p0.name),
+                    onChanged: (value) {
+                      selectedPaymentStyle.value = value!;
+                    },
+                  ),
+                ),
 
-                // ProfileSection(
-                //   title: AppStrings.hubDetail,
-                //   leading: Icon(
-                //     FontAwesome.map_location_dot,
-                //     size: 18.sp,
-                //     color: ColorPalate.secondary,
-                //   ),
-                //   visible: state.user.hub == HubModel.init(),
-                //   containerPadding: paddingV20,
-                //   replacement: Column(
-                //     children: [
-                //       BankDetailItem(
-                //         title: "Hub Name",
-                //         value: state.user.hub.name,
-                //       ),
-                //       gap16,
-                //       BankDetailItem(
-                //         title: "Hub Address",
-                //         value: state.user.hub.address,
-                //       ),
-                //     ],
-                //   ).px16(),
-                //   child: "No Hub assigned!".text.make(),
-                // ),
+                //  Default Payment -------------
 
+                ProfileSection(
+                  title: AppStrings.defaultPayment,
+                  leading: Icon(
+                    FontAwesome.money_bill_1_wave,
+                    size: 18.sp,
+                    color: ColorPalate.secondary,
+                  ),
+                  visible: isUpdate.value,
+                  containerPadding: paddingV20,
+                  replacement: Row(
+                    children: [
+                      " ${state.user.defaultPayment.toWordTitleCase()}"
+                          .text
+                          .lg
+                          .make()
+                          .flexible(),
+                    ],
+                  ).px16(),
+                  child: KDropDownSearchWidget<DefaultPayment>(
+                    enabled: isUpdate.value,
+                    // containerMargin: padding0,
+                    hintText: AppStrings.paymentOptions,
+                    selectedItem: selectedDefaultPayment.value,
+                    items: DefaultPayment.values,
+                    itemAsString: (p0) => p0.name.capitalized,
+                    compareFn: (p0, p1) => identical(p0.name, p0.name),
+                    onChanged: (value) {
+                      selectedDefaultPayment.value = value!;
+                    },
+                  ),
+                ),
                 // PICKUP Style---------------
 
                 ProfileSection(
@@ -239,11 +279,11 @@ class ProfileDetailScreen extends HookConsumerWidget {
                     size: 18.sp,
                     color: ColorPalate.secondary,
                   ),
-                  visible: isEditable.value,
+                  visible: isUpdate.value,
                   containerPadding: paddingV20,
                   replacement: Row(
                     children: [
-                      "Pickup ${state.user.pickupStyle.capitalized}"
+                      " ${state.user.pickupStyle.toWordTitleCase()}"
                           .text
                           .lg
                           .make()
@@ -255,7 +295,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
                     hintText: AppStrings.pickupStyleOptions,
                     selectedItem: selectedPickUpStyle.value,
                     items: PickUpStyle.values,
-                    itemAsString: (p0) => p0.name.capitalized,
+                    itemAsString: (p0) => p0.name.toWordTitleCase(),
                     compareFn: (p0, p1) => identical(p0.name, p0.name),
                     onChanged: (value) {
                       selectedPickUpStyle.value = value!;
@@ -263,12 +303,6 @@ class ProfileDetailScreen extends HookConsumerWidget {
                   ),
                 ),
 
-                // showing full detail when user is approved
-
-                Visibility(
-                  visible: !isEditable.value,
-                  child: const ViewOnlyWidget(),
-                ),
                 gap20,
                 Visibility(
                   visible: isUpdate.value,
@@ -283,11 +317,12 @@ class ProfileDetailScreen extends HookConsumerWidget {
                           .profileUpdate(
                               ProfileUpdateBody(
                                 name: nameController.text.trim(),
-                                email: emailController.text.trim(),
-                                phone: phoneController.text.trim(),
                                 address: addressController.text.trim(),
-                                pickUpStyle:
+                                pickupStyle:
                                     selectedPickUpStyle.value?.name ?? "",
+                                defaultPayment:
+                                    selectedDefaultPayment.value.name,
+                                paymentStyle: selectedPaymentStyle.value.name,
                               ),
                               imageFile.value)
                           .then((value) {

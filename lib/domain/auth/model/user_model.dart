@@ -1,230 +1,251 @@
 import 'dart:convert';
 
+import 'package:courier_merchent_app/presentation/profile/pages/bank_details_screen.dart';
+import 'package:courier_merchent_app/presentation/profile/pages/edit_profile/profile_detail_screen.dart';
 import 'package:equatable/equatable.dart';
 
+import 'package:courier_merchent_app/domain/auth/model/bank_account_model.dart';
+import 'package:courier_merchent_app/domain/auth/model/charge_model.dart';
 import 'package:courier_merchent_app/domain/auth/model/hub_model.dart';
-
-import 'bank_account_model.dart';
-import 'charge_model.dart';
-import 'other_account_model.dart';
+import 'package:courier_merchent_app/domain/auth/model/other_account_model.dart';
 
 class UserModel extends Equatable {
-  final String id;
+  final ChargeModel regularCharge;
+  final ChargeModel returnCharge;
+  final BankAccountModel bankAccount;
+  final OthersAccountModel othersAccount;
+  final BankAccountModel pendingBankAccount;
+  final OthersAccountModel pendingOthersAccount;
   final String serialId;
   final String address;
   final String image;
+  final List<dynamic> myShops;
+  final HubModel hubId;
+  final HubModel hub;
   final String pickupStyle;
   final String defaultPayment;
   final String paymentStyle;
+  final int codCharge;
+  final bool isPaymentUpdatePending;
+  final bool isPaymentUpdate;
+  final bool isApproved;
   final bool isDisabled;
+  final String createdBy;
   final String role;
+  final String id;
   final String name;
   final String email;
   final String phone;
-  final BankAccountModel bankAccount;
-  final OthersAccountModel othersAccount;
-  final List<String> myShops;
   final String createdAt;
   final String updatedAt;
-  final bool isApproved;
-  final ChargeModel regularCharge;
-  final ChargeModel returnCharge;
   final String token;
-  final int codCharge;
-  final bool isPaymentUpdate;
-  final HubModel hub;
-  final String createdBy;
 
   const UserModel({
-    required this.id,
+    required this.regularCharge,
+    required this.returnCharge,
+    required this.bankAccount,
+    required this.othersAccount,
+    required this.pendingBankAccount,
+    required this.pendingOthersAccount,
     required this.serialId,
     required this.address,
     required this.image,
+    required this.myShops,
+    required this.hubId,
+    required this.hub,
     required this.pickupStyle,
     required this.defaultPayment,
     required this.paymentStyle,
+    required this.codCharge,
+    required this.isPaymentUpdatePending,
+    required this.isPaymentUpdate,
+    required this.isApproved,
     required this.isDisabled,
+    required this.createdBy,
     required this.role,
+    required this.id,
     required this.name,
     required this.email,
     required this.phone,
-    required this.bankAccount,
-    required this.othersAccount,
-    required this.myShops,
     required this.createdAt,
     required this.updatedAt,
-    required this.isApproved,
-    required this.regularCharge,
-    required this.returnCharge,
     required this.token,
-    required this.codCharge,
-    required this.isPaymentUpdate,
-    required this.hub,
-    required this.createdBy,
   });
 
   factory UserModel.init() => UserModel(
-        id: '',
-        serialId: '',
-        address: '',
-        image: '',
-        pickupStyle: '',
-        defaultPayment: '',
-        paymentStyle: '',
-        isDisabled: false,
-        role: '',
-        name: '',
-        email: '',
-        phone: '',
-        bankAccount: BankAccountModel.init(),
-        othersAccount: OthersAccountModel.init(),
-        myShops: const [],
-        createdAt: '',
-        updatedAt: '',
-        isApproved: false,
-        regularCharge: ChargeModel.init(),
-        returnCharge: ChargeModel.init(),
-        token: '',
-        codCharge: 0,
-        createdBy: '',
-        hub: HubModel.init(),
-        isPaymentUpdate: false,
-      );
+      regularCharge: ChargeModel.init(),
+      returnCharge: ChargeModel.init(),
+      bankAccount: BankAccountModel.init(),
+      othersAccount: OthersAccountModel.init(),
+      pendingBankAccount: BankAccountModel.init(),
+      pendingOthersAccount: OthersAccountModel.init(),
+      serialId: '',
+      address: '',
+      image: '',
+      myShops: const [],
+      hubId: HubModel.init(),
+      hub: HubModel.init(),
+      pickupStyle: '',
+      defaultPayment: '',
+      paymentStyle: '',
+      codCharge: 0,
+      isPaymentUpdatePending: false,
+      isPaymentUpdate: false,
+      isApproved: false,
+      isDisabled: false,
+      createdBy: '',
+      role: '',
+      id: '',
+      name: '',
+      email: '',
+      phone: '',
+      createdAt: '',
+      updatedAt: '',
+      token: '');
 
   UserModel copyWith({
-    String? id,
+    ChargeModel? regularCharge,
+    ChargeModel? returnCharge,
+    BankAccountModel? bankAccount,
+    OthersAccountModel? othersAccount,
+    BankAccountModel? pendingBankAccount,
+    OthersAccountModel? pendingOthersAccount,
     String? serialId,
     String? address,
     String? image,
+    List<dynamic>? myShops,
+    HubModel? hubId,
+    HubModel? hub,
     String? pickupStyle,
     String? defaultPayment,
     String? paymentStyle,
+    int? codCharge,
+    bool? isPaymentUpdatePending,
+    bool? isPaymentUpdate,
+    bool? isApproved,
     bool? isDisabled,
+    String? createdBy,
     String? role,
+    String? id,
     String? name,
     String? email,
     String? phone,
-    BankAccountModel? bankAccount,
-    OthersAccountModel? othersAccount,
-    List<String>? myShops,
     String? createdAt,
     String? updatedAt,
-    bool? isApproved,
-    ChargeModel? regularCharge,
-    ChargeModel? returnCharge,
     String? token,
-    int? codCharge,
-    bool? isPaymentUpdate,
-    HubModel? hub,
-    String? createdBy,
   }) {
     return UserModel(
-      id: id ?? this.id,
+      regularCharge: regularCharge ?? this.regularCharge,
+      returnCharge: returnCharge ?? this.returnCharge,
+      bankAccount: bankAccount ?? this.bankAccount,
+      othersAccount: othersAccount ?? this.othersAccount,
+      pendingBankAccount: pendingBankAccount ?? this.pendingBankAccount,
+      pendingOthersAccount: pendingOthersAccount ?? this.pendingOthersAccount,
       serialId: serialId ?? this.serialId,
       address: address ?? this.address,
       image: image ?? this.image,
+      myShops: myShops ?? this.myShops,
+      hubId: hubId ?? this.hubId,
+      hub: hub ?? this.hub,
       pickupStyle: pickupStyle ?? this.pickupStyle,
       defaultPayment: defaultPayment ?? this.defaultPayment,
       paymentStyle: paymentStyle ?? this.paymentStyle,
+      codCharge: codCharge ?? this.codCharge,
+      isPaymentUpdatePending:
+          isPaymentUpdatePending ?? this.isPaymentUpdatePending,
+      isPaymentUpdate: isPaymentUpdate ?? this.isPaymentUpdate,
+      isApproved: isApproved ?? this.isApproved,
       isDisabled: isDisabled ?? this.isDisabled,
+      createdBy: createdBy ?? this.createdBy,
       role: role ?? this.role,
+      id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
       phone: phone ?? this.phone,
-      bankAccount: bankAccount ?? this.bankAccount,
-      othersAccount: othersAccount ?? this.othersAccount,
-      myShops: myShops ?? this.myShops,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      isApproved: isApproved ?? this.isApproved,
-      regularCharge: regularCharge ?? this.regularCharge,
-      returnCharge: returnCharge ?? this.returnCharge,
       token: token ?? this.token,
-      codCharge: codCharge ?? this.codCharge,
-      isPaymentUpdate: isPaymentUpdate ?? this.isPaymentUpdate,
-      hub: hub ?? this.hub,
-      createdBy: createdBy ?? this.createdBy,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      '_id': id,
+      'regularCharge': regularCharge.toMap(),
+      'returnCharge': returnCharge.toMap(),
+      'bankAccount': bankAccount.toMap(),
+      'othersAccount': othersAccount.toMap(),
+      'pendingBankAccount': pendingBankAccount.toMap(),
+      'pendingOthersAccount': pendingOthersAccount.toMap(),
       'serialId': serialId,
       'address': address,
       'image': image,
+      'myShops': myShops,
+      'hubId': hubId.toMap(),
+      'hub': hub.toMap(),
       'pickupStyle': pickupStyle,
       'defaultPayment': defaultPayment,
       'paymentStyle': paymentStyle,
+      'codCharge': codCharge,
+      'isPaymentUpdatePending': isPaymentUpdatePending,
+      'isPaymentUpdate': isPaymentUpdate,
+      'isApproved': isApproved,
       'isDisabled': isDisabled,
+      'createdBy': createdBy,
       'role': role,
+      '_id': id,
       'name': name,
       'email': email,
       'phone': phone,
-      'bankAccount': bankAccount.toMap(),
-      'othersAccount': othersAccount.toMap(),
-      'myShops': myShops,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'isApproved': isApproved,
-      'regularCharge': regularCharge.toMap(),
-      'returnCharge': returnCharge.toMap(),
-      'token': token,
-      'codCharge': codCharge,
-      'isPaymentUpdate': isPaymentUpdate,
-      'hub': hub.toMap(),
-      'createdBy': createdBy,
-    };
-  }
-
-  Map<String, dynamic> toUpdateMap() {
-    return {
-      "name": name,
-      "address": address,
-      "hubId": "",
-      "pickupStyle": pickupStyle,
-      "defaultPayment": defaultPayment,
-      "paymentStyle": paymentStyle,
-      "bankAccount": bankAccount.toMap(),
-      "othersAccount": othersAccount.toMap(),
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['_id'] ?? '',
-      serialId: map['serialId'] ?? '',
-      address: map['address'] ?? '',
-      image: map['image'] ?? '',
-      pickupStyle: map['pickupStyle'] ?? '',
-      defaultPayment: map['defaultPayment'] ?? '',
-      paymentStyle: map['paymentStyle'] ?? '',
-      isDisabled: map['isDisabled'] ?? false,
-      role: map['role'] ?? '',
-      name: map['name'] ?? '',
-      email: map['email'] ?? '',
-      phone: map['phone'] ?? '',
-      bankAccount: map['bankAccount'] != null
-          ? BankAccountModel.fromMap(map['bankAccount'])
-          : BankAccountModel.init(),
-      othersAccount: map['othersAccount'] != null
-          ? OthersAccountModel.fromMap(map['othersAccount'])
-          : OthersAccountModel.init(),
-      myShops: List<String>.from(map['myShops'] ?? const []),
-      createdAt: map['createdAt'] ?? '',
-      updatedAt: map['updatedAt'] ?? '',
-      isApproved: map['isApproved'] ?? false,
       regularCharge: map['regularCharge'] != null
           ? ChargeModel.fromMap(map['regularCharge'])
           : ChargeModel.init(),
       returnCharge: map['returnCharge'] != null
           ? ChargeModel.fromMap(map['returnCharge'])
           : ChargeModel.init(),
-      token: map['token'] ?? '',
-      codCharge: map['codCharge']?.toInt() ?? 0,
-      isPaymentUpdate: map['isPaymentUpdate'] ?? false,
+      bankAccount: map['pendingBankAccount'] != null
+          ? BankAccountModel.fromMap(map['bankAccount'])
+          : BankAccountModel.init(),
+      othersAccount: map['othersAccount'] != null
+          ? OthersAccountModel.fromMap(map['othersAccount'])
+          : OthersAccountModel.init(),
+      pendingBankAccount: map['pendingBankAccount'] != null
+          ? BankAccountModel.fromMap(map['pendingBankAccount'])
+          : BankAccountModel.init(),
+      pendingOthersAccount: map['pendingOthersAccount'] != null
+          ? OthersAccountModel.fromMap(map['pendingOthersAccount'])
+          : OthersAccountModel.init(),
+      serialId: map['serialId'] ?? '',
+      address: map['address'] ?? '',
+      image: map['image'] ?? '',
+      myShops: List<dynamic>.from(map['myShops'] ?? const []),
+      hubId: map['hubId'] != null
+          ? HubModel.fromMap(map['hubId'])
+          : HubModel.init(),
       hub: map['hub'] != null ? HubModel.fromMap(map['hub']) : HubModel.init(),
+      pickupStyle: map['pickupStyle'] ?? '',
+      defaultPayment: map['defaultPayment'] ?? '',
+      paymentStyle: map['paymentStyle'] ?? '',
+      codCharge: map['codCharge']?.toInt() ?? 0,
+      isPaymentUpdatePending: map['isPaymentUpdatePending'] ?? false,
+      isPaymentUpdate: map['isPaymentUpdate'] ?? false,
+      isApproved: map['isApproved'] ?? false,
+      isDisabled: map['isDisabled'] ?? false,
       createdBy: map['createdBy'] ?? '',
+      role: map['role'] ?? '',
+      id: map['_id'] ?? '',
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+      phone: map['phone'] ?? '',
+      createdAt: map['createdAt'] ?? '',
+      updatedAt: map['updatedAt'] ?? '',
+      token: map['token'] ?? '',
     );
   }
 
@@ -235,37 +256,40 @@ class UserModel extends Equatable {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, serialId: $serialId, address: $address, image: $image, pickupStyle: $pickupStyle, defaultPayment: $defaultPayment, paymentStyle: $paymentStyle, isDisabled: $isDisabled, role: $role, name: $name, email: $email, phone: $phone, bankAccount: $bankAccount, othersAccount: $othersAccount, myShops: $myShops, createdAt: $createdAt, updatedAt: $updatedAt, isApproved: $isApproved, regularCharge: $regularCharge, returnCharge: $returnCharge, token: $token, codCharge: $codCharge, isPaymentUpdate: $isPaymentUpdate, hub: $hub, createdBy: $createdBy)';
+    return 'UserModel(regularCharge: $regularCharge, returnCharge: $returnCharge, bankAccount: $bankAccount, othersAccount: $othersAccount, pendingBankAccount: $pendingBankAccount, pendingOthersAccount: $pendingOthersAccount, serialId: $serialId, address: $address, image: $image, myShops: $myShops, hubId: $hubId,  hub: $hub,pickupStyle: $pickupStyle, defaultPayment: $defaultPayment, paymentStyle: $paymentStyle, codCharge: $codCharge, isPaymentUpdatePending: $isPaymentUpdatePending, isPaymentUpdate: $isPaymentUpdate, isApproved: $isApproved, isDisabled: $isDisabled, createdBy: $createdBy, role: $role, id: $id, name: $name, email: $email, phone: $phone, createdAt: $createdAt, updatedAt: $updatedAt, token: $token)';
   }
 
   @override
   List<Object> get props {
     return [
-      id,
+      regularCharge,
+      returnCharge,
+      bankAccount,
+      othersAccount,
+      pendingBankAccount,
+      pendingOthersAccount,
       serialId,
       address,
       image,
+      myShops,
+      hubId,
+      hub,
       pickupStyle,
       defaultPayment,
       paymentStyle,
+      codCharge,
+      isPaymentUpdatePending,
+      isPaymentUpdate,
+      isApproved,
       isDisabled,
+      createdBy,
       role,
+      id,
       name,
       email,
       phone,
-      bankAccount,
-      othersAccount,
-      myShops,
       createdAt,
       updatedAt,
-      isApproved,
-      regularCharge,
-      returnCharge,
-      token,
-      codCharge,
-      isPaymentUpdate,
-      hub,
-      createdBy,
     ];
   }
 }

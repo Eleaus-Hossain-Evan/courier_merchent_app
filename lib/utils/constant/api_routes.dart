@@ -34,7 +34,8 @@ class APIRoute {
       "${API_V1}location/district-areas/";
   static const String IMAGE_UPLOAD =
       "${API_V1}merchant/image-update-by-himself";
-  static const String PROFILE_UPDATE = "${API_V1}merchant/update-by-himself";
+  static const String PROFILE_UPDATE = "${API_V1}merchant/profile/update";
+  static const String PAYMENT_UPDATE = "${API_V1}merchant/payment/update";
 
   //#<<----------------Parcel------------------>>
   static const WEIGHT_CHARGE = "${API_V1}weight-charge/fetch-all";

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:courier_merchent_app/domain/parcel/model/parcel_model.dart';
 import 'package:courier_merchent_app/utils/constant/api_routes.dart';
+import 'package:courier_merchent_app/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -71,7 +72,7 @@ Future<Uint8List> makePdf(ParcelModel parcel) async {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: Text(
-                      'INVOICE# : ${parcel.serialId}',
+                      'SERIAL ID# : ${parcel.serialId}',
                       textAlign: TextAlign.left,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -118,29 +119,51 @@ Future<Uint8List> makePdf(ParcelModel parcel) async {
                       child: Expanded(
                         child: Column(
                           children: [
-                            BarcodeWidget(
-                              barcode: Barcode.code128(escapes: true),
-                              data: "Hello World",
-                              width: 400,
-                              height: 160,
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: BarcodeWidget(
+                                barcode: Barcode.code128(escapes: true),
+                                data: parcel.serialId,
+                                width: 400,
+                                height: 80,
+                                textStyle: TextStyle.defaultStyle().copyWith(
+                                  fontSize: 16.sp,
+                                ),
+                                textPadding: 6.w,
+                              ),
                             ),
                             Row(
                               children: [
                                 Container(
+                                  padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     border: Border.all(color: PdfColors.black),
                                   ),
-                                  child: PaddedText(
-                                    'PARCEL ID: 30082023-48QCU7-Test123-Test123',
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: 'INVOICE : ',
+                                      children: [
+                                        TextSpan(
+                                          text: parcel
+                                              .regularParcelInfo.invoiceId,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: PdfColors.black),
-                                  ),
-                                  child: Flexible(
-                                    child: PaddedText(
-                                      'CREATED: ${parcel.createdAt.toDateString()}',
+                                Expanded(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border:
+                                          Border.all(color: PdfColors.black),
+                                    ),
+                                    child: Flexible(
+                                      child: PaddedText(
+                                        'CREATED AT: ${parcel.createdAt.formatToWordWithTime()}',
+                                      ),
                                     ),
                                   ),
                                 ),

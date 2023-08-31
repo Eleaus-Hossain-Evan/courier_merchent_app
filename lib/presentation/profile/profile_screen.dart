@@ -65,7 +65,6 @@ class ProfileScreen extends HookConsumerWidget {
                 child: Column(
                   children: [
                     ProfileOptionsItem(
-                      visible: isEditable.value,
                       leading: Bootstrap.bank2,
                       title: AppStrings.bankDetail,
                       secondaryTrailing: const Icon(Icons.warning_rounded)
@@ -73,7 +72,6 @@ class ProfileScreen extends HookConsumerWidget {
                       onTap: () => context.push(BankDetailsScreen.route),
                     ),
                     KDivider(
-                      visible: (isEditable.value),
                       height: 36.h,
                     ),
                     ProfileOptionsItem(

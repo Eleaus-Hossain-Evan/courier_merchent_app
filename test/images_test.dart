@@ -5,6 +5,7 @@ import 'package:courier_merchent_app/utils/assets/resources.dart';
 
 void main() {
   test('images assets test', () {
+    expect(File(Images.bkashLogo).existsSync(), isTrue);
     expect(File(Images.boxs).existsSync(), isTrue);
     expect(File(Images.deliveryBoxCheck).existsSync(), isTrue);
     expect(File(Images.deliveryBoxIcon).existsSync(), isTrue);
@@ -16,6 +17,7 @@ void main() {
     expect(File(Images.homeBanner4).existsSync(), isTrue);
     expect(File(Images.homeBanner).existsSync(), isTrue);
     expect(File(Images.logo).existsSync(), isTrue);
+    expect(File(Images.nagadLogo).existsSync(), isTrue);
     expect(File(Images.parcelSearch).existsSync(), isTrue);
     expect(File(Images.truck).existsSync(), isTrue);
     expect(File(Images.iconFacebook).existsSync(), isTrue);

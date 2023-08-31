@@ -4,26 +4,22 @@ import 'package:equatable/equatable.dart';
 
 class OthersAccountModel extends Equatable {
   final String bkashNum;
-  final String rocketNum;
   final String nagadNum;
 
   const OthersAccountModel({
     required this.bkashNum,
-    required this.rocketNum,
     required this.nagadNum,
   });
 
   factory OthersAccountModel.init() =>
-      const OthersAccountModel(bkashNum: '', rocketNum: '', nagadNum: '');
+      const OthersAccountModel(bkashNum: '', nagadNum: '');
 
   OthersAccountModel copyWith({
     String? bkashNum,
-    String? rocketNum,
     String? nagadNum,
   }) {
     return OthersAccountModel(
       bkashNum: bkashNum ?? this.bkashNum,
-      rocketNum: rocketNum ?? this.rocketNum,
       nagadNum: nagadNum ?? this.nagadNum,
     );
   }
@@ -31,7 +27,6 @@ class OthersAccountModel extends Equatable {
   Map<String, dynamic> toMap() {
     return {
       'bkashNum': bkashNum,
-      'rocketNum': rocketNum,
       'nagadNum': nagadNum,
     };
   }
@@ -39,7 +34,6 @@ class OthersAccountModel extends Equatable {
   factory OthersAccountModel.fromMap(Map<String, dynamic> map) {
     return OthersAccountModel(
       bkashNum: map['bkashNum'] ?? '',
-      rocketNum: map['rocketNum'] ?? '',
       nagadNum: map['nagadNum'] ?? '',
     );
   }
@@ -51,8 +45,8 @@ class OthersAccountModel extends Equatable {
 
   @override
   String toString() =>
-      'OthersAccount(bkashNum: $bkashNum, rocketNum: $rocketNum, nagadNum: $nagadNum)';
+      'OthersAccountModel(bkashNum: $bkashNum, nagadNum: $nagadNum)';
 
   @override
-  List<Object> get props => [bkashNum, rocketNum, nagadNum];
+  List<Object> get props => [bkashNum, nagadNum];
 }

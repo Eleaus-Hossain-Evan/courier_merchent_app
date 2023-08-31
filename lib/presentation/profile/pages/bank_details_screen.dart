@@ -1,5 +1,5 @@
+import 'package:courier_merchent_app/domain/auth/model/other_account_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,6 +7,8 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../application/auth/auth_provider.dart';
+import '../../../domain/auth/model/bank_account_model.dart';
+import '../../../domain/auth/payment_update_body.dart';
 import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
 
@@ -29,19 +31,11 @@ class BankDetailsScreen extends HookConsumerWidget {
 
     final otherAcc = ref.watch(authProvider).user.othersAccount;
     final bkash = useTextEditingController(text: otherAcc.bkashNum);
-    final rocket = useTextEditingController(text: otherAcc.rocketNum);
     final nagad = useTextEditingController(text: otherAcc.nagadNum);
 
     final newBankDetail = useState(bankDetail);
 
-    final selectedDefaultPayment = useState<DefaultPayment?>(null);
-    final selectedPaymentStyle = useState<PaymentStyle>(PaymentStyle.daily);
-
     final isUpdate = useState(false);
-
-    selectedDefaultPayment.addListener(() {
-      Logger.d(selectedDefaultPayment);
-    });
 
     return CustomScaffold(
       appBar: KAppBarBGTransparent(
@@ -120,64 +114,20 @@ class BankDetailsScreen extends HookConsumerWidget {
                   padding: paddingV20,
                   child: Column(
                     children: [
-                      KTextFormField2(
+                      OtherPaymentSection(
+                        isUpdate: isUpdate,
+                        title: "BKash",
+                        image: Images.bkashLogo,
+                        number: otherAcc.bkashNum,
                         controller: bkash,
-                        hintText: "Bkash Number",
-                        enabled: isUpdate.value,
                       ),
                       gap16,
-                      KTextFormField2(
-                        controller: rocket,
-                        hintText: "Rocket Number",
-                        enabled: isUpdate.value,
-                      ),
-                      gap16,
-                      KTextFormField2(
+                      OtherPaymentSection(
+                        isUpdate: isUpdate,
+                        title: "Nagad",
+                        image: Images.nagadLogo,
+                        number: otherAcc.nagadNum,
                         controller: nagad,
-                        hintText: "Nagad Number",
-                        enabled: isUpdate.value,
-                      ),
-                    ],
-                  ),
-                ),
-                gap24,
-                AppStrings.defaultPayment.text.lg.make().objectCenterLeft(),
-                gap8,
-                ContainerBGWhiteSlideFromRight(
-                  padding: paddingV20,
-                  child: Column(
-                    children: [
-                      KDropDownSearchWidget<DefaultPayment>(
-                        enabled: isUpdate.value,
-                        hintText: AppStrings.paymentOptions,
-                        selectedItem: selectedDefaultPayment.value,
-                        items: DefaultPayment.values,
-                        itemAsString: (p0) => p0.name.capitalized,
-                        compareFn: (p0, p1) => identical(p0.name, p0.name),
-                        onChanged: (value) {
-                          selectedDefaultPayment.value = value;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                gap24,
-                AppStrings.paymentStyle.text.lg.make().objectCenterLeft(),
-                gap8,
-                ContainerBGWhiteSlideFromRight(
-                  padding: paddingV20,
-                  child: Column(
-                    children: [
-                      KDropDownSearchWidget<PaymentStyle>(
-                        enabled: isUpdate.value,
-                        hintText: AppStrings.paymentOptions,
-                        selectedItem: selectedPaymentStyle.value,
-                        items: PaymentStyle.values,
-                        itemAsString: (p0) => p0.name.capitalized,
-                        compareFn: (p0, p1) => identical(p0.name, p0.name),
-                        onChanged: (value) {
-                          selectedPaymentStyle.value = value!;
-                        },
                       ),
                     ],
                   ),
@@ -186,10 +136,29 @@ class BankDetailsScreen extends HookConsumerWidget {
                 Visibility(
                   visible: isUpdate.value,
                   child: KFilledButton(
-                    text: AppStrings.save,
+                    text: "Send Update Request",
                     onPressed: isUpdate.value
                         ? () {
-                            isUpdate.value = false;
+                            ref
+                                .read(authProvider.notifier)
+                                .updatePayment(
+                                  PaymentUpdateBody(
+                                    bankAccount: BankAccountModel(
+                                      accName: accNumber.text,
+                                      accNum: accNumber.text,
+                                      bankName: bankName.text,
+                                      branch: branchName.text,
+                                      routingNum: routingNum.text,
+                                    ),
+                                    othersAccount: OthersAccountModel(
+                                      bkashNum: bkash.text,
+                                      nagadNum: nagad.text,
+                                    ),
+                                  ),
+                                )
+                                .then((value) {
+                              return value ? isUpdate.value = !value : null;
+                            });
                           }
                         : null,
                   ),
@@ -199,6 +168,57 @@ class BankDetailsScreen extends HookConsumerWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class OtherPaymentSection extends StatelessWidget {
+  const OtherPaymentSection({
+    Key? key,
+    required this.isUpdate,
+    required this.number,
+    required this.image,
+    required this.title,
+    required this.controller,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> isUpdate;
+  final String number;
+  final String image;
+  final String title;
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: isUpdate.value,
+      replacement: Row(
+        children: [
+          gap16,
+          image.assetImage(height: 30.h),
+          gap16,
+          number.isNotBlank
+              ? number.text.make()
+              : "not yet added!".text.caption(context).make(),
+        ],
+      ),
+      child: ExpansionTile(
+        title: Row(
+          children: [
+            image.assetImage(height: 30.h),
+            gap16,
+            title.text.base.make(),
+          ],
+        ),
+        shape: Border.all(color: Colors.transparent),
+        children: [
+          KTextFormField2(
+            controller: controller,
+            hintText: "$title Number",
+            enabled: isUpdate.value,
+          ),
+        ],
       ),
     );
   }

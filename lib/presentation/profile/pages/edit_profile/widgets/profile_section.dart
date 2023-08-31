@@ -42,7 +42,7 @@ class ProfileSection extends StatelessWidget {
             child: child,
           ),
         ),
-        gap24,
+        gap16,
       ],
     ).box.color(ColorPalate.bg200).make();
   }

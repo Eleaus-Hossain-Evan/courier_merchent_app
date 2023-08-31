@@ -371,9 +371,7 @@ class AddParcelScreen extends HookConsumerWidget {
                             (selectedWeight.value?.insidePrice ?? 0).toDouble(),
                       );
 
-                      await ref
-                          .read(parcelProvider.notifier)
-                          .createParcel(
+                      await ref.read(parcelProvider.notifier).createParcel(
                             CreateParcelBody(
                               merchantInfo: MerchantInfoModel(
                                 name: ref.watch(authProvider).user.name,
@@ -408,10 +406,7 @@ class AddParcelScreen extends HookConsumerWidget {
                               ),
                               regularPayment: paymentInfo,
                             ),
-                          )
-                          .then((value) => value.isNotBlank
-                              ? context.replace("${InvoiceScreen.route}/$value")
-                              : null);
+                          );
                     }
                   },
                 ),

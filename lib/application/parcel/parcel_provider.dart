@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:courier_merchent_app/presentation/parcel/invoice_screen.dart';
+import 'package:courier_merchent_app/route/go_router.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -78,20 +80,19 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
     );
   }
 
-  Future<String> createParcel(CreateParcelBody body) async {
+  Future<void> createParcel(CreateParcelBody body) async {
     state = state.copyWith(loading: true);
 
     final result = await repo.createParcel(body);
 
     ref.read(homeProvider.notifier).getRecentParcelList();
 
-    return result.fold((l) {
+    result.fold((l) {
       showErrorToast(l.error.message);
       state = state.copyWith(loading: false);
-      return '';
     }, (r) {
       state = state.copyWith(loading: false);
-      return r.data.serialId;
+      ref.read(routerProvider).replace(InvoiceScreen.route, extra: r.data);
     });
   }
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:courier_merchent_app/domain/auth/payment_update_body.dart';
 import 'package:courier_merchent_app/route/go_router.dart';
 import 'package:courier_merchent_app/utils/network_util/network_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -132,13 +133,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       uploadImage(image);
     }
 
-    final result = await repo.profileUpdate(state.user.copyWith(
-      name: updateUser.name,
-      email: updateUser.email,
-      phone: updateUser.phone,
-      address: updateUser.address,
-      pickupStyle: updateUser.pickUpStyle,
-    ));
+    final result = await repo.profileUpdate(updateUser);
 
     state = result.fold(
       (l) {
@@ -147,6 +142,27 @@ class AuthNotifier extends StateNotifier<AuthState> {
       },
       (r) {
         success = r.success;
+        showToast(r.message);
+        return state.copyWith(user: r.data, loading: false);
+      },
+    );
+
+    return success;
+  }
+
+  Future<bool> updatePayment(PaymentUpdateBody body) async {
+    bool success = false;
+    // state = state.copyWith(loading: true);
+    final result = await repo.paymentUpdate(body);
+
+    state = result.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return state = state.copyWith(failure: l, loading: false);
+      },
+      (r) {
+        success = r.success;
+        // ref.read(loggedInProvider).changeSavedUser(r.data);
         return state.copyWith(user: r.data, loading: false);
       },
     );

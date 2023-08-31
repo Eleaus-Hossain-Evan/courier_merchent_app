@@ -4,52 +4,51 @@ import 'package:equatable/equatable.dart';
 
 class ProfileUpdateBody extends Equatable {
   final String name;
-  final String email;
-  final String phone;
   final String address;
-  final String pickUpStyle;
-
+  final String pickupStyle;
+  final String defaultPayment;
+  final String paymentStyle;
   const ProfileUpdateBody({
     required this.name,
-    required this.email,
-    required this.phone,
     required this.address,
-    required this.pickUpStyle,
+    required this.pickupStyle,
+    required this.defaultPayment,
+    required this.paymentStyle,
   });
 
   ProfileUpdateBody copyWith({
     String? name,
-    String? email,
-    String? phone,
     String? address,
-    String? pickUpStyle,
+    String? pickupStyle,
+    String? defaultPayment,
+    String? paymentStyle,
   }) {
     return ProfileUpdateBody(
       name: name ?? this.name,
-      email: email ?? this.email,
-      phone: phone ?? this.phone,
       address: address ?? this.address,
-      pickUpStyle: pickUpStyle ?? this.pickUpStyle,
+      pickupStyle: pickupStyle ?? this.pickupStyle,
+      defaultPayment: defaultPayment ?? this.defaultPayment,
+      paymentStyle: paymentStyle ?? this.paymentStyle,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'email': email,
-      'phone': phone,
       'address': address,
-      'pickUpStyle': pickUpStyle,
+      'pickupStyle': pickupStyle,
+      'defaultPayment': defaultPayment,
+      'paymentStyle': paymentStyle,
     };
   }
 
   factory ProfileUpdateBody.fromMap(Map<String, dynamic> map) {
     return ProfileUpdateBody(
       name: map['name'] ?? '',
-      email: map['email'] ?? '',
-      phone: map['phone'] ?? '',
       address: map['address'] ?? '',
-      pickUpStyle: map['pickUpStyle'] ?? '',
+      pickupStyle: map['pickupStyle'] ?? '',
+      defaultPayment: map['defaultPayment'] ?? '',
+      paymentStyle: map['paymentStyle'] ?? '',
     );
   }
 
@@ -60,17 +59,17 @@ class ProfileUpdateBody extends Equatable {
 
   @override
   String toString() {
-    return 'ProfileUpdateBody(name: $name, email: $email, phone: $phone, address: $address, pickUpStyle: $pickUpStyle)';
+    return 'ProfileUpdateBody(name: $name, address: $address, pickupStyle: $pickupStyle, defaultPayment: $defaultPayment, paymentStyle: $paymentStyle)';
   }
 
   @override
   List<Object> get props {
     return [
       name,
-      email,
-      phone,
       address,
-      pickUpStyle,
+      pickupStyle,
+      defaultPayment,
+      paymentStyle,
     ];
   }
 }

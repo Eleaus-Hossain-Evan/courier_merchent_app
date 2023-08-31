@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
 import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
 import 'package:courier_merchent_app/domain/auth/password_update_body.dart';
+import 'package:courier_merchent_app/domain/auth/payment_update_body.dart';
 
 import '../domain/auth/get_all_shop_response.dart';
 import '../domain/auth/login_body.dart';
 import '../domain/auth/auth_response.dart';
 import '../domain/auth/model/user_model.dart';
+import '../domain/auth/profile_update_body.dart';
 import '../domain/auth/shop_update_response.dart';
 import '../domain/auth/signUp_body.dart';
 import '../utils/constant/api_routes.dart';
@@ -49,11 +51,11 @@ class AuthRepo {
   }
 
   Future<Either<CleanFailure, AuthResponse>> profileUpdate(
-      UserModel body) async {
+      ProfileUpdateBody body) async {
     final data = await api.patch(
       fromData: (json) => AuthResponse.fromMap(json),
       endPoint: APIRoute.PROFILE_UPDATE,
-      body: body.toUpdateMap(),
+      body: body.toMap(),
       withToken: true,
     );
 
@@ -143,6 +145,18 @@ class AuthRepo {
       body: body.toMap(),
       fromData: (json) => AuthResponse.fromMap(json),
       endPoint: APIRoute.PASSWORD_UPDATE,
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, AuthResponse>> paymentUpdate(
+      PaymentUpdateBody body) async {
+    final data = await api.patch(
+      body: body.toMap(),
+      fromData: (json) => AuthResponse.fromMap(json),
+      endPoint: APIRoute.PAYMENT_UPDATE,
       withToken: true,
     );
 
