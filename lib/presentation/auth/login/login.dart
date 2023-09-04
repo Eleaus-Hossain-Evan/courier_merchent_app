@@ -20,7 +20,7 @@ class LoginScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey.new);
-    final emailPhoneController = useTextEditingController(text: "01728897255");
+    final emailPhoneController = useTextEditingController(text: "01302936593");
     final passwordController = useTextEditingController(text: "123456");
     final phoneFocus = useFocusScopeNode();
     final passwordFocus = useFocusScopeNode();
