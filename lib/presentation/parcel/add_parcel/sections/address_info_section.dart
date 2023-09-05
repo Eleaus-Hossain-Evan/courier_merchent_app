@@ -60,6 +60,7 @@ class AddressInfoSection extends HookConsumerWidget {
                   containerMargin: EdgeInsets.zero,
                   onChanged: (value) {
                     selectedDistrict.value = value!;
+                    selectedArea.value = null;
                   },
                   validator: (value) {
                     if (value == null) {

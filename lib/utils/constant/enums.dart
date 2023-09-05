@@ -1,6 +1,5 @@
 enum ParcelMaterialType { regular, fragile, liquid, none }
 
-
 enum DistrictArea {
   inside("642e4713912a102364a618e1"),
   subside("63cfd08ade135f30482f5783");
@@ -16,7 +15,7 @@ enum ParcelRegularStatus {
   shipping,
   shipped,
   dropoff,
-  partial,
+  // partial,
   returns,
   cancel
 }

@@ -1,16 +1,21 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:courier_merchent_app/domain/auth/model/other_account_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:pinput/pinput.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../../application/auth/auth_provider.dart';
-import '../../../domain/auth/model/bank_account_model.dart';
-import '../../../domain/auth/payment_update_body.dart';
-import '../../../utils/utils.dart';
-import '../../widgets/widgets.dart';
+import '../../../../application/auth/auth_provider.dart';
+import '../../../../application/auth/auth_state.dart';
+import '../../../../domain/auth/model/bank_account_model.dart';
+import '../../../../domain/auth/payment_update_body.dart';
+import '../../../../utils/utils.dart';
+import '../../../widgets/widgets.dart';
+import 'widgets/otp_check.dart';
 
 enum DefaultPayment { bank, bkash, nagad, rocket, cod }
 
@@ -21,7 +26,11 @@ class BankDetailsScreen extends HookConsumerWidget {
   const BankDetailsScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bankDetail = ref.watch(authProvider).user.bankAccount;
+    final state = ref.watch(authProvider);
+
+    final otpController = useTextEditingController();
+
+    final bankDetail = state.user.bankAccount;
 
     final accHolder = useTextEditingController(text: bankDetail.accName);
     final bankName = useTextEditingController(text: bankDetail.bankName);
@@ -37,6 +46,20 @@ class BankDetailsScreen extends HookConsumerWidget {
 
     final isUpdate = useState(false);
 
+    final refreshController = useMemoized(
+        () => RefreshController(initialLoadStatus: LoadStatus.canLoading));
+
+    ref.listen<AuthState>(
+      authProvider,
+      (previous, next) {
+        if (previous!.loading == false && next.loading) {
+          BotToast.showLoading();
+        } else {
+          BotToast.closeAllLoading();
+        }
+      },
+    );
+
     return CustomScaffold(
       appBar: KAppBarBGTransparent(
         title: AppStrings.bankDetails.text.make(),
@@ -51,14 +74,37 @@ class BankDetailsScreen extends HookConsumerWidget {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        padding: paddingH16,
-        child: Padding(
-          padding: EdgeInsets.only(top: 160.h),
-          child: ColoredBox(
-            color: ColorPalate.bg200,
+      body: SmartRefresher(
+        controller: refreshController,
+        enablePullDown: true,
+        onRefresh: () => ref
+            .refresh(authProvider.notifier)
+            .profileView()
+            .then((_) => refreshController.refreshCompleted()),
+        child: SingleChildScrollView(
+          padding: paddingH16,
+          child: Padding(
+            padding: EdgeInsets.only(top: 100.h),
             child: Column(
               children: [
+                // show warning for edit
+                SizedBox(
+                  height: 70.h,
+                  child: WarningSection(
+                    text: Text.rich(
+                      'Payment Update is '
+                          .textSpan
+                          .withChildren([
+                            'Pending'.textSpan.bold.italic.make(),
+                            ' now!'.textSpan.make(),
+                          ])
+                          .color(ColorPalate.warning)
+                          .subtitle2(context)
+                          .make(),
+                    ),
+                    isVisible: state.user.isPaymentUpdate,
+                  ),
+                ),
                 AppStrings.bankDetails.text.lg.make().objectCenterLeft(),
                 gap8,
                 ContainerBGWhiteSlideFromRight(
@@ -134,33 +180,49 @@ class BankDetailsScreen extends HookConsumerWidget {
                 ),
                 gap20,
                 Visibility(
-                  visible: isUpdate.value,
-                  child: KFilledButton(
-                    text: "Send Update Request",
-                    onPressed: isUpdate.value
-                        ? () {
-                            ref
-                                .read(authProvider.notifier)
-                                .updatePayment(
-                                  PaymentUpdateBody(
-                                    bankAccount: BankAccountModel(
-                                      accName: accNumber.text,
-                                      accNum: accNumber.text,
-                                      bankName: bankName.text,
-                                      branch: branchName.text,
-                                      routingNum: routingNum.text,
+                  visible: !state.user.isPaymentUpdate,
+                  replacement: KElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        barrierLabel: "Barrier",
+                        useSafeArea: true,
+                        builder: (context) => const OtpCheckWidget(),
+                      );
+                    },
+                    text: 'Confirm OTP',
+                    isSecondary: false,
+                  ),
+                  child: Visibility(
+                    visible: isUpdate.value,
+                    child: KFilledButton(
+                      text: "Send Update Request",
+                      onPressed: isUpdate.value
+                          ? () {
+                              ref
+                                  .read(authProvider.notifier)
+                                  .updatePayment(
+                                    PaymentUpdateBody(
+                                      bankAccount: BankAccountModel(
+                                        accName: accNumber.text,
+                                        accNum: accNumber.text,
+                                        bankName: bankName.text,
+                                        branch: branchName.text,
+                                        routingNum: routingNum.text,
+                                      ),
+                                      othersAccount: OthersAccountModel(
+                                        bkashNum: bkash.text,
+                                        nagadNum: nagad.text,
+                                      ),
                                     ),
-                                    othersAccount: OthersAccountModel(
-                                      bkashNum: bkash.text,
-                                      nagadNum: nagad.text,
-                                    ),
-                                  ),
-                                )
-                                .then((value) {
-                              return value ? isUpdate.value = !value : null;
-                            });
-                          }
-                        : null,
+                                  )
+                                  .then((value) {
+                                return value ? isUpdate.value = !value : null;
+                              });
+                            }
+                          : null,
+                    ),
                   ),
                 ),
                 gap36,
@@ -171,6 +233,26 @@ class BankDetailsScreen extends HookConsumerWidget {
       ),
     );
   }
+
+  showAnimatedDialog(BuildContext context, {required Widget child}) =>
+      showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: 'barrierLabel',
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return Container();
+        },
+        // transitionDuration: const Duration(milliseconds: 600),
+        transitionBuilder: (context, animation, secondaryAnimation, child) {
+          return ScaleTransition(
+            scale: Tween<double>(begin: .5, end: 1).animate(animation),
+            child: FadeTransition(
+              opacity: Tween<double>(begin: 0, end: 1).animate(animation),
+              child: child,
+            ),
+          );
+        },
+      );
 }
 
 class OtherPaymentSection extends StatelessWidget {

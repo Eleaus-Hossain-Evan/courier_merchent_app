@@ -1,3 +1,5 @@
+import 'package:velocity_x/velocity_x.dart';
+
 import '../../../utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,28 +38,28 @@ class ProfilePicWidget extends HookConsumerWidget {
               enableBorder: true,
             ),
             gap16,
-            Column(
-              crossAxisAlignment: crossStart,
-              children: [
-                Text(
-                  state.user.name,
-                  style: CustomTextStyle.textStyle16w600,
-                ),
-                gap4,
-                Text(
-                  state.user.email,
-                  style: CustomTextStyle.textStyle14w400B800,
-                ),
-                gap4,
-                Text(
-                  ref.watch(appLocalProvider).languageCode == 'en'
-                      ? state.user.phone
-                      : int.parse(state.user.phone).toArabicDigits(),
-                  style: CustomTextStyle.textStyle14w400B800,
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: crossStart,
+                children: [
+                  Text(
+                    state.user.name,
+                    style: CustomTextStyle.textStyle16w600,
+                  ),
+                  gap4,
+                  Text(
+                    state.user.email,
+                    textAlign: TextAlign.center,
+                    style: CustomTextStyle.textStyle14w400B800,
+                  ),
+                  gap4,
+                  Text(
+                    state.user.phone,
+                    style: CustomTextStyle.textStyle14w400B800,
+                  ),
+                ],
+              ),
             ),
-            const Spacer(),
             Icon(
               Icons.chevron_right_rounded,
               size: 28.sp,

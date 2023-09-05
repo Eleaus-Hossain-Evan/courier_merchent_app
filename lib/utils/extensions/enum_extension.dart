@@ -30,8 +30,8 @@ extension ParcelListTypeExt on ParcelRegularStatus {
         return "shipped";
       case ParcelRegularStatus.dropoff:
         return "dropoff";
-      case ParcelRegularStatus.partial:
-        return "partial";
+      // case ParcelRegularStatus.partial:
+      //   return "partial";
       case ParcelRegularStatus.returns:
         return "return";
       case ParcelRegularStatus.cancel:

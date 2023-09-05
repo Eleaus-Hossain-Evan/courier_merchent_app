@@ -42,10 +42,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
       },
       (r) {
         showToast(r.message);
-        ref
-            .read(loggedInProvider.notifier)
-            .updateAuthCache(token: r.data.token, user: r.data);
-        return state.copyWith(user: r.data, loading: false);
+        // ref
+        //     .read(loggedInProvider.notifier)
+        //     .updateAuthCache(token: r.data.token, user: r.data);
+        ref.read(routerProvider).pop();
+
+        return state.copyWith(loading: false);
       },
     );
   }
@@ -187,5 +189,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
 
     return success;
+  }
+
+  Future<void> checkOtp(String otp) async {
+    state = state.copyWith(loading: true);
+    await repo.checkOtp(otp).then((result) {
+      state = result.fold(
+        (l) {
+          showErrorToast(l.error.message);
+          return state = state.copyWith(failure: l, loading: false);
+        },
+        (r) {
+          showToast(r.message);
+          ref.read(routerProvider).pop();
+          return state = state.copyWith(user: r.data, loading: false);
+        },
+      );
+    });
   }
 }

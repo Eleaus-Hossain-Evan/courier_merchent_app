@@ -20,7 +20,7 @@ class LoginScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(GlobalKey.new);
-    final emailPhoneController = useTextEditingController(text: "01302936593");
+    final emailPhoneController = useTextEditingController(text: "01939418891");
     final passwordController = useTextEditingController(text: "123456");
     final phoneFocus = useFocusScopeNode();
     final passwordFocus = useFocusScopeNode();
@@ -162,7 +162,7 @@ class LoginScreen extends HookConsumerWidget {
               gap16,
               KElevatedButton(
                 onPressed: () {
-                  context.replace(SignupScreen.route);
+                  context.push(SignupScreen.route);
                 },
                 text: AppStrings.createAccount,
               ),

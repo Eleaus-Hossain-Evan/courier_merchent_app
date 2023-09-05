@@ -67,7 +67,7 @@ class ParcelDetailScreen extends HookConsumerWidget {
                     ).flexible(),
                     IconButton(
                       onPressed: () =>
-                          context.push(InvoiceScreen.route, extra: data),
+                          context.push("${InvoiceScreen.route}/$parcelId"),
                       icon: Icon(
                         Bootstrap.file_earmark_pdf,
                         size: 26.sp,

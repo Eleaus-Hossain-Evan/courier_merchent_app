@@ -101,17 +101,19 @@ class AddParcelScreen extends HookConsumerWidget {
     final deliveryCharge =
         useState(parcel?.regularPayment.deliveryCharge ?? 0.0);
     final codCharge = useState(parcel?.regularPayment.codCharge ?? 0);
+    final codPercentage = useState(0.0);
 
     void getDeliveryCharge() {
-      if (selectedDistrict.value == null) {
+      if (selectedShop.value == null) {
         deliveryCharge.value = 0;
-      } else if (state.user.hub.district.id == DistrictArea.inside.id &&
+      } else if (selectedShop.value!.district.id == DistrictArea.inside.id &&
           selectedDistrict.value?.id == DistrictArea.subside.id) {
         deliveryCharge.value = state.user.regularCharge.subside;
-      } else if (state.user.hub.district.id == DistrictArea.subside.id &&
+      } else if (selectedShop.value!.district.id == DistrictArea.subside.id &&
           selectedDistrict.value?.id == DistrictArea.inside.id) {
         deliveryCharge.value = state.user.regularCharge.subside;
-      } else if (state.user.hub.district.id == selectedDistrict.value?.id) {
+      } else if (selectedShop.value!.district.id ==
+          selectedDistrict.value?.id) {
         deliveryCharge.value = state.user.regularCharge.inside;
       } else {
         deliveryCharge.value = state.user.regularCharge.outside;
@@ -120,24 +122,43 @@ class AddParcelScreen extends HookConsumerWidget {
     }
 
     void calculateCod() {
-      codCharge.value = (int.tryParse(cashController.text) ?? 0) / 100 * 1;
+      codCharge.value = ((int.tryParse(cashController.text) ?? 0) / 100) *
+          codPercentage.value;
       log('codCharge: $codCharge');
     }
 
     void getWeight() {
-      if (selectedWeight.value == null) {
-      } else if (state.user.hub.district.id == DistrictArea.inside.id &&
+      if (selectedShop.value == null) {
+      } else if (selectedShop.value!.district.id == DistrictArea.inside.id &&
           selectedDistrict.value?.id == DistrictArea.subside.id) {
         selectedWeightCharge.value = selectedWeight.value?.subSidePrice ?? 0;
-      } else if (state.user.hub.district.id == DistrictArea.subside.id &&
+      } else if (selectedShop.value!.district.id == DistrictArea.subside.id &&
           selectedDistrict.value?.id == DistrictArea.inside.id) {
         selectedWeightCharge.value = selectedWeight.value?.subSidePrice ?? 0;
-      } else if (state.user.hub.district.id == selectedDistrict.value?.id) {
+      } else if (selectedShop.value!.district.id ==
+          selectedDistrict.value?.id) {
         selectedWeightCharge.value = selectedWeight.value?.insidePrice ?? 0;
       } else {
         selectedWeightCharge.value = selectedWeight.value?.outSidePrice ?? 0;
       }
       log('selectedWeightCharge: $selectedWeightCharge');
+    }
+
+    void getCodCharge() {
+      if (selectedShop.value == null) {
+      } else if (selectedShop.value!.district.id == DistrictArea.inside.id &&
+          selectedDistrict.value?.id == DistrictArea.subside.id) {
+        codPercentage.value = state.user.codCharge.subside;
+      } else if (selectedShop.value!.district.id == DistrictArea.subside.id &&
+          selectedDistrict.value?.id == DistrictArea.inside.id) {
+        codPercentage.value = state.user.codCharge.subside;
+      } else if (selectedShop.value!.district.id ==
+          selectedDistrict.value?.id) {
+        codPercentage.value = state.user.codCharge.inside;
+      } else {
+        codPercentage.value = state.user.codCharge.outside;
+      }
+      log('codPercentage: $codPercentage');
     }
 
     ref.listen(parcelProvider, (previous, next) {
@@ -206,8 +227,16 @@ class AddParcelScreen extends HookConsumerWidget {
             )
           : setShop();
 
+      // on District Change
       selectedDistrict.addListener(getDeliveryCharge);
       selectedDistrict.addListener(getWeight);
+      selectedDistrict.addListener(getCodCharge);
+      selectedDistrict.addListener(calculateCod);
+      // on Shop Change
+      selectedShop.addListener(getDeliveryCharge);
+      selectedShop.addListener(getWeight);
+      selectedShop.addListener(getCodCharge);
+      selectedShop.addListener(calculateCod);
       // selectedWeightCharge.addListener(getDeliveryCharge);
       cashController.addListener(calculateCod);
       selectedWeight.addListener(getWeight);
@@ -217,7 +246,16 @@ class AddParcelScreen extends HookConsumerWidget {
 
         selectedDistrict.removeListener(getDeliveryCharge);
         selectedDistrict.removeListener(getWeight);
+        selectedDistrict.removeListener(getCodCharge);
+
+        selectedShop.removeListener(getDeliveryCharge);
+        selectedShop.removeListener(getWeight);
+        selectedShop.removeListener(getCodCharge);
+
+        selectedDistrict.removeListener(calculateCod);
+        selectedShop.removeListener(calculateCod);
         cashController.removeListener(calculateCod);
+
         selectedWeight.removeListener(getWeight);
       };
     }, []);
@@ -243,6 +281,10 @@ class AddParcelScreen extends HookConsumerWidget {
           child: Column(
             crossAxisAlignment: crossStart,
             children: [
+              // 'deliveryCharge: ${deliveryCharge.value}'.text.make(),
+              // 'selectedWeightCharge: ${selectedWeightCharge.value}'.text.make(),
+              // 'codPercentage: ${codPercentage.value}'.text.make(),
+              // 'codCharge: ${codCharge.value}'.text.make(),
               // show warning for edit
               UpdateParcelWarningSection(isEditable: parcel == null),
 
@@ -371,7 +413,9 @@ class AddParcelScreen extends HookConsumerWidget {
                             (selectedWeight.value?.insidePrice ?? 0).toDouble(),
                       );
 
-                      await ref.read(parcelProvider.notifier).createParcel(
+                      await ref
+                          .read(parcelProvider.notifier)
+                          .createParcel(
                             CreateParcelBody(
                               merchantInfo: MerchantInfoModel(
                                 name: ref.watch(authProvider).user.name,
@@ -406,7 +450,10 @@ class AddParcelScreen extends HookConsumerWidget {
                               ),
                               regularPayment: paymentInfo,
                             ),
-                          );
+                          )
+                          .then((value) => value.isNotBlank
+                              ? context.replace("${InvoiceScreen.route}/$value")
+                              : null);
                     }
                   },
                 ),

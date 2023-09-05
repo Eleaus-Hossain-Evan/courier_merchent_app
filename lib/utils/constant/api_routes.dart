@@ -36,6 +36,7 @@ class APIRoute {
       "${API_V1}merchant/image-update-by-himself";
   static const String PROFILE_UPDATE = "${API_V1}merchant/profile/update";
   static const String PAYMENT_UPDATE = "${API_V1}merchant/payment/update";
+  static const String CHECK_OTP = "${API_V1}merchant/confirm-payment-otp";
 
   //#<<----------------Parcel------------------>>
   static const WEIGHT_CHARGE = "${API_V1}weight-charge/fetch-all";

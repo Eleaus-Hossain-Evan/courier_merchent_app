@@ -67,11 +67,11 @@ class MyApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final appTheme = ref.watch(themeProvider);
-    final user = ref.watch(loggedInProvider.notifier).user.copyWith();
+    // final user = ref.watch(loggedInProvider.notifier).user.copyWith();
 
     useEffect(() {
       Future.wait([
-        Future.microtask(() => ref.read(authProvider.notifier).setUser(user)),
+        // Future.microtask(() => ref.read(authProvider.notifier).setUser(user)),
       ]);
 
       return null;

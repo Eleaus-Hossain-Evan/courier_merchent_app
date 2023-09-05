@@ -1,13 +1,12 @@
 import 'dart:convert';
 
-import 'package:courier_merchent_app/presentation/profile/pages/bank_details_screen.dart';
-import 'package:courier_merchent_app/presentation/profile/pages/edit_profile/profile_detail_screen.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:courier_merchent_app/domain/auth/model/bank_account_model.dart';
 import 'package:courier_merchent_app/domain/auth/model/charge_model.dart';
 import 'package:courier_merchent_app/domain/auth/model/hub_model.dart';
 import 'package:courier_merchent_app/domain/auth/model/other_account_model.dart';
+import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
 
 class UserModel extends Equatable {
   final ChargeModel regularCharge;
@@ -19,13 +18,12 @@ class UserModel extends Equatable {
   final String serialId;
   final String address;
   final String image;
-  final List<dynamic> myShops;
-  final HubModel hubId;
+  final List<MyShopModel> myShops;
   final HubModel hub;
   final String pickupStyle;
   final String defaultPayment;
   final String paymentStyle;
-  final int codCharge;
+  final ChargeModel codCharge;
   final bool isPaymentUpdatePending;
   final bool isPaymentUpdate;
   final bool isApproved;
@@ -51,7 +49,6 @@ class UserModel extends Equatable {
     required this.address,
     required this.image,
     required this.myShops,
-    required this.hubId,
     required this.hub,
     required this.pickupStyle,
     required this.defaultPayment,
@@ -83,12 +80,11 @@ class UserModel extends Equatable {
       address: '',
       image: '',
       myShops: const [],
-      hubId: HubModel.init(),
       hub: HubModel.init(),
       pickupStyle: '',
       defaultPayment: '',
       paymentStyle: '',
-      codCharge: 0,
+      codCharge: ChargeModel.init(),
       isPaymentUpdatePending: false,
       isPaymentUpdate: false,
       isApproved: false,
@@ -113,13 +109,12 @@ class UserModel extends Equatable {
     String? serialId,
     String? address,
     String? image,
-    List<dynamic>? myShops,
-    HubModel? hubId,
+    List<MyShopModel>? myShops,
     HubModel? hub,
     String? pickupStyle,
     String? defaultPayment,
     String? paymentStyle,
-    int? codCharge,
+    ChargeModel? codCharge,
     bool? isPaymentUpdatePending,
     bool? isPaymentUpdate,
     bool? isApproved,
@@ -145,7 +140,6 @@ class UserModel extends Equatable {
       address: address ?? this.address,
       image: image ?? this.image,
       myShops: myShops ?? this.myShops,
-      hubId: hubId ?? this.hubId,
       hub: hub ?? this.hub,
       pickupStyle: pickupStyle ?? this.pickupStyle,
       defaultPayment: defaultPayment ?? this.defaultPayment,
@@ -179,25 +173,25 @@ class UserModel extends Equatable {
       'serialId': serialId,
       'address': address,
       'image': image,
-      'myShops': myShops,
-      'hubId': hubId.toMap(),
+      'myShops': myShops.map((x) => x.toMap()).toList(),
       'hub': hub.toMap(),
       'pickupStyle': pickupStyle,
       'defaultPayment': defaultPayment,
       'paymentStyle': paymentStyle,
-      'codCharge': codCharge,
+      'codCharge': codCharge.toMap(),
       'isPaymentUpdatePending': isPaymentUpdatePending,
       'isPaymentUpdate': isPaymentUpdate,
       'isApproved': isApproved,
       'isDisabled': isDisabled,
       'createdBy': createdBy,
       'role': role,
-      '_id': id,
+      'id': id,
       'name': name,
       'email': email,
       'phone': phone,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'token': token,
     };
   }
 
@@ -209,7 +203,7 @@ class UserModel extends Equatable {
       returnCharge: map['returnCharge'] != null
           ? ChargeModel.fromMap(map['returnCharge'])
           : ChargeModel.init(),
-      bankAccount: map['pendingBankAccount'] != null
+      bankAccount: map['bankAccount'] != null
           ? BankAccountModel.fromMap(map['bankAccount'])
           : BankAccountModel.init(),
       othersAccount: map['othersAccount'] != null
@@ -224,15 +218,15 @@ class UserModel extends Equatable {
       serialId: map['serialId'] ?? '',
       address: map['address'] ?? '',
       image: map['image'] ?? '',
-      myShops: List<dynamic>.from(map['myShops'] ?? const []),
-      hubId: map['hubId'] != null
-          ? HubModel.fromMap(map['hubId'])
-          : HubModel.init(),
+      myShops: List<MyShopModel>.from(
+          map['myShops']?.map((x) => MyShopModel.fromMap(x)) ?? const []),
       hub: map['hub'] != null ? HubModel.fromMap(map['hub']) : HubModel.init(),
       pickupStyle: map['pickupStyle'] ?? '',
       defaultPayment: map['defaultPayment'] ?? '',
       paymentStyle: map['paymentStyle'] ?? '',
-      codCharge: map['codCharge']?.toInt() ?? 0,
+      codCharge: map['codCharge'] != null
+          ? ChargeModel.fromMap(map['codCharge'])
+          : ChargeModel.init(),
       isPaymentUpdatePending: map['isPaymentUpdatePending'] ?? false,
       isPaymentUpdate: map['isPaymentUpdate'] ?? false,
       isApproved: map['isApproved'] ?? false,
@@ -256,7 +250,7 @@ class UserModel extends Equatable {
 
   @override
   String toString() {
-    return 'UserModel(regularCharge: $regularCharge, returnCharge: $returnCharge, bankAccount: $bankAccount, othersAccount: $othersAccount, pendingBankAccount: $pendingBankAccount, pendingOthersAccount: $pendingOthersAccount, serialId: $serialId, address: $address, image: $image, myShops: $myShops, hubId: $hubId,  hub: $hub,pickupStyle: $pickupStyle, defaultPayment: $defaultPayment, paymentStyle: $paymentStyle, codCharge: $codCharge, isPaymentUpdatePending: $isPaymentUpdatePending, isPaymentUpdate: $isPaymentUpdate, isApproved: $isApproved, isDisabled: $isDisabled, createdBy: $createdBy, role: $role, id: $id, name: $name, email: $email, phone: $phone, createdAt: $createdAt, updatedAt: $updatedAt, token: $token)';
+    return 'UserModel(regularCharge: $regularCharge, returnCharge: $returnCharge, bankAccount: $bankAccount, othersAccount: $othersAccount, pendingBankAccount: $pendingBankAccount, pendingOthersAccount: $pendingOthersAccount, serialId: $serialId, address: $address, image: $image, myShops: $myShops, hub: $hub,pickupStyle: $pickupStyle, defaultPayment: $defaultPayment, paymentStyle: $paymentStyle, codCharge: $codCharge, isPaymentUpdatePending: $isPaymentUpdatePending, isPaymentUpdate: $isPaymentUpdate, isApproved: $isApproved, isDisabled: $isDisabled, createdBy: $createdBy, role: $role, id: $id, name: $name, email: $email, phone: $phone, createdAt: $createdAt, updatedAt: $updatedAt, token: $token)';
   }
 
   @override
@@ -272,7 +266,6 @@ class UserModel extends Equatable {
       address,
       image,
       myShops,
-      hubId,
       hub,
       pickupStyle,
       defaultPayment,
@@ -290,6 +283,7 @@ class UserModel extends Equatable {
       phone,
       createdAt,
       updatedAt,
+      token,
     ];
   }
 }

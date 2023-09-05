@@ -6,12 +6,8 @@ import 'package:courier_merchent_app/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
-import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter/material.dart' show AssetImage, TableCell;
 import 'package:printing/printing.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 Future<Uint8List> makePdf(ParcelModel parcel) async {
   final pdf = Document();
@@ -215,7 +211,7 @@ Widget infoSection({
               RichText(
                 text: TextSpan(
                   children: [
-                    const TextSpan(text: "address"),
+                    TextSpan(text: address),
                     const TextSpan(
                       text: ", ",
                     ),

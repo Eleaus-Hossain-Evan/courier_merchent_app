@@ -1,6 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:courier_merchent_app/presentation/parcel/add_parcel/add_parcel_screen.dart';
-import 'package:courier_merchent_app/presentation/profile/pages/bank_details_screen.dart';
+import 'package:courier_merchent_app/presentation/profile/pages/bank_detail/bank_details_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -169,10 +169,11 @@ class RouterNotifier extends ChangeNotifier {
           ),
         ),
         GoRoute(
-          path: InvoiceScreen.route,
+          path: "${InvoiceScreen.route}/:id",
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
-            child: InvoiceScreen(parcel: state.extra! as ParcelModel),
+            child:
+                InvoiceScreen(parcelId: state.pathParameters['id'] as String),
           ),
         ),
       ];

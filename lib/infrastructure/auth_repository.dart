@@ -162,4 +162,13 @@ class AuthRepo {
 
     return data;
   }
+
+  Future<Either<CleanFailure, AuthResponse>> checkOtp(String otp) async {
+    return await api.post(
+      body: {"otpCode": otp},
+      fromData: (json) => AuthResponse.fromMap(json),
+      endPoint: APIRoute.CHECK_OTP,
+      withToken: true,
+    );
+  }
 }

@@ -12,7 +12,7 @@ import '../../application/auth/auth_provider.dart';
 import '../../utils/utils.dart';
 import '../auth/login/login.dart';
 import '../widgets/widgets.dart';
-import 'pages/bank_details_screen.dart';
+import 'pages/bank_detail/bank_details_screen.dart';
 import 'pages/change_password_screen.dart';
 import 'pages/edit_profile/profile_detail_screen.dart';
 import 'pages/html_text.dart';
@@ -37,9 +37,10 @@ class ProfileScreen extends HookConsumerWidget {
       body: SmartRefresher(
         controller: refreshController,
         enablePullDown: true,
-        enablePullUp: true,
-        onRefresh: () => ref.refresh(authProvider.notifier).profileView().then(
-            (_) => refreshController.refreshCompleted(resetFooterState: true)),
+        onRefresh: () => ref
+            .refresh(authProvider.notifier)
+            .profileView()
+            .then((_) => refreshController.refreshCompleted()),
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
@@ -48,6 +49,8 @@ class ProfileScreen extends HookConsumerWidget {
               // isEditable.value.toString().text.make(),
               //? Top Section
               gap18,
+
+              //?  --- profile section ---
               ProfilePicWidget(
                 onEditTap: () => context.push(ProfileDetailScreen.route),
               ),
@@ -64,6 +67,7 @@ class ProfileScreen extends HookConsumerWidget {
                 ),
                 child: Column(
                   children: [
+                    //?  --- bank & payment section ---
                     ProfileOptionsItem(
                       leading: Bootstrap.bank2,
                       title: AppStrings.bankDetail,
@@ -71,9 +75,9 @@ class ProfileScreen extends HookConsumerWidget {
                           .iconColor(ColorPalate.warning),
                       onTap: () => context.push(BankDetailsScreen.route),
                     ),
-                    KDivider(
-                      height: 36.h,
-                    ),
+                    KDivider(height: 36.h),
+
+                    //?  --- shop section ---
                     ProfileOptionsItem(
                       leading: Bootstrap.shop,
                       title: AppStrings.myShop,
@@ -83,15 +87,17 @@ class ProfileScreen extends HookConsumerWidget {
                           : const SizedBox.shrink(),
                       onTap: () => context.push(MyShopScreen.route),
                     ),
-                    KDivider(
-                      height: 36.h,
-                    ),
+                    KDivider(height: 36.h),
+
+                    //?  --- password change section ---
                     ProfileOptionsItem(
                       leading: BoxIcons.bxs_lock,
                       title: AppStrings.changePassword,
                       onTap: () => context.push(ChangePasswordScreen.route),
                     ),
                     KDivider(height: 36.h),
+
+                    //,  --- logout section ---
                     ProfileOptionsItem(
                       leading: EvaIcons.log_out,
                       title: AppStrings.logout,

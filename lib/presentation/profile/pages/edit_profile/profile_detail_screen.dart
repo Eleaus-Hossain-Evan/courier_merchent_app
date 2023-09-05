@@ -15,8 +15,9 @@ import '../../../../application/auth/auth_state.dart';
 import '../../../../domain/auth/profile_update_body.dart';
 import '../../../../utils/utils.dart';
 import '../../../widgets/widgets.dart';
-import '../bank_details_screen.dart';
+import '../bank_detail/bank_details_screen.dart';
 import 'widgets/profile_section.dart';
+import '../../../widgets/warning_section.dart';
 
 enum PickUpStyle { perRequest, daily }
 
@@ -103,11 +104,21 @@ class ProfileDetailScreen extends HookConsumerWidget {
           return ref.read(authProvider.notifier).profileView();
         },
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 20.w).copyWith(top: 150.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.w).copyWith(top: 100.h),
           child: Form(
             key: formKey,
             child: Column(
               children: [
+                // show warning for edit
+                SizedBox(
+                  height: 70,
+                  child: WarningSection(
+                      text: 'You can\'t change phone and email'
+                          .text
+                          .color(ColorPalate.warning)
+                          .subtitle2(context)
+                          .make()),
+                ),
                 //  Personal Info------------------
 
                 ProfileSection(

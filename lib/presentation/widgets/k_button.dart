@@ -75,7 +75,7 @@ class KElevatedButton extends HookConsumerWidget {
     this.foregroundColor,
     this.loading,
     this.child,
-    this.isSecondary = false,
+    this.isSecondary = true,
     this.textStyle,
     this.size,
     this.padding,
@@ -118,9 +118,12 @@ class KElevatedButton extends HookConsumerWidget {
             TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
-              color: ColorPalate.secondary200,
+              color: isSecondary
+                  ? ColorPalate.secondary200
+                  : ColorPalate.primary300,
             ),
-        foregroundColor: foregroundColor ?? ColorPalate.secondary200,
+        foregroundColor: foregroundColor ??
+            (isSecondary ? ColorPalate.secondary200 : ColorPalate.primary300),
         backgroundColor: backgroundColor,
         padding: padding,
       ),

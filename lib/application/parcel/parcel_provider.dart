@@ -80,19 +80,20 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
     );
   }
 
-  Future<void> createParcel(CreateParcelBody body) async {
+  Future<String> createParcel(CreateParcelBody body) async {
     state = state.copyWith(loading: true);
 
     final result = await repo.createParcel(body);
 
     ref.read(homeProvider.notifier).getRecentParcelList();
 
-    result.fold((l) {
+    return result.fold((l) {
       showErrorToast(l.error.message);
       state = state.copyWith(loading: false);
+      return '';
     }, (r) {
       state = state.copyWith(loading: false);
-      ref.read(routerProvider).replace(InvoiceScreen.route, extra: r.data);
+      return r.data.serialId;
     });
   }
 
@@ -127,7 +128,7 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
     return result;
   }
 
-  void fetchCategorizedParcel(
+  Future<void> fetchCategorizedParcel(
       {ParcelRegularStatus type = ParcelRegularStatus.all,
       int page = 1}) async {
     state = state.copyWith(loading: true);
