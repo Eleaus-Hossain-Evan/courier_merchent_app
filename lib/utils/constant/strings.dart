@@ -63,6 +63,7 @@ class AppStrings {
   static const String paymentOptions = "Payment Options";
   static const String personalInfo = "Personal Info";
   static const String myShop = "My Shop";
+  static const String charges = "Charges";
 
   //#----------------  Notification ----------------
   static const String notifications = "Notifications";

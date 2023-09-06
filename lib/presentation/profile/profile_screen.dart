@@ -1,3 +1,4 @@
+import 'package:courier_merchent_app/presentation/profile/pages/charge_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -86,6 +87,18 @@ class ProfileScreen extends HookConsumerWidget {
                               .iconColor(ColorPalate.warning)
                           : const SizedBox.shrink(),
                       onTap: () => context.push(MyShopScreen.route),
+                    ),
+                    KDivider(height: 36.h),
+
+                    //?  --- charge section ---
+                    ProfileOptionsItem(
+                      leading: Bootstrap.cash,
+                      title: AppStrings.charges,
+                      secondaryTrailing: state.user.myShops.isEmpty
+                          ? const Icon(Icons.warning_rounded)
+                              .iconColor(ColorPalate.warning)
+                          : const SizedBox.shrink(),
+                      onTap: () => context.push(ChargeScreen.route),
                     ),
                     KDivider(height: 36.h),
 

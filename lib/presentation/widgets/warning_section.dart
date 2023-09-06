@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +23,8 @@ class WarningSection extends HookConsumerWidget {
   Widget build(BuildContext context, ref) {
     final isClosed = useState(false);
     final controller = useAnimationController(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 400),
+      // reverseDuration: const Duration(milliseconds: 400),
       lowerBound: 0,
       upperBound: 100,
     );
@@ -29,42 +32,46 @@ class WarningSection extends HookConsumerWidget {
 
     return Visibility(
       visible: isVisible && !isClosed.value,
-      child: FadeAnimation(
-        duration: const Duration(milliseconds: 400),
-        intervalStart: .8,
-        child: SlideAnimation(
+      child: SlideAnimation(
+        duration: const Duration(milliseconds: 800),
+        intervalStart: .6,
+        begin: const Offset(0, -100),
+        child: FadeAnimation(
           duration: const Duration(milliseconds: 800),
-          intervalStart: .4,
-          begin: const Offset(0, -100),
+          intervalStart: .7,
           child: Transform.translate(
             offset: Offset(0, -animation),
-            child: Row(
-              // mainAxisAlignment: mainSpaceBetween,
-              children: [
-                const Icon(
-                  Icons.warning_amber_rounded,
-                  color: ColorPalate.warning,
-                ),
-                gap12,
-                text.expand(),
-                CloseButton(
-                  color: ColorPalate.warning,
-                  onPressed: () {
-                    controller
-                        .forward()
-                        .whenComplete(() => isClosed.value = true);
-                  },
-                )
-              ],
-            )
-                .pSymmetric(h: 8.w, v: 2.h)
-                .box
-                .colorScaffoldBackground(context, opacity: .8)
-                .roundedSM
-                .border(color: ColorPalate.warning, width: 1.2.w)
-                .make()
-                .px8()
-                .pOnly(bottom: 16.h),
+            child: AnimatedOpacity(
+              opacity: 1 - (animation % 100) / 100,
+              duration: const Duration(milliseconds: 100),
+              child: Row(
+                // mainAxisAlignment: mainSpaceBetween,
+                children: [
+                  const Icon(
+                    Icons.warning_amber_rounded,
+                    color: ColorPalate.warning,
+                  ),
+                  gap12,
+                  text.expand(),
+                  CloseButton(
+                    color: ColorPalate.warning,
+                    onPressed: () {
+                      controller
+                          .forward()
+                          .whenCompleteOrCancel(() => isClosed.value = true);
+                    },
+                  )
+                ],
+              )
+                  .pSymmetric(h: 8.w, v: 2.h)
+                  .box
+                  .colorScaffoldBackground(context, opacity: .8)
+                  .roundedSM
+                  .border(color: ColorPalate.warning, width: 1.2.w)
+                  .make()
+                  .px8()
+                  .pOnly(bottom: 16.h),
+            ),
           ),
         ),
       ),
