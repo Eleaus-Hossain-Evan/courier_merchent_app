@@ -22,6 +22,8 @@ extension ParcelListTypeExt on ParcelRegularStatus {
         return "all";
       case ParcelRegularStatus.pending:
         return "pending";
+      case ParcelRegularStatus.hold:
+        return "hold";
       case ParcelRegularStatus.pickup:
         return "pickup";
       case ParcelRegularStatus.shipping:

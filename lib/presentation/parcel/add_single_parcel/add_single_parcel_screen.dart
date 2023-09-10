@@ -40,12 +40,12 @@ import 'sections/delivery_info_section.dart';
 import 'sections/merchant_info_section.dart';
 import 'sections/update_parcel_warning_section.dart';
 
-class AddParcelScreen extends HookConsumerWidget {
-  static const route = '/add-parcel';
+class AddSingleParcelScreen extends HookConsumerWidget {
+  static const route = '/add-single-parcel';
 
   final ParcelModel? parcel;
 
-  const AddParcelScreen({super.key, this.parcel});
+  const AddSingleParcelScreen({super.key, this.parcel});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authProvider);

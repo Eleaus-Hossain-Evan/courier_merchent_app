@@ -10,7 +10,7 @@ class HomeRepo {
     return await api.get(
       fromData: (json) => HomeResponse.fromMap(json),
       endPoint: APIRoute.HOME,
-      withToken: false,
+      withToken: true,
     );
   }
 }

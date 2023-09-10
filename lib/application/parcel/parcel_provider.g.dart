@@ -6,6 +6,21 @@ part of 'parcel_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$recentParcelHash() => r'69cbc3834bd2172b15785e6bb0090c3ed148190f';
+
+/// See also [recentParcel].
+@ProviderFor(recentParcel)
+final recentParcelProvider =
+    AutoDisposeFutureProvider<FetchAllParcelResponse>.internal(
+  recentParcel,
+  name: r'recentParcelProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$recentParcelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef RecentParcelRef = AutoDisposeFutureProviderRef<FetchAllParcelResponse>;
 String _$singleParcelHash() => r'909b79e29e9fa9df6f13880aa7b9f62b610dc6bb';
 
 /// Copied from Dart SDK

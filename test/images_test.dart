@@ -7,6 +7,8 @@ void main() {
   test('images assets test', () {
     expect(File(Images.bkashLogo).existsSync(), isTrue);
     expect(File(Images.boxs).existsSync(), isTrue);
+    expect(File(Images.bulkParcel3d).existsSync(), isTrue);
+    expect(File(Images.bulkParcel).existsSync(), isTrue);
     expect(File(Images.deliveryBoxCheck).existsSync(), isTrue);
     expect(File(Images.deliveryBoxIcon).existsSync(), isTrue);
     expect(File(Images.deliveryBoxList).existsSync(), isTrue);
@@ -19,6 +21,8 @@ void main() {
     expect(File(Images.logo).existsSync(), isTrue);
     expect(File(Images.nagadLogo).existsSync(), isTrue);
     expect(File(Images.parcelSearch).existsSync(), isTrue);
+    expect(File(Images.singleParcel3d).existsSync(), isTrue);
+    expect(File(Images.singleParcel).existsSync(), isTrue);
     expect(File(Images.truck).existsSync(), isTrue);
     expect(File(Images.iconFacebook).existsSync(), isTrue);
     expect(File(Images.iconGoogle).existsSync(), isTrue);

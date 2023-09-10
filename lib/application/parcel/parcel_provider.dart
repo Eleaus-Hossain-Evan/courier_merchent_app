@@ -1,12 +1,9 @@
 import 'dart:async';
 
-import 'package:courier_merchent_app/presentation/parcel/invoice_screen.dart';
-import 'package:courier_merchent_app/route/go_router.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../application/home/home_provider.dart';
 import '../../application/parcel/parcel_state.dart';
 import '../../domain/parcel/parcel_category_model_response.dart';
 import '../../domain/parcel/update_parcel_body.dart';
@@ -85,14 +82,13 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
 
     final result = await repo.createParcel(body);
 
-    ref.read(homeProvider.notifier).getRecentParcelList();
-
     return result.fold((l) {
       showErrorToast(l.error.message);
       state = state.copyWith(loading: false);
       return '';
     }, (r) {
       state = state.copyWith(loading: false);
+      ref.invalidate(recentParcelProvider);
       return r.data.serialId;
     });
   }
@@ -190,4 +186,13 @@ class SingleParcel extends _$SingleParcel {
   Future<ParcelModel> build(String id) {
     return _fetch(id);
   }
+}
+
+@riverpod
+FutureOr<FetchAllParcelResponse> recentParcel(RecentParcelRef ref) async {
+  final result = await ref.read(parcelProvider.notifier).fetchParcelList();
+  return result.fold((l) {
+    showErrorToast(l.error.message);
+    return FetchAllParcelResponse.init();
+  }, (r) => r);
 }

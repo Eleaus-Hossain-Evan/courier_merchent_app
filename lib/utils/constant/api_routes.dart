@@ -26,7 +26,7 @@ class APIRoute {
 
   //#<<---------------- Courier Merchant ------------------>>
 
-  static const String HOME = "${API_V1}home-page/view";
+  static const String HOME = "${API_V1}setting/home";
 
   //#<<----------------Profile------------------>>
   static const String ALL_DISTRICT = "${API_V1}location/all-districts";

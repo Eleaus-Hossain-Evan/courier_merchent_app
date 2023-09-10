@@ -5,6 +5,8 @@ class Images {
 
   static const String bkashLogo = 'assets/images/bkash-logo.png';
   static const String boxs = 'assets/images/boxs.png';
+  static const String bulkParcel3d = 'assets/images/bulk-parcel-3d.png';
+  static const String bulkParcel = 'assets/images/bulk-parcel.png';
   static const String deliveryBoxCheck = 'assets/images/delivery-box-check.png';
   static const String deliveryBoxIcon = 'assets/images/delivery-box-icon.png';
   static const String deliveryBoxList = 'assets/images/delivery-box-list.png';
@@ -18,6 +20,8 @@ class Images {
   static const String logo = 'assets/images/logo.png';
   static const String nagadLogo = 'assets/images/nagad-logo.png';
   static const String parcelSearch = 'assets/images/parcel-search.png';
+  static const String singleParcel3d = 'assets/images/single-parcel-3d.png';
+  static const String singleParcel = 'assets/images/single-parcel.png';
   static const String truck = 'assets/images/truck.png';
   static const String iconFacebook = 'assets/icons/facebook.png';
   static const String iconGoogle = 'assets/icons/google.png';

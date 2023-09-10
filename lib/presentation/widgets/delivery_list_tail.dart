@@ -7,8 +7,8 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../domain/parcel/model/parcel_model.dart';
 import '../../utils/utils.dart';
-import '../parcel/add_parcel/add_parcel_screen.dart';
-import '../parcel/parcel_detail/parcel_detail_screen.dart';
+import '../parcel/add_single_parcel/add_single_parcel_screen.dart';
+import '../parcel/track_parcel/track_parcel_screen.dart';
 import 'widgets.dart';
 
 class DeliveryListTile extends StatelessWidget {
@@ -25,7 +25,7 @@ class DeliveryListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return KInkWell(
       onTap: () =>
-          context.push("${ParcelDetailScreen.route}/${parcel.serialId}"),
+          context.push("${TrackParcelScreen.route}/${parcel.serialId}"),
       child: Column(
         mainAxisSize: mainMin,
         mainAxisAlignment: mainStart,
@@ -134,7 +134,8 @@ class DeliveryListTile extends StatelessWidget {
                       child: IconButton.outlined(
                         padding: padding0,
                         onPressed: () {
-                          context.push(AddParcelScreen.route, extra: parcel);
+                          context.push(AddSingleParcelScreen.route,
+                              extra: parcel);
                         },
                         icon: Icon(
                           BoxIcons.bx_edit_alt,

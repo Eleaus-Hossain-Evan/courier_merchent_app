@@ -11,6 +11,7 @@ enum DistrictArea {
 enum ParcelRegularStatus {
   all,
   pending,
+  hold,
   pickup,
   shipping,
   shipped,

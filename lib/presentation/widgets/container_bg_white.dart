@@ -10,15 +10,27 @@ class ContainerBGWhiteSlideFromRight extends StatelessWidget {
     required this.child,
     this.padding,
     this.bgColor = ColorPalate.bg100,
+    this.borderColor = ColorPalate.bg100,
     this.borderRadius,
+    this.isBorder = false,
   }) : super(key: key);
 
   final Widget child;
   final EdgeInsetsGeometry? padding;
-  final Color bgColor;
+  final Color bgColor, borderColor;
   final BorderRadiusGeometry? borderRadius;
+  final bool isBorder;
   @override
   Widget build(BuildContext context) {
+    final border = isBorder
+        ? Border.all(
+            color: ColorPalate.primary.withOpacity(.1),
+            width: 1.2.w,
+          )
+        : Border.all(
+            color: borderColor,
+            width: 1.2.w,
+          );
     return FadeAnimation(
       intervalStart: 0.6,
       duration: const Duration(milliseconds: 400),
@@ -29,10 +41,7 @@ class ContainerBGWhiteSlideFromRight extends StatelessWidget {
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: borderRadius ?? BorderRadius.circular(16.r),
-          // border: Border.all(
-          //   color: ColorPalate.primary.withOpacity(.1),
-          //   width: 1.2.w,
-          // ),
+          border: border,
         ),
         child: FadeAnimation(
           intervalStart: 0.5,

@@ -18,6 +18,12 @@ class FetchAllParcelResponse extends Equatable {
     required this.success,
   });
 
+  factory FetchAllParcelResponse.init() => FetchAllParcelResponse(
+      metaData: MetaDataModel.init(),
+      data: const [],
+      message: '',
+      success: false);
+
   FetchAllParcelResponse copyWith({
     MetaDataModel? metaData,
     List<ParcelModel>? data,

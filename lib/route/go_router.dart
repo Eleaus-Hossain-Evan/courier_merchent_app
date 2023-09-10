@@ -1,5 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:courier_merchent_app/presentation/parcel/add_parcel/add_parcel_screen.dart';
+import 'package:courier_merchent_app/presentation/parcel/add_single_parcel/add_single_parcel_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/bank_detail/bank_details_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/charge_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
@@ -15,8 +15,9 @@ import '../presentation/auth/signup/signup.dart';
 import '../presentation/home/home_screen.dart';
 import '../presentation/main_nav/main_nav.dart';
 import '../presentation/notification/notification_screen.dart';
+import '../presentation/parcel/add_bulk_parcel/add_bulk_parcel_screen.dart';
 import '../presentation/parcel/invoice_screen.dart';
-import '../presentation/parcel/parcel_detail/parcel_detail_screen.dart';
+import '../presentation/parcel/track_parcel/track_parcel_screen.dart';
 import '../presentation/profile/pages/change_password_screen.dart';
 import '../presentation/profile/pages/edit_profile/profile_detail_screen.dart';
 import '../presentation/profile/pages/html_text.dart';
@@ -154,19 +155,26 @@ class RouterNotifier extends ChangeNotifier {
           ),
         ),
         GoRoute(
-          path: AddParcelScreen.route,
+          path: AddSingleParcelScreen.route,
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
-            child: AddParcelScreen(
+            child: AddSingleParcelScreen(
                 parcel:
                     state.extra == null ? null : state.extra as ParcelModel),
           ),
         ),
         GoRoute(
-          path: "${ParcelDetailScreen.route}/:id",
+          path: AddBulkParcelScreen.route,
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
-            child: ParcelDetailScreen(parcelId: state.pathParameters["id"]!),
+            child: const AddBulkParcelScreen(),
+          ),
+        ),
+        GoRoute(
+          path: "${TrackParcelScreen.route}/:id",
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: TrackParcelScreen(parcelId: state.pathParameters["id"]!),
           ),
         ),
         GoRoute(

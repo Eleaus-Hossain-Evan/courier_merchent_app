@@ -1,4 +1,4 @@
-import 'package:courier_merchent_app/presentation/parcel/add_parcel/add_parcel_screen.dart';
+import 'package:courier_merchent_app/presentation/parcel/add_single_parcel/add_single_parcel_screen.dart';
 import 'package:courier_merchent_app/presentation/widgets/k_inkwell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../utils/utils.dart';
+import '../../parcel/add_bulk_parcel/add_bulk_parcel_screen.dart';
 
 class ServiceSection extends StatelessWidget {
   const ServiceSection({
@@ -20,23 +21,24 @@ class ServiceSection extends StatelessWidget {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16.w,
-        childAspectRatio: 1.4,
+        childAspectRatio: 1.2,
       ),
       children: [
         ServiceItem(
-          title: "Pick Up",
+          title: "Single Parcel",
           child: Image.asset(
-            Images.truck,
-            height: 52.h,
+            Images.singleParcel3d,
+            height: 64.h,
           ),
-          onTap: () => context.push(AddParcelScreen.route),
+          onTap: () => context.push(AddSingleParcelScreen.route),
         ),
         ServiceItem(
-          title: "Tracking",
+          title: "Bulk Parcel",
           child: Image.asset(
-            Images.parcelSearch,
-            height: 52.h,
+            Images.bulkParcel3d,
+            height: 64.h,
           ),
+          onTap: () => context.push(AddBulkParcelScreen.route),
         ),
       ],
     );
@@ -63,9 +65,16 @@ class ServiceItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: mainCenter,
         children: [
-          child,
-          gap6,
-          title.text.bold.xl.make(),
+          Container(
+            padding: padding16,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: ColorPalate.white.withOpacity(.4),
+            ),
+            alignment: Alignment.center,
+            child: child,
+          ),
+          title.text.bold.xl.color(ColorPalate.primary300.darken()).make(),
         ],
       ).box.color(context.colors.primary.withOpacity(.1)).rounded.make(),
     );

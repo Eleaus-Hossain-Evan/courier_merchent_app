@@ -9,9 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'application/auth/loggedin_provider.dart';
 import 'application/local_storage/storage_handler.dart';
-import 'application/auth/auth_provider.dart';
 import 'application/global.dart';
 import 'route/go_router.dart';
 
@@ -78,7 +76,8 @@ class MyApp extends HookConsumerWidget {
     }, []);
 
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      // designSize: const Size(375, 812),
+      designSize: const Size(392, 781),
       builder: (context, child) {
         return DismissKeyboard(
           child: MaterialApp.router(

@@ -1,27 +1,28 @@
-import 'package:courier_merchent_app/presentation/parcel/invoice_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:courier_merchent_app/presentation/widgets/widgets.dart';
 
 import '../../../application/parcel/parcel_provider.dart';
 import '../../../utils/utils.dart';
+import '../invoice_screen.dart';
 import 'section/customer_info_section.dart';
 import 'section/merchant_shop_info_section.dart';
 import 'section/parcel_info_section.dart';
 import 'section/parcel_reguler_log_section.dart';
 import 'section/payment_detail_section.dart';
 
-class ParcelDetailScreen extends HookConsumerWidget {
-  static const route = '/parcel-detail';
+class TrackParcelScreen extends HookConsumerWidget {
+  static const route = '/truck-parcel';
 
   final String parcelId;
-  const ParcelDetailScreen({
+  const TrackParcelScreen({
     super.key,
     required this.parcelId,
   });
@@ -34,7 +35,6 @@ class ParcelDetailScreen extends HookConsumerWidget {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
-      endDrawer: const Drawer(),
       appBar: const KAppBar(titleText: 'TRACK PARCEL'),
       body: parcel.when(
         data: (data) {
@@ -103,84 +103,33 @@ class ParcelDetailShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return VxShimmer(
-      primaryColor: Colors.grey.shade300,
-      secondaryColor: Colors.grey.shade100,
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
       child: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
             Row(
               children: [
-                VxSkeleton(
-                  height: 120.h,
-                  width: .3.sw,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6.r),
-                ),
-                gap16,
                 Column(
                   children: [
                     VxSkeleton(
-                      height: 50.h,
+                      height: 30.h,
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     gap16,
                     VxSkeleton(
-                      height: 50.h,
+                      height: 30.h,
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                   ],
                 ).expand(),
-              ],
-            ),
-            gap16,
-            VxSkeleton(
-              height: 50.h,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            gap16,
-            VxSkeleton(
-              height: 50.h,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            gap16,
-            VxSkeleton(
-              height: 50.h,
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            gap16,
-            Row(
-              children: [
-                VxSkeleton(
-                  height: 50.h,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6.r),
-                ).flexible(),
                 gap16,
                 VxSkeleton(
-                  height: 50.h,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6.r),
-                ).flexible(),
-              ],
-            ),
-            gap16,
-            Row(
-              children: [
-                VxSkeleton(
-                  height: 50.h,
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6.r),
-                ).flexible(),
-                gap16,
-                VxSkeleton(
-                  height: 50.h,
+                  height: 76.h,
                   width: .2.sw,
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(6.r),
@@ -192,27 +141,77 @@ class ParcelDetailShimmer extends StatelessWidget {
               children: [
                 VxSkeleton(
                   height: 50.h,
-                  width: .2.sw,
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(6.r),
+                ).flexible(),
+                gap16,
+                const SizedBox(
+                  width: 34,
+                  child: Icon(Icons.keyboard_arrow_down_outlined),
+                ),
+                gap16,
+              ],
+            ),
+            gap16,
+            Row(
+              children: [
+                VxSkeleton(
+                  height: 50.h,
+                  width: 50.h,
+                  color: Colors.white,
+                  shape: BoxShape.circle,
                 ),
                 gap16,
                 VxSkeleton(
-                  height: 50.h,
+                  height: 100.h,
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(6.r),
                 ).flexible(),
               ],
-            ),
+            ).px16(),
+            gap16,
+            Row(
+              children: [
+                VxSkeleton(
+                  height: 50.h,
+                  width: 50.h,
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                gap16,
+                VxSkeleton(
+                  height: 100.h,
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6.r),
+                ).flexible(),
+              ],
+            ).px20(),
+            gap16,
+            Row(
+              children: [
+                VxSkeleton(
+                  height: 50.h,
+                  width: 50.h,
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                gap16,
+                VxSkeleton(
+                  height: 100.h,
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(6.r),
+                ).flexible(),
+              ],
+            ).px20(),
             gap16,
             VxSkeleton(
-              height: 50.h,
+              height: 75.h,
               color: Colors.white,
               borderRadius: BorderRadius.circular(6.r),
             ),
             gap16,
             VxSkeleton(
-              height: 50.h,
+              height: 75.h,
               color: Colors.white,
               borderRadius: BorderRadius.circular(6.r),
             ),

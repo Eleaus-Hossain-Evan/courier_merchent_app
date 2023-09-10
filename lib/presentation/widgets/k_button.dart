@@ -409,7 +409,7 @@ class KTextButton extends StatelessWidget {
       style: TextButton.styleFrom(
         foregroundColor: foregroundColor,
       ),
-      onPressed: () => onPressed,
+      onPressed: onPressed,
       child: child ?? Text(text ?? ""),
     );
   }

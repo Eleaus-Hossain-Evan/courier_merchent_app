@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:courier_merchent_app/application/auth/auth_provider.dart';
-import 'package:courier_merchent_app/application/auth/auth_state.dart';
 
 import '../../../domain/auth/model/charge_model.dart';
 import '../../../utils/utils.dart';

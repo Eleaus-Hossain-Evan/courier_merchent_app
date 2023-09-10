@@ -31,8 +31,9 @@ class MainNav extends HookConsumerWidget {
     useEffect(() {
       Future.wait([
         Future.microtask(() => ref.read(authProvider.notifier).profileView()),
-        Future.microtask(
-            () => ref.read(homeProvider.notifier).getRecentParcelList()),
+        Future.microtask(() => ref.read(homeProvider.notifier)),
+        // Future.microtask(
+        //     () => ref.read(homeProvider.notifier).getRecentParcelList()),
       ]);
       return () => Logger.i("app exit");
     }, const []);
