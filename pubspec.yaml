@@ -73,6 +73,9 @@ dependencies:
   pdf:
   printing:
   url_launcher: ^6.1.14
+  dotted_border: ^2.0.0+3
+  file_picker: ^5.5.0
+  excel: ^2.1.0
 
 
 dev_dependencies:

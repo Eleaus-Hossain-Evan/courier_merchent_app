@@ -53,8 +53,8 @@ class KInkWell extends StatelessWidget {
         //   }
         //   return null;
         // }),
-        child: Container(
-          padding: padding,
+        child: Padding(
+          padding: padding ?? EdgeInsets.zero,
           child: child,
         ),
       ),

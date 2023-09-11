@@ -72,10 +72,10 @@ class MerchantInfoModel extends Equatable {
 
   Map<String, dynamic> toUpdateMap() {
     return {
-      'address': address,
       'name': name,
       'phone': phone,
       'shopName': shopName,
+      'address': address,
       'districtId': districtId,
       'areaId': areaId,
     };

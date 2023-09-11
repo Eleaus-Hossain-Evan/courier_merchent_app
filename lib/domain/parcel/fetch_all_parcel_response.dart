@@ -49,7 +49,9 @@ class FetchAllParcelResponse extends Equatable {
 
   factory FetchAllParcelResponse.fromMap(Map<String, dynamic> map) {
     return FetchAllParcelResponse(
-      metaData: MetaDataModel.fromMap(map['metaData']),
+      metaData: map['metaData'] != null
+          ? MetaDataModel.fromMap(map['metaData'])
+          : MetaDataModel.init(),
       data: List<ParcelModel>.from(
           map['data']?.map((x) => ParcelModel.fromMap(x)) ?? const []),
       message: map['message'] ?? '',

@@ -1,27 +1,22 @@
 import 'dart:developer';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:courier_merchent_app/domain/parcel/model/parcel_model.dart';
-import 'package:courier_merchent_app/domain/parcel/update_parcel_body.dart';
-import 'package:courier_merchent_app/presentation/parcel/invoice_screen.dart';
-import 'package:courier_merchent_app/utils/utils.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:icons_plus/icons_plus.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'package:courier_merchent_app/application/auth/auth_provider.dart';
 import 'package:courier_merchent_app/application/parcel/parcel_provider.dart';
+import 'package:courier_merchent_app/domain/parcel/model/parcel_model.dart';
 import 'package:courier_merchent_app/domain/parcel/parcel_category_model_response.dart';
+import 'package:courier_merchent_app/domain/parcel/update_parcel_body.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
+import 'package:courier_merchent_app/presentation/parcel/invoice_screen.dart';
+import 'package:courier_merchent_app/utils/utils.dart';
 
 import '../../../application/global.dart';
 import '../../../application/shop/shop_provider.dart';
@@ -422,8 +417,9 @@ class AddSingleParcelScreen extends HookConsumerWidget {
                                 phone: ref.watch(authProvider).user.phone,
                                 address: selectedShop.value?.address ?? "",
                                 shopName: selectedShop.value?.shopName ?? "",
-                                districtId: selectedDistrict.value?.id ?? '',
-                                areaId: selectedArea.value?.id ?? '',
+                                districtId:
+                                    selectedShop.value?.district.id ?? '',
+                                areaId: selectedShop.value?.area.id ?? '',
                                 area: AreaModel.init(),
                                 district: AreaModel.init(),
                               ),

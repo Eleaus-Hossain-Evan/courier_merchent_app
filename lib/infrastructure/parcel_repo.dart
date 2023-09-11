@@ -2,9 +2,9 @@ import 'package:courier_merchent_app/domain/parcel/create_parcel_body.dart';
 import 'package:courier_merchent_app/domain/parcel/fetch_all_parcel_response.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
 
+import '../domain/parcel/model/merchant_info_model.dart';
 import '../domain/parcel/parcel_response.dart';
 import '../domain/parcel/get_area_model_response.dart';
-import '../domain/parcel/model/parcel_model.dart';
 import '../domain/parcel/parcel_category_model_response.dart';
 import '../domain/parcel/update_parcel_body.dart';
 import '../utils/utils.dart';
@@ -102,5 +102,19 @@ class ParcelRepo {
     );
 
     return data;
+  }
+
+  Future<Either<CleanFailure, FetchAllParcelResponse>> createBulkParcel(
+      MerchantInfoModel merchant, String data) async {
+    return await api.post(
+      body: {
+        "merchantInfo": merchant.toUpdateMap(),
+        "date": DateTime.now().toIso8601String(),
+        "excel": data,
+      },
+      fromData: (json) => FetchAllParcelResponse.fromMap(json),
+      endPoint: APIRoute.CREATE_BULK_PARCEL,
+      withToken: true,
+    );
   }
 }

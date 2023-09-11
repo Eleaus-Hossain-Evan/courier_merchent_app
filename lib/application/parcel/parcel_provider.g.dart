@@ -21,7 +21,7 @@ final recentParcelProvider =
 );
 
 typedef RecentParcelRef = AutoDisposeFutureProviderRef<FetchAllParcelResponse>;
-String _$singleParcelHash() => r'909b79e29e9fa9df6f13880aa7b9f62b610dc6bb';
+String _$createBulkParcelHash() => r'473c4c3334940bab8036d5dcefd9463af945ff6a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -43,6 +43,101 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+typedef CreateBulkParcelRef
+    = AutoDisposeFutureProviderRef<FetchAllParcelResponse>;
+
+/// See also [createBulkParcel].
+@ProviderFor(createBulkParcel)
+const createBulkParcelProvider = CreateBulkParcelFamily();
+
+/// See also [createBulkParcel].
+class CreateBulkParcelFamily
+    extends Family<AsyncValue<FetchAllParcelResponse>> {
+  /// See also [createBulkParcel].
+  const CreateBulkParcelFamily();
+
+  /// See also [createBulkParcel].
+  CreateBulkParcelProvider call({
+    required MerchantInfoModel merchant,
+    required String data,
+  }) {
+    return CreateBulkParcelProvider(
+      merchant: merchant,
+      data: data,
+    );
+  }
+
+  @override
+  CreateBulkParcelProvider getProviderOverride(
+    covariant CreateBulkParcelProvider provider,
+  ) {
+    return call(
+      merchant: provider.merchant,
+      data: provider.data,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'createBulkParcelProvider';
+}
+
+/// See also [createBulkParcel].
+class CreateBulkParcelProvider
+    extends AutoDisposeFutureProvider<FetchAllParcelResponse> {
+  /// See also [createBulkParcel].
+  CreateBulkParcelProvider({
+    required this.merchant,
+    required this.data,
+  }) : super.internal(
+          (ref) => createBulkParcel(
+            ref,
+            merchant: merchant,
+            data: data,
+          ),
+          from: createBulkParcelProvider,
+          name: r'createBulkParcelProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$createBulkParcelHash,
+          dependencies: CreateBulkParcelFamily._dependencies,
+          allTransitiveDependencies:
+              CreateBulkParcelFamily._allTransitiveDependencies,
+        );
+
+  final MerchantInfoModel merchant;
+  final String data;
+
+  @override
+  bool operator ==(Object other) {
+    return other is CreateBulkParcelProvider &&
+        other.merchant == merchant &&
+        other.data == data;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, merchant.hashCode);
+    hash = _SystemHash.combine(hash, data.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+String _$singleParcelHash() => r'909b79e29e9fa9df6f13880aa7b9f62b610dc6bb';
 
 abstract class _$SingleParcel
     extends BuildlessAutoDisposeAsyncNotifier<ParcelModel> {

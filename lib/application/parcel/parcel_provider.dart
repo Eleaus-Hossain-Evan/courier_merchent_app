@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../application/parcel/parcel_state.dart';
+import '../../domain/parcel/model/merchant_info_model.dart';
 import '../../domain/parcel/parcel_category_model_response.dart';
 import '../../domain/parcel/update_parcel_body.dart';
 import '../../domain/parcel/weight_model_response.dart';
@@ -195,4 +196,17 @@ FutureOr<FetchAllParcelResponse> recentParcel(RecentParcelRef ref) async {
     showErrorToast(l.error.message);
     return FetchAllParcelResponse.init();
   }, (r) => r);
+}
+
+@riverpod
+FutureOr<FetchAllParcelResponse> createBulkParcel(CreateBulkParcelRef ref,
+    {required MerchantInfoModel merchant, required String data}) async {
+  final result = await ParcelRepo().createBulkParcel(merchant, data);
+  return result.fold((l) {
+    showErrorToast(l.error.message);
+    return FetchAllParcelResponse.init();
+  }, (r) => r);
+
+  // log(merchant.toJson());
+  // return FetchAllParcelResponse.init();
 }

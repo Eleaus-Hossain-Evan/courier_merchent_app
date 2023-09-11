@@ -273,7 +273,7 @@ class KButton extends HookConsumerWidget {
 class KFilledButton extends HookConsumerWidget {
   const KFilledButton({
     Key? key,
-    required this.text,
+    this.text = '',
     this.backgroundColor,
     this.foregroundColor,
     required this.onPressed,
@@ -341,7 +341,8 @@ class KFilledButton extends HookConsumerWidget {
                 strokeWidth: 2,
               ),
             )
-          : child ?? Text(text),
+          : child ??
+              (text.isEmptyOrNull ? const SizedBox.shrink() : Text(text)),
     );
   }
 }

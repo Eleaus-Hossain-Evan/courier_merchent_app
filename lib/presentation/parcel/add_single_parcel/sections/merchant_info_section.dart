@@ -17,16 +17,16 @@ class MerchantInfoSection extends StatelessWidget {
     required this.scaffoldKey,
     required this.myShops,
     required this.selectedShop,
-    required this.merchantInfoController,
-    required this.nameFocus,
-    required this.isEditable,
+    this.merchantInfoController,
+    this.nameFocus,
+    this.isEditable = true,
   }) : super(key: key);
 
   final GlobalKey<ScaffoldState> scaffoldKey;
   final AsyncValue<IList<MyShopModel>> myShops;
   final ValueNotifier<MyShopModel?> selectedShop;
-  final TextEditingController merchantInfoController;
-  final FocusNode nameFocus;
+  final TextEditingController? merchantInfoController;
+  final FocusNode? nameFocus;
   final bool isEditable;
 
   @override
@@ -107,16 +107,18 @@ class MerchantInfoSection extends StatelessWidget {
               ),
             ),
             gap16,
-            KTextFormField2(
-              enabled: isEditable,
-              hintText: AppStrings.merchantInfo,
-              controller: merchantInfoController,
-              containerPadding: EdgeInsets.zero,
-              textInputAction: TextInputAction.next,
-              maxLines: null,
-              validator: ValidationBuilder().required().build(),
-              onFieldSubmitted: (_) => nameFocus.requestFocus(),
-            ),
+            merchantInfoController != null
+                ? KTextFormField2(
+                    enabled: isEditable,
+                    hintText: AppStrings.merchantInfo,
+                    controller: merchantInfoController,
+                    containerPadding: EdgeInsets.zero,
+                    textInputAction: TextInputAction.next,
+                    maxLines: null,
+                    validator: ValidationBuilder().required().build(),
+                    onFieldSubmitted: (_) => nameFocus?.requestFocus(),
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
       ),
