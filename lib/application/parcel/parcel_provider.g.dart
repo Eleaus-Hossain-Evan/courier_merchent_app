@@ -233,5 +233,128 @@ class SingleParcelProvider
     );
   }
 }
+
+String _$fetchAllTypeParcelHash() =>
+    r'1655c94c2c8cf834664d94faee55ba20403c277b';
+
+abstract class _$FetchAllTypeParcel
+    extends BuildlessAutoDisposeAsyncNotifier<FetchAllParcelResponse> {
+  late final ParcelRegularStatus type;
+  late final int page;
+  late final int limit;
+
+  Future<FetchAllParcelResponse> build({
+    ParcelRegularStatus type = ParcelRegularStatus.all,
+    int page = 1,
+    int limit = 10,
+  });
+}
+
+/// See also [FetchAllTypeParcel].
+@ProviderFor(FetchAllTypeParcel)
+const fetchAllTypeParcelProvider = FetchAllTypeParcelFamily();
+
+/// See also [FetchAllTypeParcel].
+class FetchAllTypeParcelFamily
+    extends Family<AsyncValue<FetchAllParcelResponse>> {
+  /// See also [FetchAllTypeParcel].
+  const FetchAllTypeParcelFamily();
+
+  /// See also [FetchAllTypeParcel].
+  FetchAllTypeParcelProvider call({
+    ParcelRegularStatus type = ParcelRegularStatus.all,
+    int page = 1,
+    int limit = 10,
+  }) {
+    return FetchAllTypeParcelProvider(
+      type: type,
+      page: page,
+      limit: limit,
+    );
+  }
+
+  @override
+  FetchAllTypeParcelProvider getProviderOverride(
+    covariant FetchAllTypeParcelProvider provider,
+  ) {
+    return call(
+      type: provider.type,
+      page: provider.page,
+      limit: provider.limit,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'fetchAllTypeParcelProvider';
+}
+
+/// See also [FetchAllTypeParcel].
+class FetchAllTypeParcelProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    FetchAllTypeParcel, FetchAllParcelResponse> {
+  /// See also [FetchAllTypeParcel].
+  FetchAllTypeParcelProvider({
+    this.type = ParcelRegularStatus.all,
+    this.page = 1,
+    this.limit = 10,
+  }) : super.internal(
+          () => FetchAllTypeParcel()
+            ..type = type
+            ..page = page
+            ..limit = limit,
+          from: fetchAllTypeParcelProvider,
+          name: r'fetchAllTypeParcelProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$fetchAllTypeParcelHash,
+          dependencies: FetchAllTypeParcelFamily._dependencies,
+          allTransitiveDependencies:
+              FetchAllTypeParcelFamily._allTransitiveDependencies,
+        );
+
+  final ParcelRegularStatus type;
+  final int page;
+  final int limit;
+
+  @override
+  bool operator ==(Object other) {
+    return other is FetchAllTypeParcelProvider &&
+        other.type == type &&
+        other.page == page &&
+        other.limit == limit;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, type.hashCode);
+    hash = _SystemHash.combine(hash, page.hashCode);
+    hash = _SystemHash.combine(hash, limit.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+
+  @override
+  Future<FetchAllParcelResponse> runNotifierBuild(
+    covariant FetchAllTypeParcel notifier,
+  ) {
+    return notifier.build(
+      type: type,
+      page: page,
+      limit: limit,
+    );
+  }
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member

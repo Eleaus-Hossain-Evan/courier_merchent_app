@@ -1,20 +1,19 @@
 import 'dart:async';
 
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../application/parcel/parcel_state.dart';
+import '../../domain/auth/model/area_model.dart';
+import '../../domain/parcel/create_parcel_body.dart';
+import '../../domain/parcel/fetch_all_parcel_response.dart';
 import '../../domain/parcel/model/merchant_info_model.dart';
+import '../../domain/parcel/model/parcel_model.dart';
 import '../../domain/parcel/parcel_category_model_response.dart';
 import '../../domain/parcel/update_parcel_body.dart';
 import '../../domain/parcel/weight_model_response.dart';
 import '../../infrastructure/parcel_repo.dart';
-
-import '../../domain/auth/model/area_model.dart';
-import '../../domain/parcel/create_parcel_body.dart';
-import '../../domain/parcel/fetch_all_parcel_response.dart';
-import '../../domain/parcel/model/parcel_model.dart';
 import '../../utils/utils.dart';
 import '../global.dart';
 
@@ -124,51 +123,6 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
 
     return result;
   }
-
-  Future<void> fetchCategorizedParcel(
-      {ParcelRegularStatus type = ParcelRegularStatus.all,
-      int page = 1}) async {
-    state = state.copyWith(loading: true);
-
-    final result = await fetchParcelList(type: type, page: page);
-
-    result.fold(
-      (l) {
-        showErrorToast(l.error.message);
-        state = state.copyWith(loading: false);
-      },
-      (r) {
-        switch (type) {
-          case ParcelRegularStatus.all:
-            state = state.copyWith(allParcel: r.data.lock, loading: false);
-            break;
-          case ParcelRegularStatus.pending:
-            state = state.copyWith(pendingParcel: r.data.lock, loading: false);
-            break;
-          case ParcelRegularStatus.pickup:
-            state = state.copyWith(pickupParcel: r.data.lock, loading: false);
-            break;
-          case ParcelRegularStatus.shipping:
-            state = state.copyWith(shippingParcel: r.data.lock, loading: false);
-            break;
-          case ParcelRegularStatus.shipped:
-            state = state.copyWith(shippedParcel: r.data.lock, loading: false);
-            break;
-          case ParcelRegularStatus.dropoff:
-            state = state.copyWith(dropoffParcel: r.data.lock, loading: false);
-            break;
-          case ParcelRegularStatus.returns:
-            state = state.copyWith(returnParcel: r.data.lock, loading: false);
-            break;
-          case ParcelRegularStatus.cancel:
-            state = state.copyWith(cancelParcel: r.data.lock, loading: false);
-            break;
-          default:
-            state = state.copyWith(allParcel: r.data.lock, loading: false);
-        }
-      },
-    );
-  }
 }
 
 @riverpod
@@ -209,4 +163,33 @@ FutureOr<FetchAllParcelResponse> createBulkParcel(CreateBulkParcelRef ref,
 
   // log(merchant.toJson());
   // return FetchAllParcelResponse.init();
+}
+
+@riverpod
+class FetchAllTypeParcel extends _$FetchAllTypeParcel {
+  @override
+  Future<FetchAllParcelResponse> build(
+      {ParcelRegularStatus type = ParcelRegularStatus.all,
+      int page = 1,
+      int limit = 10}) async {
+    // final data = await http.post(
+    //   Uri.parse(
+    //       "https://api.courier.b2gsoft.xyz/api/v1/parcel/fetch-all-parcel-by-merchant?page=$page&limit=$limit"),
+    //   // uri,
+    //   body: {"status": type.value},
+    // );
+
+    // Logger.i(data.body);
+    // return FetchAllParcelResponse.fromJson(data.body);
+
+    final result = await ParcelRepo()
+        .fetchParcelList(type: type, limit: limit, page: page);
+
+    Logger.i(result);
+
+    return result.fold((l) {
+      showErrorToast(l.error.message);
+      return FetchAllParcelResponse.init();
+    }, (r) => r);
+  }
 }

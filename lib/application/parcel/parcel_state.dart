@@ -1,12 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
+import 'package:courier_merchent_app/domain/meta_data_model.dart';
 import 'package:courier_merchent_app/domain/parcel/model/parcel_model.dart';
 
 class ParcelState extends Equatable {
   final bool loading;
+  final MetaDataModel metaData;
   final IList<ParcelModel> allParcel;
   final IList<ParcelModel> pendingParcel;
+  final IList<ParcelModel> holdParcel;
   final IList<ParcelModel> pickupParcel;
   final IList<ParcelModel> shippingParcel;
   final IList<ParcelModel> shippedParcel;
@@ -16,32 +19,38 @@ class ParcelState extends Equatable {
 
   const ParcelState({
     required this.loading,
+    required this.metaData,
     required this.allParcel,
-    required this.cancelParcel,
-    required this.dropoffParcel,
     required this.pendingParcel,
+    required this.holdParcel,
     required this.pickupParcel,
-    required this.returnParcel,
-    required this.shippedParcel,
     required this.shippingParcel,
+    required this.shippedParcel,
+    required this.dropoffParcel,
+    required this.returnParcel,
+    required this.cancelParcel,
   });
 
-  factory ParcelState.init() => const ParcelState(
+  factory ParcelState.init() => ParcelState(
         loading: false,
-        allParcel: IListConst([]),
-        cancelParcel: IListConst([]),
-        dropoffParcel: IListConst([]),
-        pendingParcel: IListConst([]),
-        pickupParcel: IListConst([]),
-        returnParcel: IListConst([]),
-        shippedParcel: IListConst([]),
-        shippingParcel: IListConst([]),
+        metaData: MetaDataModel.init(),
+        allParcel: const IListConst([]),
+        holdParcel: const IListConst([]),
+        cancelParcel: const IListConst([]),
+        dropoffParcel: const IListConst([]),
+        pendingParcel: const IListConst([]),
+        pickupParcel: const IListConst([]),
+        returnParcel: const IListConst([]),
+        shippedParcel: const IListConst([]),
+        shippingParcel: const IListConst([]),
       );
 
   ParcelState copyWith({
     bool? loading,
+    MetaDataModel? metaData,
     IList<ParcelModel>? allParcel,
     IList<ParcelModel>? pendingParcel,
+    IList<ParcelModel>? holdParcel,
     IList<ParcelModel>? pickupParcel,
     IList<ParcelModel>? shippingParcel,
     IList<ParcelModel>? shippedParcel,
@@ -51,8 +60,10 @@ class ParcelState extends Equatable {
   }) {
     return ParcelState(
       loading: loading ?? this.loading,
+      metaData: metaData ?? this.metaData,
       allParcel: allParcel ?? this.allParcel,
       pendingParcel: pendingParcel ?? this.pendingParcel,
+      holdParcel: holdParcel ?? this.holdParcel,
       pickupParcel: pickupParcel ?? this.pickupParcel,
       shippingParcel: shippingParcel ?? this.shippingParcel,
       shippedParcel: shippedParcel ?? this.shippedParcel,
@@ -64,15 +75,17 @@ class ParcelState extends Equatable {
 
   @override
   String toString() {
-    return 'ParcelState(loading: $loading, allParcel: $allParcel, pendingParcel: $pendingParcel, pickupParcel: $pickupParcel, shippingParcel: $shippingParcel, shippedParcel: $shippedParcel, dropoffParcel: $dropoffParcel, returnParcel: $returnParcel, cancelParcel: $cancelParcel)';
+    return 'ParcelState(loading: $loading, metaData: $metaData, allParcel: $allParcel, pendingParcel: $pendingParcel, holdParcel: $holdParcel, pickupParcel: $pickupParcel, shippingParcel: $shippingParcel, shippedParcel: $shippedParcel, dropoffParcel: $dropoffParcel, returnParcel: $returnParcel, cancelParcel: $cancelParcel)';
   }
 
   @override
   List<Object> get props {
     return [
       loading,
+      metaData,
       allParcel,
       pendingParcel,
+      holdParcel,
       pickupParcel,
       shippingParcel,
       shippedParcel,

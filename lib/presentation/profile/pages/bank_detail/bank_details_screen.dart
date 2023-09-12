@@ -74,157 +74,159 @@ class BankDetailsScreen extends HookConsumerWidget {
           )
         ],
       ),
-      body: SmartRefresher(
-        controller: refreshController,
-        enablePullDown: true,
-        onRefresh: () => ref
-            .refresh(authProvider.notifier)
-            .profileView()
-            .then((_) => refreshController.refreshCompleted()),
-        child: SingleChildScrollView(
-          padding: paddingH16.copyWith(top: 100.h),
-          child: Column(
-            children: [
-              // show warning for edit
-              SizedBox(
-                height: 70.h,
-                child: WarningSection(
-                  text: Text.rich(
-                    'Payment Update is '
-                        .textSpan
-                        .withChildren([
-                          'Pending'.textSpan.bold.italic.make(),
-                          ' now!'.textSpan.make(),
-                        ])
-                        .color(ColorPalate.warning)
-                        .subtitle2(context)
-                        .make(),
-                  ),
-                  isVisible: state.user.isPaymentUpdate,
-                ),
-              ),
-              AppStrings.bankDetails.text.lg.make().objectCenterLeft(),
-              gap8,
-              ContainerBGWhiteSlideFromRight(
-                padding: paddingV20,
-                child: Column(
-                  children: [
-                    KTextFormField2(
-                      controller: accHolder,
-                      hintText: AppStrings.accountHolder,
-                      enabled: isUpdate.value,
-                      onChanged: (value) =>
-                          newBankDetail.value.copyWith(accName: value),
+      body: SafeArea(
+        child: SmartRefresher(
+          controller: refreshController,
+          enablePullDown: true,
+          onRefresh: () => ref
+              .refresh(authProvider.notifier)
+              .profileView()
+              .then((_) => refreshController.refreshCompleted()),
+          child: SingleChildScrollView(
+            padding: paddingH16.copyWith(top: 0.h),
+            child: Column(
+              children: [
+                // show warning for edit
+                SizedBox(
+                  height: 70.h,
+                  child: WarningSection(
+                    text: Text.rich(
+                      'Payment Update is '
+                          .textSpan
+                          .withChildren([
+                            'Pending'.textSpan.bold.italic.make(),
+                            ' now!'.textSpan.make(),
+                          ])
+                          .color(ColorPalate.warning)
+                          .subtitle2(context)
+                          .make(),
                     ),
-                    gap16,
-                    KTextFormField2(
-                      controller: bankName,
-                      hintText: AppStrings.bankName,
-                      enabled: isUpdate.value,
-                      onChanged: (value) =>
-                          newBankDetail.value.copyWith(bankName: value),
-                    ),
-                    gap16,
-                    KTextFormField2(
-                      controller: branchName,
-                      hintText: AppStrings.branchCode,
-                      enabled: isUpdate.value,
-                      onChanged: (value) =>
-                          newBankDetail.value.copyWith(branch: value),
-                    ),
-                    gap16,
-                    KTextFormField2(
-                      controller: routingNum,
-                      hintText: AppStrings.routingNumber,
-                      enabled: isUpdate.value,
-                      onChanged: (value) =>
-                          newBankDetail.value.copyWith(routingNum: value),
-                    ),
-                    gap16,
-                    KTextFormField2(
-                      controller: accNumber,
-                      hintText: AppStrings.accountNumber,
-                      enabled: isUpdate.value,
-                      onChanged: (value) =>
-                          newBankDetail.value.copyWith(accNum: value),
-                    ),
-                  ],
-                ),
-              ),
-              gap24,
-              AppStrings.otherPaymentMethod.text.lg.make().objectCenterLeft(),
-              gap8,
-              ContainerBGWhiteSlideFromRight(
-                padding: paddingV20,
-                child: Column(
-                  children: [
-                    OtherPaymentSection(
-                      isUpdate: isUpdate,
-                      title: "BKash",
-                      image: Images.bkashLogo,
-                      number: otherAcc.bkashNum,
-                      controller: bkash,
-                    ),
-                    gap16,
-                    OtherPaymentSection(
-                      isUpdate: isUpdate,
-                      title: "Nagad",
-                      image: Images.nagadLogo,
-                      number: otherAcc.nagadNum,
-                      controller: nagad,
-                    ),
-                  ],
-                ),
-              ),
-              gap20,
-              Visibility(
-                visible: !state.user.isPaymentUpdate,
-                replacement: KElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      barrierLabel: "Barrier",
-                      useSafeArea: true,
-                      builder: (context) => const OtpCheckWidget(),
-                    );
-                  },
-                  text: 'Confirm OTP',
-                  isSecondary: false,
-                ),
-                child: Visibility(
-                  visible: isUpdate.value,
-                  child: KFilledButton(
-                    text: "Send Update Request",
-                    onPressed: isUpdate.value
-                        ? () {
-                            ref
-                                .read(authProvider.notifier)
-                                .updatePayment(
-                                  PaymentUpdateBody(
-                                    bankAccount: BankAccountModel(
-                                      accName: accNumber.text,
-                                      accNum: accNumber.text,
-                                      bankName: bankName.text,
-                                      branch: branchName.text,
-                                      routingNum: routingNum.text,
-                                    ),
-                                    othersAccount: OthersAccountModel(
-                                      bkashNum: bkash.text,
-                                      nagadNum: nagad.text,
-                                    ),
-                                  ),
-                                )
-                                .then((value) {
-                              return value ? isUpdate.value = !value : null;
-                            });
-                          }
-                        : null,
+                    isVisible: state.user.isPaymentUpdate,
                   ),
                 ),
-              ),
-              gap36,
-            ],
+                AppStrings.bankDetails.text.lg.make().objectCenterLeft(),
+                gap8,
+                ContainerBGWhiteSlideFromRight(
+                  padding: paddingV20,
+                  child: Column(
+                    children: [
+                      KTextFormField2(
+                        controller: accHolder,
+                        hintText: AppStrings.accountHolder,
+                        enabled: isUpdate.value,
+                        onChanged: (value) =>
+                            newBankDetail.value.copyWith(accName: value),
+                      ),
+                      gap16,
+                      KTextFormField2(
+                        controller: bankName,
+                        hintText: AppStrings.bankName,
+                        enabled: isUpdate.value,
+                        onChanged: (value) =>
+                            newBankDetail.value.copyWith(bankName: value),
+                      ),
+                      gap16,
+                      KTextFormField2(
+                        controller: branchName,
+                        hintText: AppStrings.branchCode,
+                        enabled: isUpdate.value,
+                        onChanged: (value) =>
+                            newBankDetail.value.copyWith(branch: value),
+                      ),
+                      gap16,
+                      KTextFormField2(
+                        controller: routingNum,
+                        hintText: AppStrings.routingNumber,
+                        enabled: isUpdate.value,
+                        onChanged: (value) =>
+                            newBankDetail.value.copyWith(routingNum: value),
+                      ),
+                      gap16,
+                      KTextFormField2(
+                        controller: accNumber,
+                        hintText: AppStrings.accountNumber,
+                        enabled: isUpdate.value,
+                        onChanged: (value) =>
+                            newBankDetail.value.copyWith(accNum: value),
+                      ),
+                    ],
+                  ),
+                ),
+                gap24,
+                AppStrings.otherPaymentMethod.text.lg.make().objectCenterLeft(),
+                gap8,
+                ContainerBGWhiteSlideFromRight(
+                  padding: paddingV20,
+                  child: Column(
+                    children: [
+                      OtherPaymentSection(
+                        isUpdate: isUpdate,
+                        title: "BKash",
+                        image: Images.bkashLogo,
+                        number: otherAcc.bkashNum,
+                        controller: bkash,
+                      ),
+                      gap16,
+                      OtherPaymentSection(
+                        isUpdate: isUpdate,
+                        title: "Nagad",
+                        image: Images.nagadLogo,
+                        number: otherAcc.nagadNum,
+                        controller: nagad,
+                      ),
+                    ],
+                  ),
+                ),
+                gap20,
+                Visibility(
+                  visible: !state.user.isPaymentUpdate,
+                  replacement: KElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        barrierLabel: "Barrier",
+                        useSafeArea: true,
+                        builder: (context) => const OtpCheckWidget(),
+                      );
+                    },
+                    text: 'Confirm OTP',
+                    isSecondary: false,
+                  ),
+                  child: Visibility(
+                    visible: isUpdate.value,
+                    child: KFilledButton(
+                      text: "Send Update Request",
+                      onPressed: isUpdate.value
+                          ? () {
+                              ref
+                                  .read(authProvider.notifier)
+                                  .updatePayment(
+                                    PaymentUpdateBody(
+                                      bankAccount: BankAccountModel(
+                                        accName: accNumber.text,
+                                        accNum: accNumber.text,
+                                        bankName: bankName.text,
+                                        branch: branchName.text,
+                                        routingNum: routingNum.text,
+                                      ),
+                                      othersAccount: OthersAccountModel(
+                                        bkashNum: bkash.text,
+                                        nagadNum: nagad.text,
+                                      ),
+                                    ),
+                                  )
+                                  .then((value) {
+                                return value ? isUpdate.value = !value : null;
+                              });
+                            }
+                          : null,
+                    ),
+                  ),
+                ),
+                gap36,
+              ],
+            ),
           ),
         ),
       ),

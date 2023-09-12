@@ -1,13 +1,11 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import '../../../application/parcel/parcel_provider.dart';
 import '../../../utils/utils.dart';
+import '../../widgets/parcel_shimmer.dart';
 import '../../widgets/widgets.dart';
 
 class AllParcel extends HookConsumerWidget {
@@ -20,91 +18,48 @@ class AllParcel extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final loading = useState(false);
-    final state = ref.watch(parcelProvider);
+    return RefreshIndicator(
+      onRefresh: () =>
+          ref.refresh(fetchAllTypeParcelProvider(type: listType).future),
+      child: ListView.custom(
+        padding: padding16,
+        childrenDelegate: SliverChildBuilderDelegate(
+          (context, index) {
+            const pageSize = 10;
 
-    final refreshController = useMemoized<RefreshController>(() {
-      return RefreshController();
-    }, const []);
+            final page = index ~/ pageSize + 1;
+            final indexInPage = index % pageSize;
+            final parcelResponse = ref.watch(
+              fetchAllTypeParcelProvider(
+                type: listType,
+                page: page,
+              ),
+            );
 
-    ref.listen(parcelProvider, (previous, next) {
-      if (previous!.loading == false && next.loading) {
-        BotToast.showLoading();
-        loading.value = true;
-      }
-      if (previous.loading == true && next.loading == false) {
-        BotToast.closeAllLoading();
-        loading.value = false;
-      }
-    });
+            return parcelResponse.when(
+              data: (data) {
+                if (indexInPage >= data.data.length) return null;
 
-    useEffect(() {
-      Future.microtask(() => ref
-          .read(parcelProvider.notifier)
-          .fetchCategorizedParcel(type: listType));
-      return () => BotToast.closeAllLoading();
-    }, const []);
-
-    return SmartRefresher(
-      controller: refreshController,
-      onRefresh: () => ref
-          .read(parcelProvider.notifier)
-          .fetchCategorizedParcel(type: listType)
-          .then((value) => refreshController.refreshCompleted()),
-      child: KListViewSeparated(
-        gap: 16,
-        padding: padding0,
-        alternateWidget: "No order placed yet!"
-            .text
-            .caption(context)
-            .make()
-            .objectCenter()
-            .box
-            .height(1.sh)
-            .make(),
-        itemBuilder: (context, index) {
-          final parcel = listType == ParcelRegularStatus.all
-              ? state.allParcel[index]
-              : listType == ParcelRegularStatus.pending
-                  ? state.pendingParcel[index]
-                  : listType == ParcelRegularStatus.pickup
-                      ? state.pickupParcel[index]
-                      : listType == ParcelRegularStatus.shipping
-                          ? state.shippingParcel[index]
-                          : listType == ParcelRegularStatus.shipped
-                              ? state.shippedParcel[index]
-                              : listType == ParcelRegularStatus.dropoff
-                                  ? state.dropoffParcel[index]
-                                  : listType == ParcelRegularStatus.returns
-                                      ? state.returnParcel[index]
-                                      : listType == ParcelRegularStatus.cancel
-                                          ? state.cancelParcel[index]
-                                          : state.allParcel[index];
-
-          return DeliveryListTile(parcel: parcel);
-        },
-        itemCount: listType == ParcelRegularStatus.all
-            ? state.allParcel.length
-            : listType == ParcelRegularStatus.pending
-                ? state.pendingParcel.length
-                : listType == ParcelRegularStatus.pickup
-                    ? state.pickupParcel.length
-                    : listType == ParcelRegularStatus.shipping
-                        ? state.shippingParcel.length
-                        : listType == ParcelRegularStatus.shipped
-                            ? state.shippedParcel.length
-                            : listType == ParcelRegularStatus.dropoff
-                                ? state.dropoffParcel.length
-                                : listType == ParcelRegularStatus.returns
-                                    ? state.returnParcel.length
-                                    : listType == ParcelRegularStatus.cancel
-                                        ? state.cancelParcel.length
-                                        : state.allParcel.length,
-        separator: KDivider(
-          color: ColorPalate.bg200,
-          thickness: 2.2.h,
+                final parcel = data.data[indexInPage];
+                return Column(
+                  children: [
+                    DeliveryListTile(parcel: parcel),
+                    KDivider(
+                      color: ColorPalate.bg200,
+                      thickness: 2.2.h,
+                    )
+                  ],
+                );
+              },
+              error: (err, stack) {
+                Logger.e(err);
+                return Text('Error $err');
+              },
+              loading: () => const RecentParcelShimmerWidget(),
+            );
+          },
         ),
-      ).box.white.roundedSM.make().p16(),
+      ),
     );
   }
 }

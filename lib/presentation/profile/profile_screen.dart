@@ -1,3 +1,5 @@
+import 'package:courier_merchent_app/domain/auth/model/bank_account_model.dart';
+import 'package:courier_merchent_app/domain/auth/model/other_account_model.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/charge_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,6 @@ class ProfileScreen extends HookConsumerWidget {
     // final localState = ref.watch(appLocalProvider);
     // final isLoggedIn = ref.watch(loggedInProvider).loggedIn;
 
-    final isEditable = useState(!state.user.isApproved);
     final refreshController = useMemoized(
         () => RefreshController(initialLoadStatus: LoadStatus.canLoading));
 
@@ -72,8 +73,13 @@ class ProfileScreen extends HookConsumerWidget {
                     ProfileOptionsItem(
                       leading: Bootstrap.bank2,
                       title: AppStrings.bankDetail,
-                      secondaryTrailing: const Icon(Icons.warning_rounded)
-                          .iconColor(ColorPalate.warning),
+                      secondaryTrailing:
+                          state.user.bankAccount == BankAccountModel.init() &&
+                                  state.user.othersAccount ==
+                                      OthersAccountModel.init()
+                              ? const Icon(Icons.warning_rounded)
+                                  .iconColor(ColorPalate.warning)
+                              : null,
                       onTap: () => context.push(BankDetailsScreen.route),
                     ),
                     KDivider(height: 36.h),

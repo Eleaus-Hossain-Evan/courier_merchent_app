@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../domain/parcel/model/parcel_model.dart';
 import '../../utils/utils.dart';
 import '../widgets/widgets.dart';
 
@@ -18,6 +17,7 @@ class ParcelListScreen extends HookConsumerWidget {
     final tabController =
         useTabController(initialLength: ParcelRegularStatus.values.length);
     return Scaffold(
+      backgroundColor: ColorPalate.bg100,
       appBar: KAppBar(
         titleText: 'Your Parcel List',
         titleTextStyle: const TextStyle(color: ColorPalate.white),
