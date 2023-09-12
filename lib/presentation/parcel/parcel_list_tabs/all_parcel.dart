@@ -55,7 +55,7 @@ class AllParcel extends HookConsumerWidget {
                 Logger.e(err);
                 return Text('Error $err');
               },
-              loading: () => const RecentParcelShimmerWidget(),
+              loading: () => const RecentParcelShimmerWidget(length: 1),
             );
           },
         ),
