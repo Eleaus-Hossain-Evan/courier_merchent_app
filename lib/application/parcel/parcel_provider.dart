@@ -168,20 +168,11 @@ FutureOr<FetchAllParcelResponse> createBulkParcel(CreateBulkParcelRef ref,
 @riverpod
 class FetchAllTypeParcel extends _$FetchAllTypeParcel {
   @override
-  Future<FetchAllParcelResponse> build(
-      {ParcelRegularStatus type = ParcelRegularStatus.all,
-      int page = 1,
-      int limit = 10}) async {
-    // final data = await http.post(
-    //   Uri.parse(
-    //       "https://api.courier.b2gsoft.xyz/api/v1/parcel/fetch-all-parcel-by-merchant?page=$page&limit=$limit"),
-    //   // uri,
-    //   body: {"status": type.value},
-    // );
-
-    // Logger.i(data.body);
-    // return FetchAllParcelResponse.fromJson(data.body);
-
+  Future<FetchAllParcelResponse> build({
+    ParcelRegularStatus type = ParcelRegularStatus.all,
+    int page = 1,
+    int limit = 10,
+  }) async {
     final result = await ParcelRepo()
         .fetchParcelList(type: type, limit: limit, page: page);
 

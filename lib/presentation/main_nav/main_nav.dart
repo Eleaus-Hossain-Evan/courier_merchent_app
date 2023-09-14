@@ -10,6 +10,7 @@ import '../../application/auth/auth_provider.dart';
 import '../../utils/utils.dart';
 import '../home/home_screen.dart';
 import '../parcel/parcel_list_screen.dart';
+import '../payment/payment_screen.dart';
 import '../profile/profile_screen.dart';
 
 final bottomNavigatorKey = GlobalKey();
@@ -25,6 +26,7 @@ class MainNav extends HookConsumerWidget {
     final navWidget = [
       const HomeScreen(),
       const ParcelListScreen(),
+      const PaymentScreen(),
       const ProfileScreen(),
     ];
 
@@ -70,6 +72,15 @@ class MainNav extends HookConsumerWidget {
                       : ColorPalate.black600,
                 ),
                 label: AppStrings.parcel,
+              ),
+              NavigationDestination(
+                icon: Icon(
+                  FontAwesome.coins,
+                  color: navIndex.value == 2
+                      ? context.colors.primary
+                      : ColorPalate.black600,
+                ),
+                label: AppStrings.payment,
               ),
               NavigationDestination(
                 icon: Icon(

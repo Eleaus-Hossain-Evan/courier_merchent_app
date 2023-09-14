@@ -122,4 +122,8 @@ class AppStrings {
       "Your parcel has been created successfully";
   static String youCanTruckYourParcel(String id) =>
       "You can track your parcel with tracking id: #$id";
+
+  //#----------------  Payment ----------------
+  static const String payment = "Payment";
+  static const String pendingPayment = "Pending Payment";
 }

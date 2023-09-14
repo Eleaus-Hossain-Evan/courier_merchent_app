@@ -48,6 +48,10 @@ class APIRoute {
   static const SINGLE_PARCEL = "${API_V1}parcel/fetch-single/";
   static const CREATE_BULK_PARCEL = "${API_V1}parcel/merchant/bulk";
 
+  //#<<----------------Payment------------------>>
+  static const PENDING_PAYMENT_LIST =
+      "${API_V1}account/merchant/pending-payment?";
+
   static const ORDER_CREATE = "";
 
   static const SUBMIT_REVIEW = "";
