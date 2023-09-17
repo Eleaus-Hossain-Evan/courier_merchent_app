@@ -1,9 +1,10 @@
-import 'package:courier_merchent_app/presentation/widgets/k_inkwell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import 'package:courier_merchent_app/presentation/widgets/k_inkwell.dart';
 
 import '../../domain/parcel/model/parcel_model.dart';
 import '../../utils/utils.dart';
@@ -16,10 +17,12 @@ class DeliveryListTile extends StatelessWidget {
     Key? key,
     this.leadingImage = Images.deliveryBoxList,
     required this.parcel,
+    this.isEditable = true,
   }) : super(key: key);
 
   final String leadingImage;
   final ParcelModel parcel;
+  final bool isEditable;
 
   @override
   Widget build(BuildContext context) {
@@ -122,12 +125,15 @@ class DeliveryListTile extends StatelessWidget {
                   ),
                 ],
               ).flexible(),
+
+              // parcel edit button (push to add parcel page for editing)
+
               Column(
                 mainAxisAlignment: mainSpaceAround,
                 mainAxisSize: mainMax,
                 children: [
                   Visibility(
-                    visible: parcel.merchantUpdate <= 0,
+                    visible: parcel.merchantUpdate <= 0 && isEditable,
                     child: SizedBox(
                       width: 48.w,
                       height: 28.h,

@@ -56,6 +56,7 @@ Future<T?> showAppModal<T>({
   BoxConstraints? constraints,
   double? elevation,
   Color? barrierColor,
+  Color? backgroundColor,
   bool isDismissible = true,
   bool enableDrag = true,
   AnimationController? transitionAnimationController,
@@ -71,5 +72,6 @@ Future<T?> showAppModal<T>({
     enableDrag: enableDrag,
     transitionAnimationController: transitionAnimationController,
     elevation: elevation,
+    backgroundColor: backgroundColor,
   );
 }

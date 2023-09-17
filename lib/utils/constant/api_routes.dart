@@ -51,6 +51,10 @@ class APIRoute {
   //#<<----------------Payment------------------>>
   static const PENDING_PAYMENT_LIST =
       "${API_V1}account/merchant/pending-payment?";
+  static const HISTORY_PAYMENT_LIST =
+      "${API_V1}account/merchant/sending-merchant-payment-history?";
+  static const SINGLE_HISTORY_PAYMENT =
+      "${API_V1}account/merchant/view/sending-merchant-payment-history/";
 
   static const ORDER_CREATE = "";
 

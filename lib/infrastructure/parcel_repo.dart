@@ -84,7 +84,13 @@ class ParcelRepo {
     int limit = 10,
   }) async {
     final data = await api.post(
-      body: {"status": type.value},
+      body: {
+        "status": type.value,
+        "serialId": "",
+        "customerPhone": "",
+        "startTime": "",
+        "endTime": ""
+      },
       fromData: (json) => FetchAllParcelResponse.fromMap(json),
       endPoint: "${APIRoute.FETCH_ALL_PARCEL}page=$page&limit=$limit",
       withToken: true,

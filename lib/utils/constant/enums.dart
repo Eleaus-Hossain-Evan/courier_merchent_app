@@ -20,3 +20,5 @@ enum ParcelRegularStatus {
   returns,
   cancel
 }
+
+enum PaymentTab { payment, history }

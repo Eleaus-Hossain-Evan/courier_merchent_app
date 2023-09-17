@@ -1,14 +1,13 @@
-import 'package:courier_merchent_app/application/payment/payment_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../utils/utils.dart';
 import '../widgets/widgets.dart';
+import 'widgets/history_payment.dart';
+import 'widgets/pending_payment.dart';
 
 class PaymentScreen extends HookConsumerWidget {
   static const route = '/payment';
@@ -20,82 +19,76 @@ class PaymentScreen extends HookConsumerWidget {
     final totalPage = useState(0);
     final count = useState(0);
 
-    final refreshController = useMemoized(() => RefreshController());
-    return Container(
-      color: ColorPalate.bg100,
-      height: 1.sh,
-      width: 1.sw,
-      child: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            centerTitle: true,
-            title: AppStrings.payment.text.bold.white.xl.make(),
-            backgroundColor: context.colors.primary,
-            floating: true,
-            pinned: true,
-          ),
-          SliverPersistentHeader(
-            delegate: TotalDeliverySection(
+    final tabController =
+        useTabController(initialLength: PaymentTab.values.length);
+
+    return Scaffold(
+      appBar: KAppBar(
+        titleText: AppStrings.payment,
+        backgroundColor: context.colors.primary,
+        titleTextStyle: const TextStyle(color: Colors.white),
+      ),
+      body: ColoredBox(
+        color: context.colors.primary,
+        child: Column(
+          children: [
+            TotalDeliverySection(
               totalDelivery: count.value,
             ),
-          ),
-          SliverGap(16.h),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                const pageSize = 10;
-
-                final page = index ~/ pageSize + 1;
-                final indexInPage = index % pageSize;
-                final parcelResponse = ref.watch(
-                  getPendingPaymentListProvider(
-                    page: page,
-                  ),
-                );
-                return parcelResponse.when(
-                  data: (data) {
-                    if (indexInPage >= data.data.length) return null;
-
-                    final parcel = data.data[indexInPage];
-                    return Column(
-                      children: [
-                        DeliveryListTile(parcel: parcel),
-                        KDivider(
-                          color: ColorPalate.bg200,
-                          thickness: 2.2.h,
-                        )
-                      ],
-                    );
-                  },
-                  error: (err, stack) {
-                    Logger.e(err);
-                    return Text('Error $err');
-                  },
-                  loading: () => const CircularProgressIndicator(),
-                );
-              },
+            gap16,
+            TabBar(
+              padding: paddingH16,
+              labelStyle: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 12.sp,
+                letterSpacing: 1.2,
+              ),
+              unselectedLabelStyle: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 12.sp,
+                letterSpacing: 1.2,
+              ),
+              unselectedLabelColor: ColorPalate.white,
+              controller: tabController,
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  25.0,
+                ),
+                color: ColorPalate.white,
+              ),
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicatorPadding: EdgeInsets.symmetric(vertical: 4.w),
+              tabs: PaymentTab.values
+                  .map((e) => Tab(
+                        text: e.name.capitalized,
+                      ))
+                  .toList(),
             ),
-          ),
-          // SliverFillRemaining(
-          //   child: ListView.custom(
-          //     childrenDelegate: SliverChildBuilderDelegate(
-          //       (context, index) => null,
-          //     ),
-          //   ),
-          // ),
-        ],
+            Expanded(
+              child: ColoredBox(
+                color: ColorPalate.bg200,
+                child: TabBarView(
+                  controller: tabController,
+                  children: [
+                    PendingPayment(count: count),
+                    HistoryPayment(count: count),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class TotalDeliverySection extends SliverPersistentHeaderDelegate {
+class TotalDeliverySection extends StatelessWidget {
   final int totalDelivery;
 
-  TotalDeliverySection({required this.totalDelivery});
+  const TotalDeliverySection({super.key, required this.totalDelivery});
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: mainSpaceBetween,
       children: [
@@ -113,14 +106,4 @@ class TotalDeliverySection extends SliverPersistentHeaderDelegate {
         .color(context.colors.primary)
         .make();
   }
-
-  @override
-  double get maxExtent => 60;
-
-  @override
-  double get minExtent => 60;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
 }

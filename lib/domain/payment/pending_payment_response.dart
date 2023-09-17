@@ -57,7 +57,9 @@ class PendingPaymentResponse extends Equatable {
 
   factory PendingPaymentResponse.fromMap(Map<String, dynamic> map) {
     return PendingPaymentResponse(
-      paymentDetails: PaymentDetails.fromMap(map['paymentDetails']),
+      paymentDetails: map['paymentDetails'] != null
+          ? PaymentDetails.fromMap(map['paymentDetails'])
+          : PaymentDetails.init(),
       metaData: MetaDataModel.fromMap(map['metaData']),
       data: List<ParcelModel>.from(
           map['data']?.map((x) => ParcelModel.fromMap(x)) ?? const []),
