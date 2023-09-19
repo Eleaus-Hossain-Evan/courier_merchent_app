@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:courier_merchent_app/presentation/auth/reset_password/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,15 +46,7 @@ class LoginScreen extends HookConsumerWidget {
             crossAxisAlignment: crossStart,
             children: [
               Gap(80.h),
-              Images.logo.assetImage(width: .6.sw).centered(),
-              "Merchant"
-                  .text
-                  .xl3
-                  .bold
-                  .colorPrimary(context)
-                  .italic
-                  .makeCentered(),
-              divider.w(.3.sw).centered(),
+              const AppLogoWidget(),
               gap36,
               Text(
                 AppStrings.login.toTitleCase(),
@@ -66,6 +59,7 @@ class LoginScreen extends HookConsumerWidget {
               ),
               gap24,
               KTextFormField2(
+                containerPadding: padding0,
                 controller: emailPhoneController,
                 focusNode: phoneFocus,
                 keyboardType: TextInputType.text,
@@ -73,6 +67,7 @@ class LoginScreen extends HookConsumerWidget {
               ),
               gap16,
               KTextFormField2(
+                containerPadding: padding0,
                 controller: passwordController,
                 focusNode: passwordFocus,
                 keyboardType: TextInputType.text,
@@ -145,7 +140,9 @@ class LoginScreen extends HookConsumerWidget {
                             color: ColorPalate.secondary200,
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          context.push(ResetPasswordScreen.route);
+                        },
                       ),
                     ),
                   ],

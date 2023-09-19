@@ -4,6 +4,8 @@ import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
 import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
 import 'package:courier_merchent_app/domain/auth/password_update_body.dart';
 import 'package:courier_merchent_app/domain/auth/payment_update_body.dart';
+import 'package:courier_merchent_app/domain/auth/verify-otp-model.dart';
+import 'package:courier_merchent_app/domain/simple_response.dart';
 
 import '../domain/auth/get_all_shop_response.dart';
 import '../domain/auth/login_body.dart';
@@ -29,11 +31,22 @@ class AuthRepo {
     return data;
   }
 
-  Future<Either<CleanFailure, AuthResponse>> signUp(SignUpBody body) async {
+  Future<Either<CleanFailure, SimpleResponse>> signUp(SignUpBody body) async {
     final data = await api.post(
-      fromData: (json) => AuthResponse.fromMap(json),
+      fromData: (json) => SimpleResponse.fromMap(json),
       endPoint: APIRoute.SIGN_UP,
       body: body.toMap(),
+      withToken: false,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, AuthResponse>> verifySignUp(String otp) async {
+    final data = await api.post(
+      fromData: (json) => AuthResponse.fromMap(json),
+      endPoint: APIRoute.VERIFY_SIGN_UP,
+      body: {"otpCode": otp},
       withToken: false,
     );
 
@@ -163,12 +176,46 @@ class AuthRepo {
     return data;
   }
 
-  Future<Either<CleanFailure, AuthResponse>> checkOtp(String otp) async {
+  Future<Either<CleanFailure, AuthResponse>> checkOtpForPayment(
+      String otp) async {
     return await api.post(
       body: {"otpCode": otp},
       fromData: (json) => AuthResponse.fromMap(json),
       endPoint: APIRoute.CHECK_OTP,
       withToken: true,
     );
+  }
+
+  Future<Either<CleanFailure, SimpleResponse>> forgotPasswordPhone(
+      String phone) async {
+    final data = await api.post(
+      body: {"phone": phone},
+      fromData: (json) => SimpleResponse.fromMap(json),
+      endPoint: APIRoute.FORGOT_PASSWORD_GET_OTP,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, VerifyOTPModel>> forgotPasswordVerifyOtp(
+      String otp) async {
+    final data = await api.post(
+      body: {"otpCode": otp},
+      fromData: (json) => VerifyOTPModel.fromMap(json),
+      endPoint: APIRoute.FORGOT_PASSWORD_VERIFY_OTP,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, AuthResponse>> resetPassword(
+      String password, String token) async {
+    final data = await api.post(
+      body: {"password": password, "token": token},
+      fromData: (json) => AuthResponse.fromMap(json),
+      endPoint: APIRoute.RESET_PASSWORD,
+    );
+
+    return data;
   }
 }

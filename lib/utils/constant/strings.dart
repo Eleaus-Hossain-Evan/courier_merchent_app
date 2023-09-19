@@ -77,6 +77,8 @@ class AppStrings {
       "Press the login button for logged into the app";
   static const String remember = "Remember Me";
   static const String forgotPassword = "Forgot Password";
+  static const String forgotBelowText =
+      "Enter you number to get OTP for resetting you password";
   static const String dontHaveAccount = "Don't have account yet?";
   static const String alreadyHaveAccount = "Already have an Account";
   static const String createAccount = "Create Account";
@@ -85,6 +87,7 @@ class AppStrings {
       "By clicking Sign Up, you agree to our Terms of Use and our Privacy Policy.";
   static const String reTypePassword = "Re-Type Password";
   static const String notMatch = "Password doesn't match";
+  static const String sendOtp = "Send OTP";
 
   //#----------------  Parcel ----------------
   static const String parcel = "Parcel";

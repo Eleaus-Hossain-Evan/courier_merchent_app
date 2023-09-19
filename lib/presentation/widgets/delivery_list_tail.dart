@@ -26,6 +26,9 @@ class DeliveryListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ParcelRegularStatus.values.toList();
+// final updatable = parcel.regularStatus.index
+
     return KInkWell(
       onTap: () =>
           context.push("${TrackParcelScreen.route}/${parcel.serialId}"),

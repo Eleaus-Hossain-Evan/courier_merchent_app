@@ -10,7 +10,8 @@ class APIRoute {
   static const String API_V1 = "api/v1/";
 
   //#<<---------------- AUTH ------------------>>
-  static const String SIGN_UP = "${API_V1}merchant/registration";
+  static const String SIGN_UP = "${API_V1}merchant/signup";
+  static const String VERIFY_SIGN_UP = "${API_V1}merchant/verify-signup";
   static const String LOGIN = "${API_V1}merchant/login";
   static const String PROFILE_VIEW =
       "${API_V1}merchant/single-fetch-by-himself";
@@ -37,6 +38,11 @@ class APIRoute {
   static const String PROFILE_UPDATE = "${API_V1}merchant/profile/update";
   static const String PAYMENT_UPDATE = "${API_V1}merchant/payment/update";
   static const String CHECK_OTP = "${API_V1}merchant/confirm-payment-otp";
+  static const String FORGOT_PASSWORD_GET_OTP =
+      "${API_V1}merchant/forget-password";
+  static const String FORGOT_PASSWORD_VERIFY_OTP =
+      "${API_V1}merchant/verify-reset-otp";
+  static const String RESET_PASSWORD = "${API_V1}merchant/reset-password";
 
   //#<<----------------Parcel------------------>>
   static const WEIGHT_CHARGE = "${API_V1}weight-charge/fetch-all";

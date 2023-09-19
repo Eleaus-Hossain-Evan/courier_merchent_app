@@ -30,7 +30,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(user: user);
   }
 
-  void signUp(SignUpBody body) async {
+  Future<bool> signUp(SignUpBody body) async {
+    bool success = false;
     state = state.copyWith(loading: true);
 
     final res = await repo.signUp(body);
@@ -42,12 +43,28 @@ class AuthNotifier extends StateNotifier<AuthState> {
       },
       (r) {
         showToast(r.message);
-        // ref
-        //     .read(loggedInProvider.notifier)
-        //     .updateAuthCache(token: r.data.token, user: r.data);
-        ref.read(routerProvider).pop();
-
+        success = r.success;
         return state.copyWith(loading: false);
+      },
+    );
+
+    return success;
+  }
+
+  Future<void> verifySignUp(String otp) async {
+    state = state.copyWith(loading: true);
+
+    final result = await repo.verifySignUp(otp);
+
+    state = result.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return state = state.copyWith(failure: l, loading: false);
+      },
+      (r) {
+        showToast(r.message);
+        ref.read(routerProvider).pop();
+        return state = state.copyWith(user: r.data, loading: false);
       },
     );
   }
@@ -193,7 +210,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> checkOtp(String otp) async {
     state = state.copyWith(loading: true);
-    await repo.checkOtp(otp).then((result) {
+    await repo.checkOtpForPayment(otp).then((result) {
       state = result.fold(
         (l) {
           showErrorToast(l.error.message);
@@ -206,5 +223,64 @@ class AuthNotifier extends StateNotifier<AuthState> {
         },
       );
     });
+  }
+
+  Future<bool> forgotPassword(String phone) async {
+    bool success = false;
+
+    state = state.copyWith(loading: true);
+    final result = await repo.forgotPasswordPhone(phone);
+
+    state = result.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return state = state.copyWith(failure: l, loading: false);
+      },
+      (r) {
+        showToast(r.message);
+        success = r.success;
+        return state = state.copyWith(loading: false);
+      },
+    );
+
+    return success;
+  }
+
+  Future<String> verifyOtp(String otp) async {
+    String token = '';
+
+    state = state.copyWith(loading: true);
+    final result = await repo.forgotPasswordVerifyOtp(otp);
+
+    state = result.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return state = state.copyWith(failure: l, loading: false);
+      },
+      (r) {
+        showToast(r.message);
+        token = r.token;
+        return state = state.copyWith(loading: false);
+      },
+    );
+
+    return token;
+  }
+
+  Future<void> resetPassword(String password, String token) async {
+    state = state.copyWith(loading: true);
+    final result = await repo.resetPassword(password, token);
+
+    state = result.fold(
+      (l) {
+        showErrorToast(l.error.message);
+        return state = state.copyWith(failure: l, loading: false);
+      },
+      (r) {
+        showToast(r.message);
+        ref.read(routerProvider).pop();
+        return state = state.copyWith(loading: false);
+      },
+    );
   }
 }

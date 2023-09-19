@@ -5,14 +5,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pinput/pinput.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../../../../application/auth/auth_provider.dart';
-import '../../../../../utils/utils.dart';
-import '../../../../widgets/widgets.dart';
+import '../../utils/utils.dart';
+import 'widgets.dart';
 
 class OtpCheckWidget extends HookConsumerWidget {
   const OtpCheckWidget({
     super.key,
+    required this.onTapOtpCheck,
   });
+
+  final Function(String) onTapOtpCheck;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -83,9 +85,9 @@ class OtpCheckWidget extends HookConsumerWidget {
             submittedPinTheme: submittedPinTheme,
             errorPinTheme: errorPinTheme,
             // enabled: !isTimerFinished.value,
-            validator: (s) {
-              return s == "1111111" ? null : 'Pin is incorrect';
-            },
+            // validator: (s) {
+            //   return s == "1111111" ? null : 'Pin is incorrect';
+            // },
             pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
             androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
             hapticFeedbackType: HapticFeedbackType.lightImpact,
@@ -109,9 +111,7 @@ class OtpCheckWidget extends HookConsumerWidget {
           ),
           gap16,
           KElevatedButton(
-            onPressed: () {
-              ref.read(authProvider.notifier).checkOtp(otpController.text);
-            },
+            onPressed: () => onTapOtpCheck(otpController.text),
             text: "Check OTP",
             isSecondary: true,
           ),

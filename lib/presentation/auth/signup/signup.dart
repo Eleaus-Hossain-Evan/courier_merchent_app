@@ -25,6 +25,7 @@ class SignupScreen extends HookConsumerWidget {
     final nameController = useTextEditingController();
     final emailController = useTextEditingController();
     final phoneController = useTextEditingController();
+    final addressController = useTextEditingController();
     final passwordController = useTextEditingController();
     final rePasswordController = useTextEditingController();
 
@@ -32,6 +33,7 @@ class SignupScreen extends HookConsumerWidget {
     final lastNameFocusNode = useFocusNode();
     final emailFocusNode = useFocusNode();
     final phoneFocusNode = useFocusNode();
+    final addressFocusNode = useFocusNode();
     final referralFocusNode = useFocusNode();
     final passwordFocusNode = useFocusNode();
     final rePasswordFocusNode = useFocusNode();
@@ -54,9 +56,29 @@ class SignupScreen extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: crossStart,
               children: [
-                Text(
-                  AppStrings.signUp.toTitleCase(),
-                  style: CustomTextStyle.textStyle32w600,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        AppStrings.signUp.toTitleCase(),
+                        style: CustomTextStyle.textStyle32w600,
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Images.logo.assetImage(width: .25.sw).centered(),
+                        "Merchant"
+                            .text
+                            .sm
+                            .bold
+                            .colorPrimary(context)
+                            .italic
+                            .makeCentered(),
+                        divider.w(.1.sw).centered(),
+                      ],
+                    ).hero('app-logo'),
+                    gap18,
+                  ],
                 ),
                 gap6,
                 Padding(
@@ -72,30 +94,38 @@ class SignupScreen extends HookConsumerWidget {
                 ),
                 gap36,
                 KTextFormField2(
+                  containerPadding: padding0,
                   focusNode: firstNameFocusNode,
                   hintText: AppStrings.name,
                   isLabel: true,
                   controller: nameController,
                   textInputAction: TextInputAction.next,
-                  validator: ValidationBuilder().maxLength(15).build(),
+                  validator:
+                      ValidationBuilder().maxLength(25).required().build(),
                   onFieldSubmitted: (value) {
                     lastNameFocusNode.requestFocus();
                   },
                 ),
                 gap16,
                 KTextFormField2(
+                  containerPadding: padding0,
                   hintText: AppStrings.email,
                   isLabel: true,
                   controller: emailController,
                   focusNode: emailFocusNode,
                   keyboardType: TextInputType.emailAddress,
-                  validator: ValidationBuilder().maxLength(30).email().build(),
+                  validator: ValidationBuilder()
+                      .maxLength(30)
+                      .email()
+                      .required()
+                      .build(),
                   onFieldSubmitted: (value) {
                     phoneFocusNode.requestFocus();
                   },
                 ),
                 gap16,
                 KTextFormField2(
+                  containerPadding: padding0,
                   hintText: AppStrings.phoneNumber,
                   isLabel: true,
                   controller: phoneController,
@@ -105,6 +135,7 @@ class SignupScreen extends HookConsumerWidget {
                       .maxLength(11)
                       .minLength(11)
                       .phone()
+                      .required()
                       .build(),
                   onFieldSubmitted: (value) {
                     referralFocusNode.requestFocus();
@@ -112,6 +143,20 @@ class SignupScreen extends HookConsumerWidget {
                 ),
                 gap16,
                 KTextFormField2(
+                  containerPadding: padding0,
+                  hintText: AppStrings.address,
+                  isLabel: true,
+                  controller: addressController,
+                  focusNode: addressFocusNode,
+                  keyboardType: TextInputType.phone,
+                  validator: ValidationBuilder().required().build(),
+                  onFieldSubmitted: (value) {
+                    referralFocusNode.requestFocus();
+                  },
+                ),
+                gap16,
+                KTextFormField2(
+                  containerPadding: padding0,
                   hintText: AppStrings.password,
                   isLabel: true,
                   controller: passwordController,
@@ -124,6 +169,7 @@ class SignupScreen extends HookConsumerWidget {
                 ),
                 gap16,
                 KTextFormField2(
+                  containerPadding: padding0,
                   controller: rePasswordController,
                   focusNode: rePasswordFocusNode,
                   hintText: AppStrings.reTypePassword,
@@ -138,7 +184,7 @@ class SignupScreen extends HookConsumerWidget {
                     referralFocusNode.requestFocus();
                   },
                 ),
-                gap24,
+                gap12,
                 Text(
                   AppStrings.signUpPrivacyPolicy,
                   textAlign: TextAlign.center,
@@ -149,23 +195,41 @@ class SignupScreen extends HookConsumerWidget {
                     color: ColorPalate.black600,
                   ),
                 ),
-                gap8,
+                gap12,
                 KFilledButton(
                   onPressed: () async {
                     FocusManager.instance.primaryFocus?.unfocus();
-                    ref.read(authProvider.notifier).signUp(
+                    ref
+                        .read(authProvider.notifier)
+                        .signUp(
                           SignUpBody(
                             name: nameController.text,
                             email: emailController.text,
                             phone: phoneController.text,
                             password: passwordController.text,
-                            address: '',
+                            address: addressController.text,
+                          ),
+                        )
+                        .then((value) {
+                      if (value) {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          barrierLabel: "Barrier",
+                          useSafeArea: true,
+                          builder: (context) => OtpCheckWidget(
+                            onTapOtpCheck: (otp) => ref
+                                .read(authProvider.notifier)
+                                .verifySignUp(otp)
+                                .then((value) => Navigator.pop(context)),
                           ),
                         );
+                      }
+                    });
                   },
                   text: AppStrings.signUp,
                 ),
-                gap24,
+                gap16,
                 Center(
                   child: Row(
                     mainAxisAlignment: mainCenter,
@@ -209,7 +273,7 @@ class SignupScreen extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                gap28,
+                gap16,
                 Align(
                   alignment: Alignment.center,
                   child: Text.rich(
@@ -234,7 +298,7 @@ class SignupScreen extends HookConsumerWidget {
                             fontWeight: FontWeight.w700,
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => context.go(LoginScreen.route),
+                            ..onTap = () => context.pop(),
                         )
                       ],
                     ),

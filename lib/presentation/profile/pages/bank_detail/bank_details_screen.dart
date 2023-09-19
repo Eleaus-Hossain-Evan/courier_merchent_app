@@ -15,7 +15,7 @@ import '../../../../domain/auth/model/bank_account_model.dart';
 import '../../../../domain/auth/payment_update_body.dart';
 import '../../../../utils/utils.dart';
 import '../../../widgets/widgets.dart';
-import 'widgets/otp_check.dart';
+import '../../../widgets/otp_check.dart';
 
 enum DefaultPayment { bank, bkash, nagad, rocket, cod }
 
@@ -27,8 +27,6 @@ class BankDetailsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authProvider);
-
-    final otpController = useTextEditingController();
 
     final bankDetail = state.user.bankAccount;
 
@@ -187,7 +185,11 @@ class BankDetailsScreen extends HookConsumerWidget {
                         barrierDismissible: false,
                         barrierLabel: "Barrier",
                         useSafeArea: true,
-                        builder: (context) => const OtpCheckWidget(),
+                        builder: (context) => OtpCheckWidget(
+                          onTapOtpCheck: (otp) {
+                            ref.read(authProvider.notifier).checkOtp(otp);
+                          },
+                        ),
                       );
                     },
                     text: 'Confirm OTP',
