@@ -13,6 +13,7 @@ import '../presentation/auth/login/login.dart';
 import '../presentation/auth/reset_password/reset_password.dart';
 import '../presentation/auth/signup/signup.dart';
 import '../presentation/home/home_screen.dart';
+import '../presentation/home/parcel_filter_screen.dart';
 import '../presentation/main_nav/main_nav.dart';
 import '../presentation/notification/notification_screen.dart';
 import '../presentation/parcel/add_bulk_parcel/add_bulk_parcel_screen.dart';
@@ -190,6 +191,18 @@ class RouterNotifier extends ChangeNotifier {
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
             child: const ChargeScreen(),
+          ),
+        ),
+        GoRoute(
+          path: ParcelFilterScreen.route,
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: ParcelFilterScreen(
+              serialId: state.uri.queryParameters["serialId"] ?? "",
+              customerPhone: state.uri.queryParameters["customerPhone"] ?? "",
+              endTime: state.uri.queryParameters["endTime"] ?? "",
+              startTime: state.uri.queryParameters["startTime"] ?? "",
+            ),
           ),
         ),
       ];

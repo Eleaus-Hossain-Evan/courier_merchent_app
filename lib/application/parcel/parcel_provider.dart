@@ -110,20 +110,33 @@ class ParcelNotifier extends StateNotifier<ParcelState> {
     return success;
   }
 
-  Future<Either<CleanFailure, FetchAllParcelResponse>> fetchParcelList({
-    ParcelRegularStatus type = ParcelRegularStatus.all,
-    int page = 1,
-    int limit = 10,
-  }) async {
-    final result = await repo.fetchParcelList(
-      page: page,
-      limit: limit,
-      type: type,
-    );
+  // Future<Either<CleanFailure, FetchAllParcelResponse>> fetchParcelList({
+  //   ParcelRegularStatus type = ParcelRegularStatus.all,
+  //   int page = 1,
+  //   int limit = 10,
+  // }) async {
+  //   final result = await repo.fetchParcelList(
+  //     page: page,
+  //     limit: limit,
+  //     type: FetchParcelBody.init(),
+  //   );
 
-    return result;
-  }
+  //   return result;
+  // }
 }
+
+//  Fetching recent parcels for the home page bottom section
+@riverpod
+FutureOr<FetchAllParcelResponse> recentParcel(RecentParcelRef ref) async {
+  final result = await ParcelRepo().fetchParcelList();
+
+  return result.fold((l) {
+    showErrorToast(l.error.message);
+    return FetchAllParcelResponse.init();
+  }, (r) => r);
+}
+
+//   Fetching Parcel detail (full Parcel response)
 
 @riverpod
 class SingleParcel extends _$SingleParcel {
@@ -143,15 +156,7 @@ class SingleParcel extends _$SingleParcel {
   }
 }
 
-@riverpod
-FutureOr<FetchAllParcelResponse> recentParcel(RecentParcelRef ref) async {
-  final result = await ref.read(parcelProvider.notifier).fetchParcelList();
-  return result.fold((l) {
-    showErrorToast(l.error.message);
-    return FetchAllParcelResponse.init();
-  }, (r) => r);
-}
-
+//    Creating bulk parcel (Multiple Parcel)
 @riverpod
 FutureOr<FetchAllParcelResponse> createBulkParcel(CreateBulkParcelRef ref,
     {required MerchantInfoModel merchant, required String data}) async {
@@ -160,10 +165,9 @@ FutureOr<FetchAllParcelResponse> createBulkParcel(CreateBulkParcelRef ref,
     showErrorToast(l.error.message);
     return FetchAllParcelResponse.init();
   }, (r) => r);
-
-  // log(merchant.toJson());
-  // return FetchAllParcelResponse.init();
 }
+
+//    Fetching all Parcel with all Filtered option
 
 @riverpod
 class FetchAllTypeParcel extends _$FetchAllTypeParcel {
@@ -172,9 +176,19 @@ class FetchAllTypeParcel extends _$FetchAllTypeParcel {
     ParcelRegularStatus type = ParcelRegularStatus.all,
     int page = 1,
     int limit = 10,
+    String serialId = "",
+    String customerPhone = "",
+    String startTime = "",
+    String endTime = "",
   }) async {
-    final result = await ParcelRepo()
-        .fetchParcelList(type: type, limit: limit, page: page);
+    final result = await ParcelRepo().fetchParcelList(
+        status: type,
+        customerPhone: customerPhone,
+        serialId: serialId,
+        endTime: endTime,
+        startTime: startTime,
+        limit: limit,
+        page: page);
 
     Logger.i(result);
 

@@ -15,11 +15,12 @@ class ParcelStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color getColor() {
-      return status == ParcelRegularStatus.pending
-          ? context.colors.secondary
-          : status == ParcelRegularStatus.cancel
-              ? context.colors.error
-              : context.colors.primary;
+      return switch (status) {
+        ParcelRegularStatus.cancel => context.colors.error,
+        ParcelRegularStatus.hold => context.colors.secondary,
+        ParcelRegularStatus.pending => context.colors.secondary,
+        _ => context.colors.primary,
+      };
     }
 
     return VxCapsule(

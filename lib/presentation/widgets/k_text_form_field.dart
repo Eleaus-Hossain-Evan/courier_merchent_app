@@ -157,7 +157,7 @@ class KTextFormField2 extends HookConsumerWidget {
   const KTextFormField2({
     Key? key,
     this.controller,
-    required this.hintText,
+    this.hintText,
     this.textAlign = TextAlign.start,
     this.suffixIcon,
     this.readOnly = false,
@@ -182,7 +182,7 @@ class KTextFormField2 extends HookConsumerWidget {
   }) : super(key: key);
 
   final TextEditingController? controller;
-  final String hintText;
+  final String? hintText;
   final TextAlign textAlign;
   final Widget? suffixIcon;
   final bool readOnly, isLabel, enabled;

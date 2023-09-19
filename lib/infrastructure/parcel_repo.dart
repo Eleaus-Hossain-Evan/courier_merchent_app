@@ -79,17 +79,21 @@ class ParcelRepo {
   }
 
   Future<Either<CleanFailure, FetchAllParcelResponse>> fetchParcelList({
-    ParcelRegularStatus type = ParcelRegularStatus.all,
+    ParcelRegularStatus status = ParcelRegularStatus.all,
+    String serialId = "",
+    String customerPhone = "",
+    String startTime = "",
+    String endTime = "",
     int page = 1,
     int limit = 10,
   }) async {
     final data = await api.post(
       body: {
-        "status": type.value,
-        "serialId": "",
-        "customerPhone": "",
-        "startTime": "",
-        "endTime": ""
+        "status": status.value,
+        "serialId": serialId,
+        "customerPhone": customerPhone,
+        "startTime": startTime,
+        "endTime": endTime
       },
       fromData: (json) => FetchAllParcelResponse.fromMap(json),
       endPoint: "${APIRoute.FETCH_ALL_PARCEL}page=$page&limit=$limit",

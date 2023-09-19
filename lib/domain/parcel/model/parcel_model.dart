@@ -225,8 +225,9 @@ class ParcelModel extends Equatable {
           map['adminLogs']?.map((x) => StatusLog.fromMap(x)) ?? const []),
       serialId: map['serialId'] ?? '',
       qrCode: map['qrCode'] ?? '',
-      exchangeStatusLogs:
-          List<StatusLog>.from(map['exchangeStatusLogs'] ?? const []),
+      exchangeStatusLogs: List<StatusLog>.from(
+          map['exchangeStatusLogs']?.map((x) => StatusLog.fromMap(x)) ??
+              const []),
       createdAt: map['createdAt'] ?? '',
       updatedAt: map['updatedAt'] ?? '',
       sourceHub: map['sourceHub'] != null

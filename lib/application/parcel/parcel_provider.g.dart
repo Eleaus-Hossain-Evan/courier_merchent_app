@@ -6,7 +6,7 @@ part of 'parcel_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$recentParcelHash() => r'69cbc3834bd2172b15785e6bb0090c3ed148190f';
+String _$recentParcelHash() => r'124aaddea1754c11f1ea9422c51c4f5a601d0746';
 
 /// See also [recentParcel].
 @ProviderFor(recentParcel)
@@ -235,18 +235,26 @@ class SingleParcelProvider
 }
 
 String _$fetchAllTypeParcelHash() =>
-    r'1655c94c2c8cf834664d94faee55ba20403c277b';
+    r'74778d98271bd8c736c712e1fa235f9ed0e7d478';
 
 abstract class _$FetchAllTypeParcel
     extends BuildlessAutoDisposeAsyncNotifier<FetchAllParcelResponse> {
   late final ParcelRegularStatus type;
   late final int page;
   late final int limit;
+  late final String serialId;
+  late final String customerPhone;
+  late final String startTime;
+  late final String endTime;
 
   Future<FetchAllParcelResponse> build({
     ParcelRegularStatus type = ParcelRegularStatus.all,
     int page = 1,
     int limit = 10,
+    String serialId = "",
+    String customerPhone = "",
+    String startTime = "",
+    String endTime = "",
   });
 }
 
@@ -265,11 +273,19 @@ class FetchAllTypeParcelFamily
     ParcelRegularStatus type = ParcelRegularStatus.all,
     int page = 1,
     int limit = 10,
+    String serialId = "",
+    String customerPhone = "",
+    String startTime = "",
+    String endTime = "",
   }) {
     return FetchAllTypeParcelProvider(
       type: type,
       page: page,
       limit: limit,
+      serialId: serialId,
+      customerPhone: customerPhone,
+      startTime: startTime,
+      endTime: endTime,
     );
   }
 
@@ -281,6 +297,10 @@ class FetchAllTypeParcelFamily
       type: provider.type,
       page: provider.page,
       limit: provider.limit,
+      serialId: provider.serialId,
+      customerPhone: provider.customerPhone,
+      startTime: provider.startTime,
+      endTime: provider.endTime,
     );
   }
 
@@ -307,11 +327,19 @@ class FetchAllTypeParcelProvider extends AutoDisposeAsyncNotifierProviderImpl<
     this.type = ParcelRegularStatus.all,
     this.page = 1,
     this.limit = 10,
+    this.serialId = "",
+    this.customerPhone = "",
+    this.startTime = "",
+    this.endTime = "",
   }) : super.internal(
           () => FetchAllTypeParcel()
             ..type = type
             ..page = page
-            ..limit = limit,
+            ..limit = limit
+            ..serialId = serialId
+            ..customerPhone = customerPhone
+            ..startTime = startTime
+            ..endTime = endTime,
           from: fetchAllTypeParcelProvider,
           name: r'fetchAllTypeParcelProvider',
           debugGetCreateSourceHash:
@@ -326,13 +354,21 @@ class FetchAllTypeParcelProvider extends AutoDisposeAsyncNotifierProviderImpl<
   final ParcelRegularStatus type;
   final int page;
   final int limit;
+  final String serialId;
+  final String customerPhone;
+  final String startTime;
+  final String endTime;
 
   @override
   bool operator ==(Object other) {
     return other is FetchAllTypeParcelProvider &&
         other.type == type &&
         other.page == page &&
-        other.limit == limit;
+        other.limit == limit &&
+        other.serialId == serialId &&
+        other.customerPhone == customerPhone &&
+        other.startTime == startTime &&
+        other.endTime == endTime;
   }
 
   @override
@@ -341,6 +377,10 @@ class FetchAllTypeParcelProvider extends AutoDisposeAsyncNotifierProviderImpl<
     hash = _SystemHash.combine(hash, type.hashCode);
     hash = _SystemHash.combine(hash, page.hashCode);
     hash = _SystemHash.combine(hash, limit.hashCode);
+    hash = _SystemHash.combine(hash, serialId.hashCode);
+    hash = _SystemHash.combine(hash, customerPhone.hashCode);
+    hash = _SystemHash.combine(hash, startTime.hashCode);
+    hash = _SystemHash.combine(hash, endTime.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -353,6 +393,10 @@ class FetchAllTypeParcelProvider extends AutoDisposeAsyncNotifierProviderImpl<
       type: type,
       page: page,
       limit: limit,
+      serialId: serialId,
+      customerPhone: customerPhone,
+      startTime: startTime,
+      endTime: endTime,
     );
   }
 }

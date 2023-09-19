@@ -17,27 +17,20 @@ extension ParcelMaterialTypeExt on ParcelMaterialType {
 
 extension ParcelListTypeExt on ParcelRegularStatus {
   String get value {
-    switch (this) {
-      case ParcelRegularStatus.all:
-        return "all";
-      case ParcelRegularStatus.pending:
-        return "pending";
-      case ParcelRegularStatus.hold:
-        return "hold";
-      case ParcelRegularStatus.pickup:
-        return "pickup";
-      case ParcelRegularStatus.shipping:
-        return "shipping";
-      case ParcelRegularStatus.shipped:
-        return "shipped";
-      case ParcelRegularStatus.dropoff:
-        return "dropoff";
+    return switch (this) {
+      ParcelRegularStatus.all => "all",
+      ParcelRegularStatus.pending => "pending",
+      ParcelRegularStatus.hold => "hold",
+      ParcelRegularStatus.pickup => "pickup",
+      ParcelRegularStatus.shipping => "shipping",
+      ParcelRegularStatus.shipped => "shipped",
+      ParcelRegularStatus.dropoff => "dropoff",
       // case ParcelRegularStatus.partial:
       //   return "partial";
-      case ParcelRegularStatus.returns:
-        return "return";
-      case ParcelRegularStatus.cancel:
-        return "cancel";
-    }
+      ParcelRegularStatus.returns => "return",
+      ParcelRegularStatus.cancel => "cancel",
+      // ignore: unreachable_switch_case
+      _ => "",
+    };
   }
 }
