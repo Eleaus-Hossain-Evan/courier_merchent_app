@@ -132,7 +132,6 @@ class PaymentHistoryDetails extends HookConsumerWidget {
                         data.data.parcels.length,
                         (index) => DeliveryListTile(
                           parcel: data.data.parcels[index],
-                          isEditable: false,
                         ),
                       ),
                     ],

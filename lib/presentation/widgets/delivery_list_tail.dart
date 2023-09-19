@@ -17,17 +17,19 @@ class DeliveryListTile extends StatelessWidget {
     Key? key,
     this.leadingImage = Images.deliveryBoxList,
     required this.parcel,
-    this.isEditable = true,
   }) : super(key: key);
 
   final String leadingImage;
   final ParcelModel parcel;
-  final bool isEditable;
 
   @override
   Widget build(BuildContext context) {
-    ParcelRegularStatus.values.toList();
-// final updatable = parcel.regularStatus.index
+    final isEditable = switch (parcel.regularStatus) {
+      ParcelRegularStatus.dropoff => false,
+      ParcelRegularStatus.cancel => false,
+      ParcelRegularStatus.returns => false,
+      _ => true,
+    };
 
     return KInkWell(
       onTap: () =>
@@ -180,53 +182,3 @@ class DeliveryListTile extends StatelessWidget {
         parcel: parcel,
       );
 }
-
-// KInkWell(
-//       onTap: () {},
-//       child: Column(
-//         crossAxisAlignment: crossStart,
-//         children: [
-//           Row(
-//             crossAxisAlignment: crossCenter,
-//             children: [
-//               leadingImage.assetImage(
-//                 height: 42.h,
-//                 width: 42.w,
-//               ),
-//               gap12,
-//               Expanded(
-//                 child: customerName.text.xl.bold.make(),
-//               ),
-//               "${AppStrings.tkSymbol}$price"
-//                   .text
-//                   // .caption(context)
-//                   .extraBold
-//                   .lg
-//                   .caption(context)
-//                   .make()
-//                   .p4(),
-//             ],
-//           ),
-//           gap4,
-//           Row(
-//             mainAxisAlignment: mainSpaceBetween,
-//             children: [
-//               "Tracking ID : $serialId".text.caption(context).make(),
-//               VxCapsule(
-//                 width: 68.w,
-//                 height: 32.h,
-//                 backgroundColor: context.theme.primaryColorLight,
-//                 child: status.text.xs
-//                     .letterSpacing(1)
-//                     .medium
-//                     .capitalize
-//                     .make()
-//                     .centered(),
-//               ),
-//             ],
-//           ),
-//           gap4,
-//         ],
-//       ),
-//     )
-//         .p8()
