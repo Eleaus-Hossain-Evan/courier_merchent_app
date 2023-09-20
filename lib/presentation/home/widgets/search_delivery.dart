@@ -18,7 +18,16 @@ class SearchDelivery extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: crossStart,
       children: [
-        "Track your package".text.xl.extraBold.make(),
+        Row(
+          children: [
+            "Track your package".text.xl.extraBold.make(),
+            gap6,
+            Images.iconDelivery.assetSvg(
+              width: 24.w,
+              height: 24.h,
+            )
+          ],
+        ),
         gap12,
         "Please enter appropriate property from tracing parcel"
             .text
@@ -41,9 +50,27 @@ class SearchDelivery extends HookConsumerWidget {
                 // size: Size(60, 50.h),
                 padding: padding0,
                 backgroundColor: ColorPalate.primary.lighten(),
-                child: const Icon(
-                  BoxIcons.bx_search_alt,
-                  color: ColorPalate.bg200,
+                child: "ID".text.white.make(),
+              ),
+            ).flexible(),
+            gap16,
+            SizedBox(
+              height: 50.h,
+              child: KFilledButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const SearchParcelWidget(),
+                  );
+                },
+                text: '',
+                // size: Size(60, 50.h),
+                padding: padding0,
+                backgroundColor: ColorPalate.primary.lighten(),
+                child: Images.iconCallDropped.assetSvg(
+                  width: 24.w,
+                  height: 24.h,
+                  color: Colors.white,
                 ),
               ),
             ).flexible(),
@@ -51,7 +78,15 @@ class SearchDelivery extends HookConsumerWidget {
             SizedBox(
               height: 50.h,
               child: KFilledButton(
-                onPressed: () {},
+                onPressed: () => showDateRangePicker(
+                  context: context,
+                  lastDate: DateTime.now(),
+                  firstDate: DateTime(2019),
+                ).then((picked) {
+                  if (picked == null) return;
+                  context.push(
+                      "${ParcelFilterScreen.route}?startTime=${picked.start}&&endTime=${picked.end}");
+                }),
                 text: '',
                 // size: Size(60, 50.h),
                 padding: padding0,
@@ -71,9 +106,10 @@ class SearchDelivery extends HookConsumerWidget {
                 // size: Size(60, 50.h),
                 padding: padding0,
                 backgroundColor: ColorPalate.primary.lighten(),
-                child: const Icon(
-                  Icons.qr_code_scanner,
-                  color: ColorPalate.bg200,
+                child: Images.iconObjectScan.assetSvg(
+                  width: 24.w,
+                  height: 24.h,
+                  color: Colors.white,
                 ),
               ),
             ).flexible(),

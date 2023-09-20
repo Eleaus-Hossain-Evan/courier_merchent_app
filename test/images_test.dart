@@ -24,6 +24,9 @@ void main() {
     expect(File(Images.singleParcel3d).existsSync(), isTrue);
     expect(File(Images.singleParcel).existsSync(), isTrue);
     expect(File(Images.truck).existsSync(), isTrue);
+    expect(File(Images.iconCallDropped).existsSync(), isTrue);
+    expect(File(Images.iconObjectScan).existsSync(), isTrue);
+    expect(File(Images.iconDelivery).existsSync(), isTrue);
     expect(File(Images.iconFacebook).existsSync(), isTrue);
     expect(File(Images.iconGoogle).existsSync(), isTrue);
     expect(File(Images.svgCheck).existsSync(), isTrue);

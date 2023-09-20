@@ -135,7 +135,7 @@ class ImagePickWidget extends HookConsumerWidget {
                         fontWeight: FontWeight.w500,
                         letterSpacing: .6,
                       ),
-                    ).w(140.w).centered().h(42.h).py16()
+                    ).w(150.w).centered().h(42.h).py16()
                   : const SizedBox.shrink()
               : const SizedBox.shrink(),
         ],

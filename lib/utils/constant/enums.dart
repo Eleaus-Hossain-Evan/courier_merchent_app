@@ -18,7 +18,8 @@ enum ParcelRegularStatus {
   dropoff,
   // partial,
   returns,
-  cancel
+  cancel,
+  returnEnd,
 }
 
 enum PaymentTab { payment, history }

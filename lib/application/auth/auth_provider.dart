@@ -201,7 +201,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
       },
       (r) {
         success = true;
-        return state.copyWith(user: r.data, loading: false);
+        final user = state.user.copyWith(
+          updatedAt: r.data.updatedAt,
+          image: r.data.image,
+        );
+        return state.copyWith(user: user, loading: false);
       },
     );
 

@@ -23,6 +23,9 @@ class Images {
   static const String singleParcel3d = 'assets/images/single-parcel-3d.png';
   static const String singleParcel = 'assets/images/single-parcel.png';
   static const String truck = 'assets/images/truck.png';
+  static const String iconCallDropped = 'assets/icons/Call Dropped.svg';
+  static const String iconObjectScan = 'assets/icons/Object Scan.svg';
+  static const String iconDelivery = 'assets/icons/delivery.svg';
   static const String iconFacebook = 'assets/icons/facebook.png';
   static const String iconGoogle = 'assets/icons/google.png';
   static const String svgCheck = 'assets/svg/check.svg';

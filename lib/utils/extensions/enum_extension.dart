@@ -29,6 +29,7 @@ extension ParcelListTypeExt on ParcelRegularStatus {
       //   return "partial";
       ParcelRegularStatus.returns => "return",
       ParcelRegularStatus.cancel => "cancel",
+      ParcelRegularStatus.returnEnd => "return_end",
       // ignore: unreachable_switch_case
       _ => "",
     };

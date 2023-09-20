@@ -8,6 +8,7 @@ import 'package:courier_merchent_app/domain/auth/verify-otp-model.dart';
 import 'package:courier_merchent_app/domain/simple_response.dart';
 
 import '../domain/auth/get_all_shop_response.dart';
+import '../domain/auth/image_update_response.dart';
 import '../domain/auth/login_body.dart';
 import '../domain/auth/auth_response.dart';
 import '../domain/auth/model/user_model.dart';
@@ -75,7 +76,8 @@ class AuthRepo {
     return data;
   }
 
-  Future<Either<CleanFailure, AuthResponse>> imageUpload(File image) async {
+  Future<Either<CleanFailure, ImageUpdateResponse>> imageUpload(
+      File image) async {
     // var request = MultipartRequest(
     //     'PATCH', Uri.parse(APIRoute.BASE_URL + APIRoute.IMAGE_UPLOAD));
 
@@ -93,6 +95,7 @@ class AuthRepo {
     // final Map<String, dynamic> data = jsonDecode(response.body);
     // Logger.v(data['data']['Location']);
     // return data['data']['Location'];
+
     final bytes = image.readAsBytesSync();
     final imageString = Uri.dataFromBytes(
       bytes,
@@ -100,7 +103,7 @@ class AuthRepo {
     ).toString();
 
     final data = await api.patch(
-      fromData: (json) => AuthResponse.fromMap(json),
+      fromData: (json) => ImageUpdateResponse.fromMap(json),
       endPoint: APIRoute.IMAGE_UPLOAD,
       body: {"image": imageString},
       withToken: true,

@@ -1,4 +1,3 @@
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
@@ -62,6 +61,7 @@ class HomeScreen extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: crossStart,
                 children: [
+                  gap16,
                   const SearchDelivery(),
                   gap32,
 
