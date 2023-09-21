@@ -228,7 +228,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
                   containerPadding: paddingV20,
                   replacement: Row(
                     children: [
-                      " ${state.user.paymentStyle.toWordTitleCase()}"
+                      " ${state.user.paymentStyle.toTitleCaseFromCamel()}"
                           .text
                           .lg
                           .make()
@@ -261,7 +261,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
                   containerPadding: paddingV20,
                   replacement: Row(
                     children: [
-                      " ${state.user.defaultPayment.toWordTitleCase()}"
+                      " ${state.user.defaultPayment.toTitleCaseFromCamel()}"
                           .text
                           .lg
                           .make()
@@ -294,7 +294,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
                   containerPadding: paddingV20,
                   replacement: Row(
                     children: [
-                      " ${state.user.pickupStyle.toWordTitleCase()}"
+                      " ${state.user.pickupStyle.toTitleCaseFromCamel()}"
                           .text
                           .lg
                           .make()
@@ -306,7 +306,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
                     hintText: AppStrings.pickupStyleOptions,
                     selectedItem: selectedPickUpStyle.value,
                     items: PickUpStyle.values,
-                    itemAsString: (p0) => p0.name.toWordTitleCase(),
+                    itemAsString: (p0) => p0.name.toTitleCaseFromCamel(),
                     compareFn: (p0, p1) => identical(p0.name, p0.name),
                     onChanged: (value) {
                       selectedPickUpStyle.value = value!;

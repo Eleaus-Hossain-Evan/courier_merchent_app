@@ -1,4 +1,3 @@
-import 'package:courier_merchent_app/presentation/home/parcel_filter_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import 'package:courier_merchent_app/presentation/home/parcel_filter_screen.dart';
 
 import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
@@ -43,7 +44,8 @@ class SearchDelivery extends HookConsumerWidget {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const SearchParcelWidget(),
+                    builder: (context) =>
+                        const SearchParcelWidget(searchBy: SearchBy.bySerialId),
                   );
                 },
                 text: '',
@@ -60,7 +62,8 @@ class SearchDelivery extends HookConsumerWidget {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const SearchParcelWidget(),
+                    builder: (context) =>
+                        const SearchParcelWidget(searchBy: SearchBy.byPhone),
                   );
                 },
                 text: '',
@@ -87,8 +90,6 @@ class SearchDelivery extends HookConsumerWidget {
                   context.push(
                       "${ParcelFilterScreen.route}?startTime=${picked.start}&&endTime=${picked.end}");
                 }),
-                text: '',
-                // size: Size(60, 50.h),
                 padding: padding0,
                 backgroundColor: ColorPalate.primary.lighten(),
                 child: const Icon(
@@ -123,13 +124,18 @@ class SearchDelivery extends HookConsumerWidget {
 class SearchParcelWidget extends HookConsumerWidget {
   const SearchParcelWidget({
     super.key,
+    this.initialText,
+    required this.searchBy,
+    this.onTapSearch,
   });
+
+  final String? initialText;
+  final SearchBy searchBy;
+  final Function(String)? onTapSearch;
 
   @override
   Widget build(BuildContext context, ref) {
-    final searchTextController = useTextEditingController();
-
-    final groupValue = useState(SearchBy.bySerialId);
+    final searchTextController = useTextEditingController(text: initialText);
 
     return Dialog(
       backgroundColor: Colors.white,
@@ -140,39 +146,28 @@ class SearchParcelWidget extends HookConsumerWidget {
           mainAxisSize: mainMin,
           children: [
             Text(
-              "Search Parcel",
+              "Search Parcel ${searchBy.name.toTitleCaseFromCamel()}",
               style: context.titleMedium!.copyWith(fontWeight: FontWeight.bold),
             ),
-            Row(
-              children: [
-                ...SearchBy.values.mapIndexed(
-                  (currentValue, index) => Row(
-                    children: [
-                      Radio.adaptive(
-                        value: currentValue,
-                        groupValue: groupValue.value,
-                        onChanged: (value) {
-                          groupValue.value = value!;
-                        },
-                      ),
-                      currentValue.name.toWordTitleCase().text.make().onTap(() {
-                        groupValue.value = currentValue;
-                      }),
-                    ],
-                  ).flexible(),
-                ),
-              ],
-            ),
+            gap10,
             KTextFormField2(
               containerPadding: padding0,
               controller: searchTextController,
+              autofocus: true,
+              suffixIcon: CloseButton(
+                onPressed: () => searchTextController.clear(),
+              ),
             ),
             gap16,
             KFilledButton(
               onPressed: () {
                 Navigator.pop(context);
-                context.push(
-                    "${ParcelFilterScreen.route}?${groupValue.value == SearchBy.bySerialId ? "serialId" : "customerPhone"}=${searchTextController.text}");
+                if (onTapSearch != null) {
+                  onTapSearch?.call(searchTextController.text);
+                } else {
+                  context.push(
+                      "${ParcelFilterScreen.route}?${searchBy == SearchBy.bySerialId ? "serialId" : "customerPhone"}=${searchTextController.text}");
+                }
               },
               text: "Search",
             ),

@@ -14,11 +14,28 @@ extension StringCasingExtension on String {
     return items;
   }
 
-  String toWordTitleCase() {
+  String toTitleCaseFromCamel() {
     return iterable()
         .map((e) {
           if (e == e.toUpperCase()) {
             return " $e";
+          } else {
+            return e;
+          }
+        })
+        .toList()
+        .join('')
+        .trim()
+        .split(' ')
+        .map((str) => str.toCapitalize())
+        .join(' ');
+  }
+
+  String toTitleCaseFromSnack() {
+    return iterable()
+        .map((e) {
+          if (e == '_') {
+            return " ";
           } else {
             return e;
           }

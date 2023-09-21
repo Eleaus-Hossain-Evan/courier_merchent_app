@@ -25,10 +25,11 @@ class DeliveryListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isEditable = switch (parcel.regularStatus) {
-      ParcelRegularStatus.dropoff => false,
-      ParcelRegularStatus.cancel => false,
-      ParcelRegularStatus.returns => false,
-      _ => true,
+      ParcelRegularStatus.pending => true,
+      ParcelRegularStatus.hold => true,
+      ParcelRegularStatus.shipping => true,
+      ParcelRegularStatus.shipped => true,
+      _ => false,
     };
 
     return KInkWell(

@@ -16,19 +16,28 @@ class ParcelStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Color getColor() {
       return switch (status) {
+        ParcelRegularStatus.returns => context.colors.error,
+        ParcelRegularStatus.returnEnd => context.colors.error,
         ParcelRegularStatus.cancel => context.colors.error,
         ParcelRegularStatus.hold => context.colors.secondary,
         ParcelRegularStatus.pending => context.colors.secondary,
+        ParcelRegularStatus.dropoff => ColorPalate.black700,
         _ => context.colors.primary,
       };
     }
 
-    return VxCapsule(
-      width: 72.w,
+    return Container(
       height: 24.h,
-      backgroundColor: getColor().withOpacity(.1),
-      border: Border.all(color: getColor().withOpacity(.2)),
-      child: status.value.text.xs
+      padding: paddingH10,
+      decoration: BoxDecoration(
+        color: getColor().withOpacity(.1),
+        border: Border.all(color: getColor().withOpacity(.2)),
+        borderRadius: BorderRadius.circular(18.r),
+      ),
+      child: status.value
+          .toTitleCaseFromSnack()
+          .text
+          .xs
           .letterSpacing(1)
           .medium
           .color(getColor())
