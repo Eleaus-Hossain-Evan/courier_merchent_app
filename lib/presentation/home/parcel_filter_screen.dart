@@ -45,8 +45,9 @@ class ParcelFilterScreen extends HookConsumerWidget {
         useState(startTimeVal.value.isNotBlank && endTimeVal.value.isNotBlank);
 
     return Scaffold(
-      appBar: KAppBar(
-        title: "Search Result".text.make(),
+      appBar: const KAppBar(
+        titleText: "Search Result",
+        // titleTextStyle: TextStyle(color: ColorPalate.black),
       ),
       body: Column(
         children: [

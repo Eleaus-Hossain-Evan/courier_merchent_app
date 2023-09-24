@@ -3,6 +3,7 @@ import 'package:courier_merchent_app/presentation/parcel/add_single_parcel/add_s
 import 'package:courier_merchent_app/presentation/profile/pages/bank_detail/bank_details_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/charge_screen.dart';
 import 'package:courier_merchent_app/presentation/profile/pages/my_shop_screen.dart';
+import 'package:courier_merchent_app/presentation/return/return_parcel_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,6 +20,7 @@ import '../presentation/notification/notification_screen.dart';
 import '../presentation/parcel/add_bulk_parcel/add_bulk_parcel_screen.dart';
 import '../presentation/parcel/invoice_screen.dart';
 import '../presentation/parcel/track_parcel/track_parcel_screen.dart';
+import '../presentation/payment/payment_screen.dart';
 import '../presentation/profile/pages/change_password_screen.dart';
 import '../presentation/profile/pages/edit_profile/profile_detail_screen.dart';
 import '../presentation/profile/pages/html_text.dart';
@@ -194,6 +196,13 @@ class RouterNotifier extends ChangeNotifier {
           ),
         ),
         GoRoute(
+          path: PaymentScreen.route,
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: const PaymentScreen(),
+          ),
+        ),
+        GoRoute(
           path: ParcelFilterScreen.route,
           pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
             key: state.pageKey,
@@ -203,6 +212,13 @@ class RouterNotifier extends ChangeNotifier {
               endTime: state.uri.queryParameters["endTime"] ?? "",
               startTime: state.uri.queryParameters["startTime"] ?? "",
             ),
+          ),
+        ),
+        GoRoute(
+          path: ReturnParcelScreen.route,
+          pageBuilder: (context, state) => SlideRightToLeftTransitionPage(
+            key: state.pageKey,
+            child: const ReturnParcelScreen(),
           ),
         ),
       ];

@@ -29,8 +29,8 @@ class KShimmerContainer extends StatelessWidget {
 class KSkeletonWidget extends HookConsumerWidget {
   const KSkeletonWidget({
     super.key,
-    required this.height,
-    required this.width,
+    this.height,
+    this.width,
     this.borderRadius,
   });
 

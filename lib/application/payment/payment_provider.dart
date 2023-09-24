@@ -22,6 +22,26 @@ FutureOr<PendingPaymentResponse> getPendingPaymentList(
   }, (r) => r);
 }
 
+// @riverpod
+// class PendingPaymentList extends _$PendingPaymentList {
+//   @override
+//   FutureOr<void> build() {
+//     return null;
+//   }
+
+//   FutureOr<void> getParcel(
+//       {int page = 1, int limit = 10}) async {
+//     state = const AsyncLoading();
+//     final result =
+//         await PaymentRepo().getPendingPaymentList(page: page, limit: limit);
+
+//     state = await AsyncValue.guard(() => result.fold((l) {
+//           showErrorToast(l.error.message);
+//           return PendingPaymentResponse.init();
+//         }, (r) => r));
+//   }
+// }
+
 @riverpod
 FutureOr<HistoryPaymentListResponse> getHistoryPaymentList(
   GetHistoryPaymentListRef ref, {

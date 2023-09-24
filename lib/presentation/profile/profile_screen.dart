@@ -14,6 +14,7 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../application/auth/auth_provider.dart';
 import '../../utils/utils.dart';
 import '../auth/login/login.dart';
+import '../payment/payment_screen.dart';
 import '../widgets/widgets.dart';
 import 'pages/bank_detail/bank_details_screen.dart';
 import 'pages/change_password_screen.dart';
@@ -69,6 +70,14 @@ class ProfileScreen extends HookConsumerWidget {
                 ),
                 child: Column(
                   children: [
+                    //?  --- Parcel Payment & History ---
+                    ProfileOptionsItem(
+                      leading: FontAwesome.coins,
+                      title: AppStrings.payment,
+                      onTap: () => context.push(PaymentScreen.route),
+                    ),
+                    KDivider(height: 36.h),
+
                     //?  --- bank & payment section ---
                     ProfileOptionsItem(
                       leading: Bootstrap.bank2,

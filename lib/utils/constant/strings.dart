@@ -129,4 +129,7 @@ class AppStrings {
   //#----------------  Payment ----------------
   static const String payment = "Payment";
   static const String pendingPayment = "Pending Payment";
+
+  //#----------------  Return ----------------
+  static const String returns = "Return";
 }

@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -39,6 +40,14 @@ class HomeScreen extends HookConsumerWidget {
 
     return Scaffold(
       // appBar: const HomeAppBar(),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   child: Images.iconObjectScan.assetSvg(
+      //     width: 24.w,
+      //     height: 24.h,
+      //     color: Colors.white,
+      //   ),
+      // ),
       body: SafeArea(
         child: SizedBox(
           height: 1.sh,
@@ -63,6 +72,7 @@ class HomeScreen extends HookConsumerWidget {
                 children: [
                   gap16,
                   const SearchDelivery(),
+
                   gap32,
 
                   //?  Services section ---------------------

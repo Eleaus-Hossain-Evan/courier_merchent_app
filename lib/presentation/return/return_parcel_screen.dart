@@ -1,5 +1,3 @@
-import 'package:courier_merchent_app/presentation/parcel/parcel_list_tabs/all_parcel.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,24 +6,26 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../utils/utils.dart';
+import '../parcel/parcel_list_tabs/all_parcel.dart';
 import '../widgets/widgets.dart';
 
-class ParcelListScreen extends HookConsumerWidget {
-  static const route = '/parcel-list';
+class ReturnParcelScreen extends HookConsumerWidget {
+  static const route = '/return-parcel';
 
-  const ParcelListScreen({super.key});
+  const ReturnParcelScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final normalTabs = ParcelRegularStatus.values.lock
-        .removeLast()
-        .removeAt(ParcelRegularStatus.values.length - 3);
+    final normalTabs = [
+      ParcelRegularStatus.returns,
+      ParcelRegularStatus.returnEnd
+    ];
     final tabController = useTabController(initialLength: normalTabs.length);
 
     Logger.w(normalTabs);
     return Scaffold(
       backgroundColor: ColorPalate.bg100,
       appBar: KAppBar(
-        titleText: 'Your Parcel List',
+        titleText: 'Your Return Parcel List',
         titleTextStyle: const TextStyle(color: ColorPalate.white),
         backgroundColor: context.colors.primary,
         bottom: TabBar(
@@ -42,7 +42,7 @@ class ParcelListScreen extends HookConsumerWidget {
           ),
           unselectedLabelColor: ColorPalate.white,
           controller: tabController,
-          isScrollable: true,
+          // isScrollable: true,
           indicator: BoxDecoration(
             borderRadius: BorderRadius.circular(
               25.0,
@@ -52,9 +52,7 @@ class ParcelListScreen extends HookConsumerWidget {
           indicatorSize: TabBarIndicatorSize.tab,
           indicatorPadding: EdgeInsets.symmetric(vertical: 4.w),
           tabs: normalTabs
-              .map((e) => Tab(
-                    text: e.value.capitalized,
-                  ))
+              .map((e) => Tab(text: e.value.toTitleCaseFromSnack()))
               .toList(),
         ),
       ),

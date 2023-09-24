@@ -5,6 +5,9 @@ extension TextColor on VxTextBuilder {
       color(context.colors.primary);
   VxTextBuilder colorSecondary(BuildContext context) =>
       color(context.colors.secondary);
+  VxTextBuilder colorScaffoldBackground(BuildContext context,
+          {double? opacity}) =>
+      color(context.theme.scaffoldBackgroundColor.withOpacity(opacity ?? 1));
 }
 
 extension BoxColor on VxBox {

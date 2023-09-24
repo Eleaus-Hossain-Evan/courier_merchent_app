@@ -15,10 +15,8 @@ import 'payment_history_detail.dart';
 class HistoryPayment extends HookConsumerWidget {
   const HistoryPayment({
     super.key,
-    required this.count,
   });
 
-  final ValueNotifier<int> count;
 
   @override
   Widget build(BuildContext context, ref) {

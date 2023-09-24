@@ -12,10 +12,7 @@ import '../../widgets/widgets.dart';
 class PendingPayment extends HookConsumerWidget {
   const PendingPayment({
     super.key,
-    required this.count,
   });
-
-  final ValueNotifier<int> count;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -28,11 +25,8 @@ class PendingPayment extends HookConsumerWidget {
 
             final page = index ~/ pageSize + 1;
             final indexInPage = index % pageSize;
-            final parcelResponse = ref.watch(
-              getPendingPaymentListProvider(
-                page: page,
-              ),
-            );
+            final parcelResponse =
+                ref.watch(getPendingPaymentListProvider(page: page));
             return parcelResponse.when(
               data: (data) {
                 if (indexInPage >= data.data.length) return null;

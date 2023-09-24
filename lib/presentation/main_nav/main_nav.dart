@@ -10,8 +10,8 @@ import '../../application/auth/auth_provider.dart';
 import '../../utils/utils.dart';
 import '../home/home_screen.dart';
 import '../parcel/parcel_list_screen.dart';
-import '../payment/payment_screen.dart';
 import '../profile/profile_screen.dart';
+import '../return/return_parcel_screen.dart';
 
 final bottomNavigatorKey = GlobalKey();
 
@@ -26,7 +26,7 @@ class MainNav extends HookConsumerWidget {
     final navWidget = [
       const HomeScreen(),
       const ParcelListScreen(),
-      const PaymentScreen(),
+      const ReturnParcelScreen(),
       const ProfileScreen(),
     ];
 
@@ -57,7 +57,7 @@ class MainNav extends HookConsumerWidget {
             destinations: [
               NavigationDestination(
                 icon: Icon(
-                  Icons.home_filled,
+                  Icons.home_outlined,
                   color: navIndex.value == 0
                       ? context.colors.primary
                       : ColorPalate.black600,
@@ -66,7 +66,7 @@ class MainNav extends HookConsumerWidget {
               ),
               NavigationDestination(
                 icon: Icon(
-                  FontAwesome.boxes_packing,
+                  LineAwesome.boxes_solid,
                   color: navIndex.value == 1
                       ? context.colors.primary
                       : ColorPalate.black600,
@@ -75,16 +75,16 @@ class MainNav extends HookConsumerWidget {
               ),
               NavigationDestination(
                 icon: Icon(
-                  FontAwesome.coins,
+                  LineAwesome.box_open_solid,
                   color: navIndex.value == 2
                       ? context.colors.primary
                       : ColorPalate.black600,
                 ),
-                label: AppStrings.payment,
+                label: AppStrings.returns,
               ),
               NavigationDestination(
                 icon: Icon(
-                  Icons.account_box_rounded,
+                  Icons.account_box_outlined,
                   color: navIndex.value == 3
                       ? context.colors.primary
                       : ColorPalate.black600,
