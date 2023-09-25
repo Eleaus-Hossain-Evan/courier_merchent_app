@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:courier_merchent_app/domain/auth/model/bank_model.dart';
 import 'package:courier_merchent_app/domain/auth/payment_update_body.dart';
 import 'package:courier_merchent_app/route/go_router.dart';
 import 'package:courier_merchent_app/utils/network_util/network_handler.dart';
@@ -288,3 +289,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 }
+
+final authRepoProvider = Provider<AuthRepo>((ref) {
+  return AuthRepo();
+});
+
+final fetchAllBankProvider = FutureProvider<List<BankModel>>((ref) async {
+  final result = await ref.watch(authRepoProvider).fetchAllBank();
+
+  return result.fold((l) {
+    showErrorToast(l.error.message);
+    return [];
+  }, (r) => r.data);
+});

@@ -35,3 +35,20 @@ extension ParcelListTypeExt on ParcelRegularStatus {
     };
   }
 }
+
+extension ParcelListTypeChangeExt on ParcelRegularStatus {
+  String get changedValue {
+    return switch (this) {
+      ParcelRegularStatus.all => "all",
+      ParcelRegularStatus.pending => "pending",
+      ParcelRegularStatus.hold => "hold",
+      ParcelRegularStatus.pickup => "pickup",
+      ParcelRegularStatus.shipping => "shipping",
+      ParcelRegularStatus.shipped => "shipped",
+      ParcelRegularStatus.dropoff => "dropoff",
+      ParcelRegularStatus.returns => "to_Be_Return",
+      ParcelRegularStatus.cancel => "cancel",
+      ParcelRegularStatus.returnEnd => "return",
+    };
+  }
+}

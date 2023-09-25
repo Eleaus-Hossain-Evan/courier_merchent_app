@@ -37,6 +37,7 @@ class APIRoute {
       "${API_V1}merchant/image-update-by-himself";
   static const String PROFILE_UPDATE = "${API_V1}merchant/profile/update";
   static const String PAYMENT_UPDATE = "${API_V1}merchant/payment/update";
+  static const String BANK_ALL = "${API_V1}bank/fetch-all";
   static const String CHECK_OTP = "${API_V1}merchant/confirm-payment-otp";
   static const String FORGOT_PASSWORD_GET_OTP =
       "${API_V1}merchant/forget-password";

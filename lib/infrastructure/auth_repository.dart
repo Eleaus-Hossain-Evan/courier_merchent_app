@@ -7,6 +7,7 @@ import 'package:courier_merchent_app/domain/auth/payment_update_body.dart';
 import 'package:courier_merchent_app/domain/auth/verify-otp-model.dart';
 import 'package:courier_merchent_app/domain/simple_response.dart';
 
+import '../domain/auth/fetch_all_bank_response.dart';
 import '../domain/auth/get_all_shop_response.dart';
 import '../domain/auth/image_update_response.dart';
 import '../domain/auth/login_body.dart';
@@ -173,6 +174,16 @@ class AuthRepo {
       body: body.toMap(),
       fromData: (json) => AuthResponse.fromMap(json),
       endPoint: APIRoute.PAYMENT_UPDATE,
+      withToken: true,
+    );
+
+    return data;
+  }
+
+  Future<Either<CleanFailure, FetchAllBankResponse>> fetchAllBank() async {
+    final data = await api.get(
+      fromData: (json) => FetchAllBankResponse.fromMap(json),
+      endPoint: APIRoute.BANK_ALL,
       withToken: true,
     );
 

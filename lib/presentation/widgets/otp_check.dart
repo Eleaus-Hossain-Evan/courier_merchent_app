@@ -61,6 +61,10 @@ class OtpCheckWidget extends HookConsumerWidget {
     );
 
     return AlertDialog(
+      titlePadding: EdgeInsets.only(
+        left: 18.w,
+        right: 8.w,
+      ),
       title: Row(
         children: [
           Text(

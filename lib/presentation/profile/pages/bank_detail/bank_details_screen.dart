@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:courier_merchent_app/domain/auth/model/other_account_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,6 +13,7 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../../../application/auth/auth_provider.dart';
 import '../../../../application/auth/auth_state.dart';
 import '../../../../domain/auth/model/bank_account_model.dart';
+import '../../../../domain/auth/model/bank_model.dart';
 import '../../../../domain/auth/payment_update_body.dart';
 import '../../../../utils/utils.dart';
 import '../../../widgets/widgets.dart';
@@ -31,7 +33,7 @@ class BankDetailsScreen extends HookConsumerWidget {
     final bankDetail = state.user.bankAccount;
 
     final accHolder = useTextEditingController(text: bankDetail.accName);
-    final bankName = useTextEditingController(text: bankDetail.bankName);
+    final bankName = useState(bankDetail.bankName);
     final branchName = useTextEditingController(text: bankDetail.branch);
     final routingNum = useTextEditingController(text: bankDetail.routingNum);
     final accNumber = useTextEditingController(text: bankDetail.accNum);
@@ -40,7 +42,7 @@ class BankDetailsScreen extends HookConsumerWidget {
     final bkash = useTextEditingController(text: otherAcc.bkashNum);
     final nagad = useTextEditingController(text: otherAcc.nagadNum);
 
-    final newBankDetail = useState(bankDetail);
+    // final newBankDetail = useState(bankDetail);
 
     final isUpdate = useState(false);
 
@@ -112,40 +114,45 @@ class BankDetailsScreen extends HookConsumerWidget {
                         controller: accHolder,
                         hintText: AppStrings.accountHolder,
                         enabled: isUpdate.value,
-                        onChanged: (value) =>
-                            newBankDetail.value.copyWith(accName: value),
+                        // onChanged: (value) =>
+                        //     newBankDetail.value.copyWith(accName: value),
                       ),
                       gap16,
-                      KTextFormField2(
-                        controller: bankName,
+                      KDropDownSearchWidget<BankModel>(
                         hintText: AppStrings.bankName,
                         enabled: isUpdate.value,
+                        selectedItem:
+                            BankModel.init().copyWith(name: bankName.value),
+                        asyncItems: (p0) =>
+                            ref.watch(fetchAllBankProvider.future),
+                        itemAsString: (model) => model.name,
+                        compareFn: (p0, p1) => identical(p0.id, p1.id),
                         onChanged: (value) =>
-                            newBankDetail.value.copyWith(bankName: value),
+                            bankName.value = value?.name ?? "",
                       ),
                       gap16,
                       KTextFormField2(
                         controller: branchName,
                         hintText: AppStrings.branchCode,
                         enabled: isUpdate.value,
-                        onChanged: (value) =>
-                            newBankDetail.value.copyWith(branch: value),
+                        // onChanged: (value) =>
+                        //     newBankDetail.value.copyWith(branch: value),
                       ),
                       gap16,
                       KTextFormField2(
                         controller: routingNum,
                         hintText: AppStrings.routingNumber,
                         enabled: isUpdate.value,
-                        onChanged: (value) =>
-                            newBankDetail.value.copyWith(routingNum: value),
+                        // onChanged: (value) =>
+                        //     newBankDetail.value.copyWith(routingNum: value),
                       ),
                       gap16,
                       KTextFormField2(
                         controller: accNumber,
                         hintText: AppStrings.accountNumber,
                         enabled: isUpdate.value,
-                        onChanged: (value) =>
-                            newBankDetail.value.copyWith(accNum: value),
+                        // onChanged: (value) =>
+                        //     newBankDetail.value.copyWith(accNum: value),
                       ),
                     ],
                   ),
@@ -191,6 +198,14 @@ class BankDetailsScreen extends HookConsumerWidget {
                           },
                         ),
                       );
+
+                      Logger.d(BankAccountModel(
+                        accName: accNumber.text,
+                        accNum: accNumber.text,
+                        bankName: bankName.value,
+                        branch: branchName.text,
+                        routingNum: routingNum.text,
+                      ));
                     },
                     text: 'Confirm OTP',
                     isSecondary: false,
@@ -208,7 +223,7 @@ class BankDetailsScreen extends HookConsumerWidget {
                                       bankAccount: BankAccountModel(
                                         accName: accNumber.text,
                                         accNum: accNumber.text,
-                                        bankName: bankName.text,
+                                        bankName: bankName.value,
                                         branch: branchName.text,
                                         routingNum: routingNum.text,
                                       ),

@@ -23,9 +23,27 @@ class SearchDelivery extends HookConsumerWidget {
           children: [
             "Track your package".text.xl.extraBold.make(),
             gap6,
-            Images.iconDelivery.assetSvg(
-              width: 24.w,
-              height: 24.h,
+            Images.iconDelivery
+                .assetSvg(
+                  width: 24.w,
+                  height: 24.h,
+                )
+                .expand(),
+            IconButton.outlined(
+              onPressed: () {},
+              iconSize: 12.sp,
+              padding: padding4,
+              style: IconButton.styleFrom(minimumSize: Size(18.w, 18.w)),
+              isSelected: true,
+              color: context.colors.primary,
+              selectedIcon: Icon(
+                BoxIcons.bx_minus,
+                size: 18.sp,
+              ),
+              icon: Icon(
+                BoxIcons.bxs_dashboard,
+                size: 18.sp,
+              ),
             )
           ],
         ),

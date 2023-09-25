@@ -34,7 +34,7 @@ class ParcelStatusWidget extends StatelessWidget {
         border: Border.all(color: getColor().withOpacity(.2)),
         borderRadius: BorderRadius.circular(18.r),
       ),
-      child: status.value
+      child: status.changedValue
           .toTitleCaseFromSnack()
           .text
           .xs

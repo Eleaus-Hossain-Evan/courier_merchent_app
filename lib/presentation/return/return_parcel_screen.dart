@@ -17,7 +17,7 @@ class ReturnParcelScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final normalTabs = [
       ParcelRegularStatus.returns,
-      ParcelRegularStatus.returnEnd
+      ParcelRegularStatus.returnEnd,
     ];
     final tabController = useTabController(initialLength: normalTabs.length);
 
@@ -52,7 +52,7 @@ class ReturnParcelScreen extends HookConsumerWidget {
           indicatorSize: TabBarIndicatorSize.tab,
           indicatorPadding: EdgeInsets.symmetric(vertical: 4.w),
           tabs: normalTabs
-              .map((e) => Tab(text: e.value.toTitleCaseFromSnack()))
+              .map((e) => Tab(text: e.changedValue.toTitleCaseFromSnack()))
               .toList(),
         ),
       ),
