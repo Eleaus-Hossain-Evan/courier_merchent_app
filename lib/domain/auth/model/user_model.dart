@@ -218,8 +218,10 @@ class UserModel extends Equatable {
       serialId: map['serialId'] ?? '',
       address: map['address'] ?? '',
       image: map['image'] ?? '',
-      myShops: List<MyShopModel>.from(
-          map['myShops']?.map((x) => MyShopModel.fromMap(x)) ?? const []),
+      myShops: map['myShops'] is List<Map<String, dynamic>>
+          ? List<MyShopModel>.from(
+              map['myShops']?.map((x) => MyShopModel.fromMap(x)) ?? const [])
+          : [],
       hub: map['hub'] != null ? HubModel.fromMap(map['hub']) : HubModel.init(),
       pickupStyle: map['pickupStyle'] ?? '',
       defaultPayment: map['defaultPayment'] ?? '',

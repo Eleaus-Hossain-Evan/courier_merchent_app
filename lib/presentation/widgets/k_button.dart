@@ -126,6 +126,7 @@ class KElevatedButton extends HookConsumerWidget {
             (isSecondary ? ColorPalate.secondary200 : ColorPalate.primary300),
         backgroundColor: backgroundColor,
         padding: padding,
+        minimumSize: size,
       ),
       onPressed: onPressed,
       child: (loading != null && loading!)

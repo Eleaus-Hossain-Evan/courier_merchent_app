@@ -183,7 +183,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       (r) {
         success = r.success;
         // ref.read(loggedInProvider).changeSavedUser(r.data);
-        return state.copyWith(user: r.data, loading: false);
+        return state.copyWith(loading: false);
       },
     );
 
@@ -213,7 +213,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     return success;
   }
 
-  Future<void> checkOtp(String otp) async {
+  Future<bool> checkOtp(String otp) async {
+    bool success = false;
     state = state.copyWith(loading: true);
     await repo.checkOtpForPayment(otp).then((result) {
       state = result.fold(
@@ -223,11 +224,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
         },
         (r) {
           showToast(r.message);
-          ref.read(routerProvider).pop();
-          return state = state.copyWith(user: r.data, loading: false);
+          // ref.read(routerProvider).pop();
+          success = r.success;
+          return state = state.copyWith(
+            // user: r.data,
+            loading: false,
+          );
         },
       );
     });
+    return success;
   }
 
   Future<bool> forgotPassword(String phone) async {

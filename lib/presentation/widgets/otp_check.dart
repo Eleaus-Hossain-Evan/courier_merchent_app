@@ -66,6 +66,7 @@ class OtpCheckWidget extends HookConsumerWidget {
         right: 8.w,
       ),
       title: Row(
+        mainAxisAlignment: mainCenter,
         children: [
           Text(
             'Enter OTP',
@@ -73,8 +74,7 @@ class OtpCheckWidget extends HookConsumerWidget {
               fontWeight: FontWeight.w600,
               fontSize: 16.sp,
             ),
-          ).expand(),
-          const CloseButton()
+          ).pOnly(top: 16.h, bottom: 4.h),
         ],
       ),
       content: Column(

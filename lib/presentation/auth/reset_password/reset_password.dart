@@ -90,20 +90,22 @@ class ResetPasswordScreen extends HookConsumerWidget {
                 // 1st page
 
                 SendOTP(
-                    phoneController: phoneController,
-                    token: token,
-                    pageController: pageController),
+                  phoneController: phoneController,
+                  token: token,
+                  pageController: pageController,
+                ),
 
                 // 2nd page
                 VerifyOTP(
-                    formKey: formKey,
-                    newPasswordController: newPasswordController,
-                    newPasswordFocus: newPasswordFocus,
-                    currentPasswordController: currentPasswordController,
-                    reNewPasswordFocus: reNewPasswordFocus,
-                    reNewPasswordController: reNewPasswordController,
-                    loading: loading,
-                    token: token),
+                  formKey: formKey,
+                  newPasswordController: newPasswordController,
+                  newPasswordFocus: newPasswordFocus,
+                  currentPasswordController: currentPasswordController,
+                  reNewPasswordFocus: reNewPasswordFocus,
+                  reNewPasswordController: reNewPasswordController,
+                  loading: loading,
+                  token: token,
+                ),
               ],
             ),
           ),

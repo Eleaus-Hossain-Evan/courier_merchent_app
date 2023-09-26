@@ -77,7 +77,7 @@ class MyTheme {
       bottomSheetModalBackgroundColor: SchemeColor.surface,
       bottomSheetBackgroundColor: SchemeColor.surface,
       dialogBackgroundSchemeColor: SchemeColor.background,
-      // buttonMinSize: Size.fromHeight(42.h),
+      buttonMinSize: Size.fromHeight(40.h),
       outlinedButtonRadius: 8.r,
       outlinedButtonTextStyle: MaterialStateProperty.all(
         CustomTextStyle.textStyle16w600Black1000,
