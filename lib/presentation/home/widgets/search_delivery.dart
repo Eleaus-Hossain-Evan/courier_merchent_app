@@ -12,7 +12,14 @@ import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
 
 class SearchDelivery extends HookConsumerWidget {
-  const SearchDelivery({super.key});
+  const SearchDelivery({
+    super.key,
+    this.onTapDashboard,
+    required this.isDashboard,
+  });
+
+  final VoidCallback? onTapDashboard;
+  final ValueNotifier<bool> isDashboard;
 
   @override
   Widget build(BuildContext context, ref) {
@@ -29,22 +36,27 @@ class SearchDelivery extends HookConsumerWidget {
                   height: 24.h,
                 )
                 .expand(),
-            IconButton.outlined(
-              onPressed: () {},
-              iconSize: 12.sp,
-              padding: padding4,
-              style: IconButton.styleFrom(minimumSize: Size(18.w, 18.w)),
-              isSelected: true,
-              color: context.colors.primary,
-              selectedIcon: Icon(
-                BoxIcons.bx_minus,
-                size: 18.sp,
+            Tooltip(
+              message: "Dashboard",
+              child: KOutlinedButton(
+                onPressed: onTapDashboard,
+                foregroundColor: isDashboard.value
+                    ? ColorPalate.bg200
+                    : context.colors.primary,
+                backgroundColor: isDashboard.value
+                    ? context.colors.primary.withOpacity(.5)
+                    : null,
+                padding: padding0,
+                borderColor: context.colors.primary,
+                borderRadius: BorderRadius.circular(18.r),
+                size: const Size(44, 34),
+                isSecondary: false,
+                child: Icon(
+                  BoxIcons.bxs_dashboard,
+                  size: 18.sp,
+                ),
               ),
-              icon: Icon(
-                BoxIcons.bxs_dashboard,
-                size: 18.sp,
-              ),
-            )
+            ),
           ],
         ),
         gap12,

@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -12,6 +11,7 @@ import 'package:courier_merchent_app/application/parcel/parcel_provider.dart';
 
 import '../../application/home/home_provider.dart';
 import '../../utils/utils.dart';
+import '../widgets/widgets.dart';
 import 'widgets/recent_parcel_section.dart';
 import 'widgets/search_delivery.dart';
 import 'widgets/service_section.dart';
@@ -23,6 +23,9 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final refreshController = useMemoized(
         () => RefreshController(initialLoadStatus: LoadStatus.canLoading));
+
+    final isDashboard = useState(false);
+
     ref.listen(homeProvider, (previous, next) {
       if (previous!.isLoading == false && next.isLoading) {
         BotToast.showLoading();
@@ -71,7 +74,51 @@ class HomeScreen extends HookConsumerWidget {
                 crossAxisAlignment: crossStart,
                 children: [
                   gap16,
-                  const SearchDelivery(),
+
+                  Visibility(
+                    visible: isDashboard.value,
+                    child: ContainerBGWhiteSlideFromLeft(
+                      child: Column(
+                        crossAxisAlignment: crossStart,
+                        children: [
+                          const Text(
+                            "Dashboard",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          gap16,
+                          Wrap(
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 100,
+                                color: Colors.red,
+                                child: Row(
+                                  children: [
+                                    
+                                    const Column(
+                                      children: [
+                                        Text("Total Parcel"),
+                                        Text("100"),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  gap16,
+                  SearchDelivery(
+                    isDashboard: isDashboard,
+                    onTapDashboard: () =>
+                        isDashboard.value = !isDashboard.value,
+                  ),
 
                   gap32,
 

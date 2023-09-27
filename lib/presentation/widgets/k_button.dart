@@ -165,11 +165,13 @@ class KOutlinedButton extends HookConsumerWidget {
     this.child,
     this.borderSide,
     this.borderStyle,
+    this.padding,
+    this.shape,
+    this.borderRadius = BorderRadius.zero,
   }) : super(key: key);
 
   final String? text;
-  final Color? backgroundColor;
-  final Color? foregroundColor;
+  final Color? backgroundColor, foregroundColor;
   final Color borderColor;
   final double? borderWidth;
   final VoidCallback? onPressed;
@@ -180,11 +182,15 @@ class KOutlinedButton extends HookConsumerWidget {
   final Widget? child;
   final BorderSide? borderSide;
   final BorderStyle? borderStyle;
+  final EdgeInsetsGeometry? padding;
+  final OutlinedBorder? shape;
+  final BorderRadiusGeometry borderRadius;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
+        padding: padding,
         textStyle: textStyle ??
             TextStyle(
               fontSize: 16.sp,
@@ -200,6 +206,10 @@ class KOutlinedButton extends HookConsumerWidget {
           width: borderWidth ?? 1,
           style: borderStyle ?? BorderStyle.solid,
         ),
+        shape: shape ??
+            RoundedRectangleBorder(
+              borderRadius: borderRadius,
+            ),
         minimumSize: size,
       ),
       onPressed: onPressed,
