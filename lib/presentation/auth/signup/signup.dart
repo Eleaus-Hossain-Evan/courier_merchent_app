@@ -7,6 +7,7 @@ import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:timer_count_down/timer_controller.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../application/auth/auth_provider.dart';
@@ -46,6 +47,9 @@ class SignupScreen extends HookConsumerWidget {
         BotToast.closeAllLoading();
       }
     });
+
+    // Controller
+    final controller = useMemoized(() => CountdownController(autoStart: true));
     return Scaffold(
       appBar: const KAppBar(),
       body: SafeArea(
@@ -218,6 +222,7 @@ class SignupScreen extends HookConsumerWidget {
                           barrierLabel: "Barrier",
                           useSafeArea: true,
                           builder: (context) => OtpCheckWidget(
+                            controller: controller,
                             onTapOtpCheck: (otp) => ref
                                 .read(authProvider.notifier)
                                 .verifySignUp(otp)

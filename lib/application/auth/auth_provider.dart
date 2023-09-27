@@ -172,7 +172,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<bool> updatePayment(PaymentUpdateBody body) async {
     bool success = false;
-    // state = state.copyWith(loading: true);
+    state = state.copyWith(loading: true);
     final result = await repo.paymentUpdate(body);
 
     state = result.fold(

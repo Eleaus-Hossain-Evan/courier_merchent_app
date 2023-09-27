@@ -75,7 +75,7 @@ class MyApp extends HookConsumerWidget {
       return null;
     }, []);
 
-    return ScreenUtilInit(
+    return ScreenUtilInit( 
       // designSize: const Size(375, 812),
       designSize: const Size(392, 781),
       builder: (context, child) {

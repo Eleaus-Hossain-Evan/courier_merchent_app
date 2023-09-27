@@ -152,7 +152,7 @@ class KElevatedButton extends HookConsumerWidget {
 class KOutlinedButton extends HookConsumerWidget {
   const KOutlinedButton({
     Key? key,
-    required this.text,
+    this.text,
     this.backgroundColor,
     this.foregroundColor,
     this.borderColor = ColorPalate.primary,
@@ -167,7 +167,7 @@ class KOutlinedButton extends HookConsumerWidget {
     this.borderStyle,
   }) : super(key: key);
 
-  final String text;
+  final String? text;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final Color borderColor;
@@ -200,6 +200,7 @@ class KOutlinedButton extends HookConsumerWidget {
           width: borderWidth ?? 1,
           style: borderStyle ?? BorderStyle.solid,
         ),
+        minimumSize: size,
       ),
       onPressed: onPressed,
       child: (loading != null && loading!.value)
@@ -212,10 +213,7 @@ class KOutlinedButton extends HookConsumerWidget {
                 ),
               ),
             )
-          : child ??
-              Text(
-                text,
-              ),
+          : child ?? Text(text ?? ''),
     );
   }
 }
