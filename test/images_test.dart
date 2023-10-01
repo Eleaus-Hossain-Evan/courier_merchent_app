@@ -29,6 +29,20 @@ void main() {
     expect(File(Images.iconDelivery).existsSync(), isTrue);
     expect(File(Images.iconFacebook).existsSync(), isTrue);
     expect(File(Images.iconGoogle).existsSync(), isTrue);
+    expect(File(Images.iconParcelCancel).existsSync(), isTrue);
+    expect(File(Images.iconParcelCredit).existsSync(), isTrue);
+    expect(File(Images.iconParcelDeliveryFeesPaid).existsSync(), isTrue);
+    expect(File(Images.iconParcelDropoff).existsSync(), isTrue);
+    expect(File(Images.iconParcelPending).existsSync(), isTrue);
+    expect(File(Images.iconParcelReturnEnd).existsSync(), isTrue);
+    expect(File(Images.iconParcelShipping).existsSync(), isTrue);
+    expect(File(Images.iconParcelTotal).existsSync(), isTrue);
+    expect(File(Images.iconPayCollection).existsSync(), isTrue);
+    expect(File(Images.iconPayDeliveryCharge).existsSync(), isTrue);
+    expect(File(Images.iconPayPending).existsSync(), isTrue);
+    expect(File(Images.iconPayProcessing).existsSync(), isTrue);
+    expect(File(Images.iconPayWithDraw).existsSync(), isTrue);
+    expect(File(Images.iconTotalUnsettledAmount).existsSync(), isTrue);
     expect(File(Images.svgCheck).existsSync(), isTrue);
   });
 }

@@ -18,16 +18,17 @@ class APIRoute {
   static const String PASSWORD_UPDATE =
       "${API_V1}merchant/password-update-by-himself";
 
+  //#<<---------------- Courier Merchant ------------------>>
+
+  static const String HOME = "${API_V1}setting/home";
+  static const String DASHBOARD = "${API_V1}merchant/dashboard";
+
   //#<<---------------- SHOP ------------------>>
   static const String ADD_SHOP = "${API_V1}merchant/add-shop-by-himself";
   static const String FETCH_ALL_SHOP =
       "${API_V1}merchant/fetch-all-shop-by-himself";
   static const String UPDATE_SHOP = "${API_V1}merchant/update-shop-by-himself/";
   static const String DELETE_SHOP = "${API_V1}merchant/delete-shop-by-himself/";
-
-  //#<<---------------- Courier Merchant ------------------>>
-
-  static const String HOME = "${API_V1}setting/home";
 
   //#<<----------------Profile------------------>>
   static const String ALL_DISTRICT = "${API_V1}location/all-districts";

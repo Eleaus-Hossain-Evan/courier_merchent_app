@@ -11,7 +11,7 @@ import 'package:courier_merchent_app/application/parcel/parcel_provider.dart';
 
 import '../../application/home/home_provider.dart';
 import '../../utils/utils.dart';
-import '../widgets/widgets.dart';
+import 'widgets/dashboard_section.dart';
 import 'widgets/recent_parcel_section.dart';
 import 'widgets/search_delivery.dart';
 import 'widgets/service_section.dart';
@@ -25,6 +25,7 @@ class HomeScreen extends HookConsumerWidget {
         () => RefreshController(initialLoadStatus: LoadStatus.canLoading));
 
     final isDashboard = useState(false);
+    final isDashboardVisible = useState(false);
 
     ref.listen(homeProvider, (previous, next) {
       if (previous!.isLoading == false && next.isLoading) {
@@ -40,6 +41,16 @@ class HomeScreen extends HookConsumerWidget {
       // Future.microtask(() => ref.read(authProvider.notifier).profileView());
       return () => BotToast.closeAllLoading();
     }, const []);
+
+    isDashboard.addListener(() {
+      if (isDashboard.value == false) {
+        isDashboardVisible.value = false;
+      } else {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          isDashboardVisible.value = true;
+        });
+      }
+    });
 
     return Scaffold(
       // appBar: const HomeAppBar(),
@@ -73,45 +84,9 @@ class HomeScreen extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: crossStart,
                 children: [
-                  gap16,
-
-                  Visibility(
-                    visible: isDashboard.value,
-                    child: ContainerBGWhiteSlideFromLeft(
-                      child: Column(
-                        crossAxisAlignment: crossStart,
-                        children: [
-                          const Text(
-                            "Dashboard",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          gap16,
-                          Wrap(
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 100,
-                                color: Colors.red,
-                                child: Row(
-                                  children: [
-                                    
-                                    const Column(
-                                      children: [
-                                        Text("Total Parcel"),
-                                        Text("100"),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                  DashboardSection(
+                    isDashboard: isDashboard,
+                    isDashboardVisible: isDashboardVisible,
                   ),
                   gap16,
                   SearchDelivery(

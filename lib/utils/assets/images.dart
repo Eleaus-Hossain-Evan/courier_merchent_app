@@ -28,5 +28,23 @@ class Images {
   static const String iconDelivery = 'assets/icons/delivery.svg';
   static const String iconFacebook = 'assets/icons/facebook.png';
   static const String iconGoogle = 'assets/icons/google.png';
+  static const String iconParcelCancel = 'assets/icons/parcel_cancel.png';
+  static const String iconParcelCredit = 'assets/icons/parcel_credit.png';
+  static const String iconParcelDeliveryFeesPaid =
+      'assets/icons/parcel_delivery_fees_paid.png';
+  static const String iconParcelDropoff = 'assets/icons/parcel_dropoff.png';
+  static const String iconParcelPending = 'assets/icons/parcel_pending.png';
+  static const String iconParcelReturnEnd =
+      'assets/icons/parcel_return_end.png';
+  static const String iconParcelShipping = 'assets/icons/parcel_shipping.png';
+  static const String iconParcelTotal = 'assets/icons/parcel_total.png';
+  static const String iconPayCollection = 'assets/icons/pay_collection.png';
+  static const String iconPayDeliveryCharge =
+      'assets/icons/pay_delivery_charge.png';
+  static const String iconPayPending = 'assets/icons/pay_pending.png';
+  static const String iconPayProcessing = 'assets/icons/pay_processing.png';
+  static const String iconPayWithDraw = 'assets/icons/pay_with_draw.png';
+  static const String iconTotalUnsettledAmount =
+      'assets/icons/total_unsettled_amount.png';
   static const String svgCheck = 'assets/svg/check.svg';
 }

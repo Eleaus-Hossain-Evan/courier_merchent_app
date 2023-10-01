@@ -1,4 +1,5 @@
 import 'package:courier_merchent_app/domain/home/home_response.dart';
+import 'package:courier_merchent_app/domain/home/model/dashboard_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../infrastructure/home_repo.dart';
@@ -47,5 +48,28 @@ class Home extends _$Home {
   @override
   FutureOr<HomeResponse> build() {
     return _fetch();
+  }
+}
+
+@riverpod
+class Dashboard extends _$Dashboard {
+  final repo = HomeRepo();
+
+  Future<DashboardModel> _fetch({
+    required String startTime,
+    required String endTime,
+  }) async {
+    final result =
+        await repo.fetchDashboard(startTime: startTime, endTime: endTime);
+
+    return result.fold((l) {
+      showErrorToast(l.error.message);
+      return DashboardModel.init();
+    }, (r) => r.data);
+  }
+
+  @override
+  FutureOr<DashboardModel> build({String startTime = '', String endTime = ''}) {
+    return _fetch(startTime: startTime, endTime: endTime);
   }
 }

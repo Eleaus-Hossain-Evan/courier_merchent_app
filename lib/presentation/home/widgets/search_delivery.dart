@@ -35,6 +35,7 @@ class SearchDelivery extends HookConsumerWidget {
                   width: 24.w,
                   height: 24.h,
                 )
+                .objectBottomLeft()
                 .expand(),
             Tooltip(
               message: "Dashboard",
