@@ -15,9 +15,8 @@ class MerchantShopInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IndividualSection(
+    return IndividualSectionParcelTrack(
       title: "${AppStrings.merchantInfo} - ${AppStrings.shop}",
-      bgColor: ColorPalate.bg200,
       child: Column(
         crossAxisAlignment: crossStart,
         children: [

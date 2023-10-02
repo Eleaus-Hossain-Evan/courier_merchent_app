@@ -47,3 +47,63 @@ class IndividualSection extends StatelessWidget {
     ).box.color(ColorPalate.bg200).make();
   }
 }
+
+class IndividualSectionParcelTrack extends StatelessWidget {
+  const IndividualSectionParcelTrack({
+    Key? key,
+    required this.title,
+    this.leading,
+    this.visible = true,
+    required this.child,
+    this.replacement,
+    this.containerPadding,
+    this.action,
+  }) : super(key: key);
+
+  final String title;
+  final Widget? leading, action;
+  final bool visible;
+  final Widget child;
+  final Widget? replacement;
+  final EdgeInsetsGeometry? containerPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    return ContainerBGWhiteSlideFromRight(
+      padding: padding0,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Container(
+              margin: paddingTop12,
+              decoration: BoxDecoration(
+                color: ColorPalate.bg200,
+                border: Border.all(
+                  color: const Color(0xFF1C3011),
+                ),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+            ),
+          ),
+          Padding(
+            padding: paddingH16.copyWith(bottom: 12.h),
+            child: Column(
+              children: [
+                title.text.extraBold.lg.white
+                    .make()
+                    .pSymmetric(v: 2.h, h: 22.w)
+                    .box
+                    .color(const Color(0xFF1C3011))
+                    .rounded
+                    .make()
+                    .objectCenterLeft(),
+                gap16,
+                child,
+              ],
+            ),
+          ),
+        ],
+      ),
+    ).box.color(ColorPalate.bg200).make();
+  }
+}

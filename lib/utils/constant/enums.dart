@@ -25,4 +25,3 @@ enum ParcelRegularStatus {
 enum PaymentTab { payment, history }
 
 enum SearchBy { bySerialId, byPhone }
-

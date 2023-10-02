@@ -15,9 +15,8 @@ class PaymentDetailSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IndividualSection(
+    return IndividualSectionParcelTrack(
       title: "Payment Detail",
-      bgColor: ColorPalate.bg200,
       child: Column(
         crossAxisAlignment: crossStart,
         children: [

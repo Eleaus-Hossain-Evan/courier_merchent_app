@@ -22,6 +22,7 @@ class ParcelStatusWidget extends StatelessWidget {
         ParcelRegularStatus.hold => context.colors.secondary,
         ParcelRegularStatus.pending => context.colors.secondary,
         ParcelRegularStatus.dropoff => ColorPalate.black700,
+        ParcelRegularStatus.pickup => Vx.blue900,
         _ => context.colors.primary,
       };
     }
@@ -30,7 +31,7 @@ class ParcelStatusWidget extends StatelessWidget {
       height: 24.h,
       padding: paddingH10,
       decoration: BoxDecoration(
-        color: getColor().withOpacity(.1),
+        color: getColor(),
         border: Border.all(color: getColor().withOpacity(.2)),
         borderRadius: BorderRadius.circular(18.r),
       ),
@@ -40,7 +41,7 @@ class ParcelStatusWidget extends StatelessWidget {
           .xs
           .letterSpacing(1)
           .medium
-          .color(getColor())
+          .white
           .bold
           .capitalize
           .make()

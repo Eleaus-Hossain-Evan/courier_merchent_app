@@ -15,9 +15,8 @@ class CustomerInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IndividualSection(
+    return IndividualSectionParcelTrack(
       title: AppStrings.customerInformation,
-      bgColor: ColorPalate.bg200,
       child: Column(
         crossAxisAlignment: crossStart,
         children: [

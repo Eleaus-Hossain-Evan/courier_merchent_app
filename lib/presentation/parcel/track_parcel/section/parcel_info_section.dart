@@ -15,9 +15,8 @@ class ParcelInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IndividualSection(
+    return IndividualSectionParcelTrack(
       title: AppStrings.parcelInformation,
-      bgColor: ColorPalate.bg200,
       child: Column(
         children: [
           Row(
