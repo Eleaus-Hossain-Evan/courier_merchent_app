@@ -13,6 +13,7 @@ Future<Uint8List> makePdf(ParcelModel parcel) async {
   final pdf = Document();
 
   final netImage = await networkImage(APIRoute.BASE_URL + parcel.qrCode);
+  final logoImage = await imageFromAssetBundle(Images.logo);
 
   pdf.addPage(
     Page(
@@ -23,20 +24,21 @@ Future<Uint8List> makePdf(ParcelModel parcel) async {
           children: [
             Container(
               width: double.infinity,
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 border: Border.all(color: PdfColors.black),
               ),
-              child: infoSection(
-                title: 'Merchant',
-                name: parcel.merchantInfo.name,
-                address: parcel.merchantInfo.address,
-                area: parcel.merchantInfo.area.name,
-                district: parcel.merchantInfo.district.name,
-                phone: parcel.merchantInfo.phone,
-                price: 0,
-                isCustomer: false,
-              ),
+              child: Image(logoImage, height: 40),
+              // child: infoSection(
+              //   title: 'Merchant',
+              //   name: parcel.merchantInfo.name,
+              //   address: parcel.merchantInfo.address,
+              //   area: parcel.merchantInfo.area.name,
+              //   district: parcel.merchantInfo.district.name,
+              //   phone: parcel.merchantInfo.phone,
+              //   price: 0,
+              //   isCustomer: false,
+              // ),
             ),
             Container(
               decoration: const BoxDecoration(
@@ -82,11 +84,11 @@ Future<Uint8List> makePdf(ParcelModel parcel) async {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'AREA#: Uttara',
+                        'AREA#: ${parcel.customerInfo.area.name}',
                         textAlign: TextAlign.left,
                       ),
                       Text(
-                        'HUB#:',
+                        'HUB#: ${parcel.destinationHub.name}',
                         textAlign: TextAlign.left,
                       ),
                     ],

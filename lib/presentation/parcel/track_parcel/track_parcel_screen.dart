@@ -1,3 +1,4 @@
+import 'package:courier_merchent_app/application/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,17 +64,47 @@ class TrackParcelScreen extends HookConsumerWidget {
                             ParcelStatusWidget(status: data.regularStatus),
                           ],
                         ).px16(),
+                        gap16,
+                        Row(
+                          children: [
+                            'Payment Status : '.text.make(),
+                            data.merchantPaymentStatus.text.make(),
+                          ],
+                        ).px16(),
                       ],
                     ).flexible(),
-                    IconButton(
-                      onPressed: () =>
-                          context.push("${InvoiceScreen.route}/$parcelId"),
-                      icon: Icon(
-                        Bootstrap.file_earmark_pdf,
-                        size: 26.sp,
-                      ).p12(),
+                    Column(
+                      children: [
+                        IconButton(
+                          onPressed: () =>
+                              context.push("${InvoiceScreen.route}/$parcelId"),
+                          icon: const Icon(
+                            Bootstrap.file_earmark_pdf,
+                            // size: 26.sp,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => showAttachedWidget(
+                            builder: (cancel) => Center(
+                              child: Container(
+                                height: .6.sw,
+                                width: .6.sw,
+                                color: Colors.white,
+                                child: Image.network(
+                                  APIRoute.BASE_URL + data.qrCode,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                          icon: const Icon(
+                            Bootstrap.qr_code_scan,
+                            // size: 26.sp,
+                          ),
+                        ),
+                      ],
                     ),
-                    gap4,
+                    gap14,
                   ],
                 ),
                 gap6,

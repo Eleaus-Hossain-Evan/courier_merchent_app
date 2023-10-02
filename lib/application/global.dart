@@ -138,32 +138,8 @@ showAttachedWidget({
         ],
       ),
       animationDuration: const Duration(milliseconds: 300),
-      duration: const Duration(seconds: 2),
+      // duration: const Duration(seconds: 2),
     );
-
-// showFloatBottomSheet(
-//   BuildContext context, {
-//   required Widget Function(BuildContext context) builder,
-// }) =>
-//     showModalBottomSheet(
-//       context: context,
-//       backgroundColor: Colors.transparent,
-//       shape: const RoundedRectangleBorder(
-//         borderRadius: BorderRadius.zero,
-//       ),
-//       elevation: 0,
-//       builder: (context) => Container(
-//         // height: height,
-//         margin: EdgeInsets.all(20.w),
-//         decoration: BoxDecoration(
-//           color: context.themeData.scaffoldBackgroundColor,
-//           borderRadius: BorderRadius.circular(12.r),
-//         ),
-//         child: IntrinsicHeight(
-//           child: builder(context),
-//         ),
-//       ),
-//     );
 
 bool? showBotToastDialog({
   required bool? Function() cancel,

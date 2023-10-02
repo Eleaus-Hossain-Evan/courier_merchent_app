@@ -37,6 +37,8 @@ class ParcelModel extends Equatable {
   final String createdAt;
   final String updatedAt;
   final HubModel sourceHub;
+  final HubModel destinationHub;
+  final String merchantPaymentStatus;
 
   const ParcelModel({
     required this.merchantInfo,
@@ -65,6 +67,8 @@ class ParcelModel extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     required this.sourceHub,
+    required this.destinationHub,
+    required this.merchantPaymentStatus,
   });
 
   factory ParcelModel.init() => ParcelModel(
@@ -94,6 +98,8 @@ class ParcelModel extends Equatable {
         createdAt: '',
         updatedAt: '',
         sourceHub: HubModel.init(),
+        destinationHub: HubModel.init(),
+        merchantPaymentStatus: '',
       );
 
   ParcelModel copyWith({
@@ -123,6 +129,8 @@ class ParcelModel extends Equatable {
     String? createdAt,
     String? updatedAt,
     HubModel? sourceHub,
+    HubModel? destinationHub,
+    String? merchantPaymentStatus,
   }) {
     return ParcelModel(
       merchantInfo: merchantInfo ?? this.merchantInfo,
@@ -151,6 +159,9 @@ class ParcelModel extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       sourceHub: sourceHub ?? this.sourceHub,
+      destinationHub: destinationHub ?? this.destinationHub,
+      merchantPaymentStatus:
+          merchantPaymentStatus ?? this.merchantPaymentStatus,
     );
   }
 
@@ -182,6 +193,7 @@ class ParcelModel extends Equatable {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'sourceHub': sourceHub.toMap(),
+      'destinationHub': destinationHub.toMap(),
     };
   }
 
@@ -233,6 +245,10 @@ class ParcelModel extends Equatable {
       sourceHub: map['sourceHub'] != null
           ? HubModel.fromMap(map['sourceHub'])
           : HubModel.init(),
+      destinationHub: map['destinationHub'] != null
+          ? HubModel.fromMap(map['destinationHub'])
+          : HubModel.init(),
+      merchantPaymentStatus: map['merchantPaymentStatus'] ?? '',
     );
   }
 
@@ -242,9 +258,7 @@ class ParcelModel extends Equatable {
       ParcelModel.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'ParcelModel(merchantInfo: $merchantInfo, regularParcelInfo: $regularParcelInfo, exchangeParcelInfo: $exchangeParcelInfo, regularPayment: $regularPayment, exchangePayment: $exchangePayment, createdBy: $createdBy, merchantId: $merchantId, parcelType: $parcelType, pickupStatus: $pickupStatus, isTransferMode: $isTransferMode, regularStatus: $regularStatus, exchangeStatus: $exchangeStatus, merchantUpdate: $merchantUpdate, id: $id, customerInfo: $customerInfo, sourceHubId: $sourceHubId, currentHubId: $currentHubId, destinationHubId: $destinationHubId, regularStatusLogs: $regularStatusLogs, adminLogs: $adminLogs, serialId: $serialId, qrCode: $qrCode, exchangeStatusLogs: $exchangeStatusLogs, createdAt: $createdAt, updatedAt: $updatedAt, sourceHub: $sourceHub)';
-  }
+  bool? get stringify => true;
 
   @override
   List<Object> get props {
@@ -275,6 +289,8 @@ class ParcelModel extends Equatable {
       createdAt,
       updatedAt,
       sourceHub,
+      destinationHub,
+      merchantPaymentStatus,
     ];
   }
 }
