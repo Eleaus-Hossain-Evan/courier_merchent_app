@@ -152,7 +152,7 @@ class SignupScreen extends HookConsumerWidget {
                   isLabel: true,
                   controller: addressController,
                   focusNode: addressFocusNode,
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.multiline,
                   validator: ValidationBuilder().required().build(),
                   onFieldSubmitted: (value) {
                     referralFocusNode.requestFocus();
@@ -203,9 +203,7 @@ class SignupScreen extends HookConsumerWidget {
                 KFilledButton(
                   onPressed: () async {
                     FocusManager.instance.primaryFocus?.unfocus();
-                    ref
-                        .read(authProvider.notifier)
-                        .signUp(
+                    ref.read(authProvider.notifier).signUp(
                           SignUpBody(
                             name: nameController.text,
                             email: emailController.text,
@@ -213,24 +211,7 @@ class SignupScreen extends HookConsumerWidget {
                             password: passwordController.text,
                             address: addressController.text,
                           ),
-                        )
-                        .then((value) {
-                      if (value) {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          barrierLabel: "Barrier",
-                          useSafeArea: true,
-                          builder: (context) => OtpCheckWidget(
-                            controller: controller,
-                            onTapOtpCheck: (otp) => ref
-                                .read(authProvider.notifier)
-                                .verifySignUp(otp)
-                                .then((value) => Navigator.pop(context)),
-                          ),
                         );
-                      }
-                    });
                   },
                   text: AppStrings.signUp,
                 ),
