@@ -99,7 +99,7 @@ class BankDetailsScreen extends HookConsumerWidget {
                             ' now!'.textSpan.make(),
                           ])
                           .color(ColorPalate.warning)
-                          .subtitle2(context)
+                          .titleSmall(context)
                           .make(),
                     ),
                     isVisible: state.user.isPaymentUpdate,

@@ -7,14 +7,12 @@ import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:timer_count_down/timer_controller.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../application/auth/auth_provider.dart';
 import '../../../domain/auth/signUp_body.dart';
 import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
-import '../login/login.dart';
 
 class SignupScreen extends HookConsumerWidget {
   static String route = "/sign-up";
@@ -49,7 +47,7 @@ class SignupScreen extends HookConsumerWidget {
     });
 
     // Controller
-    final controller = useMemoized(() => CountdownController(autoStart: true));
+    // final controller = useMemoized(() => CountdownController(autoStart: true));
     return Scaffold(
       appBar: const KAppBar(),
       body: SafeArea(
@@ -234,8 +232,8 @@ class SignupScreen extends HookConsumerWidget {
                       KInkWell(
                         onTap: () {},
                         borderRadius: BorderRadius.circular(100.r),
-                        child: Logo(
-                          Logos.google,
+                        child: Brand(
+                          Brands.google,
                           size: 12.sp,
                         ).p12(),
                       )
@@ -247,8 +245,8 @@ class SignupScreen extends HookConsumerWidget {
                       KInkWell(
                         onTap: () {},
                         borderRadius: BorderRadius.circular(100.r),
-                        child: Logo(
-                          Logos.facebook_f,
+                        child: Brand(
+                          Brands.facebook_f,
                           size: 12.sp,
                         ).p12(),
                       )

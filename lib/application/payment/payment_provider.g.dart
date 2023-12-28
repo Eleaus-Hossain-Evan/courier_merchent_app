@@ -30,9 +30,6 @@ class _SystemHash {
   }
 }
 
-typedef GetPendingPaymentListRef
-    = AutoDisposeFutureProviderRef<PendingPaymentResponse>;
-
 /// See also [getPendingPaymentList].
 @ProviderFor(getPendingPaymentList)
 const getPendingPaymentListProvider = GetPendingPaymentListFamily();
@@ -84,11 +81,11 @@ class GetPendingPaymentListProvider
     extends AutoDisposeFutureProvider<PendingPaymentResponse> {
   /// See also [getPendingPaymentList].
   GetPendingPaymentListProvider({
-    this.page = 1,
-    this.limit = 10,
-  }) : super.internal(
+    int page = 1,
+    int limit = 10,
+  }) : this._internal(
           (ref) => getPendingPaymentList(
-            ref,
+            ref as GetPendingPaymentListRef,
             page: page,
             limit: limit,
           ),
@@ -101,10 +98,48 @@ class GetPendingPaymentListProvider
           dependencies: GetPendingPaymentListFamily._dependencies,
           allTransitiveDependencies:
               GetPendingPaymentListFamily._allTransitiveDependencies,
+          page: page,
+          limit: limit,
         );
+
+  GetPendingPaymentListProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.page,
+    required this.limit,
+  }) : super.internal();
 
   final int page;
   final int limit;
+
+  @override
+  Override overrideWith(
+    FutureOr<PendingPaymentResponse> Function(GetPendingPaymentListRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetPendingPaymentListProvider._internal(
+        (ref) => create(ref as GetPendingPaymentListRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        page: page,
+        limit: limit,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<PendingPaymentResponse> createElement() {
+    return _GetPendingPaymentListProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -123,10 +158,28 @@ class GetPendingPaymentListProvider
   }
 }
 
+mixin GetPendingPaymentListRef
+    on AutoDisposeFutureProviderRef<PendingPaymentResponse> {
+  /// The parameter `page` of this provider.
+  int get page;
+
+  /// The parameter `limit` of this provider.
+  int get limit;
+}
+
+class _GetPendingPaymentListProviderElement
+    extends AutoDisposeFutureProviderElement<PendingPaymentResponse>
+    with GetPendingPaymentListRef {
+  _GetPendingPaymentListProviderElement(super.provider);
+
+  @override
+  int get page => (origin as GetPendingPaymentListProvider).page;
+  @override
+  int get limit => (origin as GetPendingPaymentListProvider).limit;
+}
+
 String _$getHistoryPaymentListHash() =>
     r'a2dc377fd0cea0110b9528a29457fe489d6867fc';
-typedef GetHistoryPaymentListRef
-    = AutoDisposeFutureProviderRef<HistoryPaymentListResponse>;
 
 /// See also [getHistoryPaymentList].
 @ProviderFor(getHistoryPaymentList)
@@ -179,11 +232,11 @@ class GetHistoryPaymentListProvider
     extends AutoDisposeFutureProvider<HistoryPaymentListResponse> {
   /// See also [getHistoryPaymentList].
   GetHistoryPaymentListProvider({
-    this.page = 1,
-    this.limit = 10,
-  }) : super.internal(
+    int page = 1,
+    int limit = 10,
+  }) : this._internal(
           (ref) => getHistoryPaymentList(
-            ref,
+            ref as GetHistoryPaymentListRef,
             page: page,
             limit: limit,
           ),
@@ -196,10 +249,49 @@ class GetHistoryPaymentListProvider
           dependencies: GetHistoryPaymentListFamily._dependencies,
           allTransitiveDependencies:
               GetHistoryPaymentListFamily._allTransitiveDependencies,
+          page: page,
+          limit: limit,
         );
+
+  GetHistoryPaymentListProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.page,
+    required this.limit,
+  }) : super.internal();
 
   final int page;
   final int limit;
+
+  @override
+  Override overrideWith(
+    FutureOr<HistoryPaymentListResponse> Function(
+            GetHistoryPaymentListRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetHistoryPaymentListProvider._internal(
+        (ref) => create(ref as GetHistoryPaymentListRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        page: page,
+        limit: limit,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<HistoryPaymentListResponse> createElement() {
+    return _GetHistoryPaymentListProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -218,10 +310,28 @@ class GetHistoryPaymentListProvider
   }
 }
 
+mixin GetHistoryPaymentListRef
+    on AutoDisposeFutureProviderRef<HistoryPaymentListResponse> {
+  /// The parameter `page` of this provider.
+  int get page;
+
+  /// The parameter `limit` of this provider.
+  int get limit;
+}
+
+class _GetHistoryPaymentListProviderElement
+    extends AutoDisposeFutureProviderElement<HistoryPaymentListResponse>
+    with GetHistoryPaymentListRef {
+  _GetHistoryPaymentListProviderElement(super.provider);
+
+  @override
+  int get page => (origin as GetHistoryPaymentListProvider).page;
+  @override
+  int get limit => (origin as GetHistoryPaymentListProvider).limit;
+}
+
 String _$getSinglePaymentHistoryHash() =>
     r'8cf12aa4496fbd910431dfabf55990837a5106e8';
-typedef GetSinglePaymentHistoryRef
-    = AutoDisposeFutureProviderRef<SingleHistoryPaymentResponse>;
 
 /// See also [getSinglePaymentHistory].
 @ProviderFor(getSinglePaymentHistory)
@@ -271,10 +381,10 @@ class GetSinglePaymentHistoryProvider
     extends AutoDisposeFutureProvider<SingleHistoryPaymentResponse> {
   /// See also [getSinglePaymentHistory].
   GetSinglePaymentHistoryProvider({
-    required this.historyId,
-  }) : super.internal(
+    required String historyId,
+  }) : this._internal(
           (ref) => getSinglePaymentHistory(
-            ref,
+            ref as GetSinglePaymentHistoryRef,
             historyId: historyId,
           ),
           from: getSinglePaymentHistoryProvider,
@@ -286,9 +396,46 @@ class GetSinglePaymentHistoryProvider
           dependencies: GetSinglePaymentHistoryFamily._dependencies,
           allTransitiveDependencies:
               GetSinglePaymentHistoryFamily._allTransitiveDependencies,
+          historyId: historyId,
         );
 
+  GetSinglePaymentHistoryProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.historyId,
+  }) : super.internal();
+
   final String historyId;
+
+  @override
+  Override overrideWith(
+    FutureOr<SingleHistoryPaymentResponse> Function(
+            GetSinglePaymentHistoryRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetSinglePaymentHistoryProvider._internal(
+        (ref) => create(ref as GetSinglePaymentHistoryRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        historyId: historyId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<SingleHistoryPaymentResponse>
+      createElement() {
+    return _GetSinglePaymentHistoryProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -304,5 +451,20 @@ class GetSinglePaymentHistoryProvider
     return _SystemHash.finish(hash);
   }
 }
+
+mixin GetSinglePaymentHistoryRef
+    on AutoDisposeFutureProviderRef<SingleHistoryPaymentResponse> {
+  /// The parameter `historyId` of this provider.
+  String get historyId;
+}
+
+class _GetSinglePaymentHistoryProviderElement
+    extends AutoDisposeFutureProviderElement<SingleHistoryPaymentResponse>
+    with GetSinglePaymentHistoryRef {
+  _GetSinglePaymentHistoryProviderElement(super.provider);
+
+  @override
+  String get historyId => (origin as GetSinglePaymentHistoryProvider).historyId;
+}
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

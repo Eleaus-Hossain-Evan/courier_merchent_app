@@ -1,18 +1,16 @@
 import 'dart:io';
 
 import 'package:courier_merchent_app/domain/auth/add_shop_body.dart';
-import 'package:courier_merchent_app/domain/auth/model/shop_model.dart';
 import 'package:courier_merchent_app/domain/auth/password_update_body.dart';
 import 'package:courier_merchent_app/domain/auth/payment_update_body.dart';
 import 'package:courier_merchent_app/domain/auth/verify-otp-model.dart';
 import 'package:courier_merchent_app/domain/simple_response.dart';
 
+import '../domain/auth/auth_response.dart';
 import '../domain/auth/fetch_all_bank_response.dart';
 import '../domain/auth/get_all_shop_response.dart';
 import '../domain/auth/image_update_response.dart';
 import '../domain/auth/login_body.dart';
-import '../domain/auth/auth_response.dart';
-import '../domain/auth/model/user_model.dart';
 import '../domain/auth/profile_update_body.dart';
 import '../domain/auth/shop_update_response.dart';
 import '../domain/auth/signUp_body.dart';

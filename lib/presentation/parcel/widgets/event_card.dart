@@ -1,11 +1,9 @@
+import 'package:courier_merchent_app/presentation/widgets/k_inkwell.dart';
+import 'package:courier_merchent_app/utils/color_palate.dart';
+import 'package:courier_merchent_app/utils/constant/ui_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import 'package:courier_merchent_app/presentation/widgets/k_inkwell.dart';
-import 'package:courier_merchent_app/utils/color_palate.dart';
-import 'package:courier_merchent_app/utils/extensions/extensions.dart';
-import 'package:courier_merchent_app/utils/constant/ui_constant.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({

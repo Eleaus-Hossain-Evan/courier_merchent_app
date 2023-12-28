@@ -1,12 +1,9 @@
-import 'package:velocity_x/velocity_x.dart';
-
-import '../../../utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../../application/auth/auth_provider.dart';
 
-import '../../../application/global.dart';
+import '../../../application/auth/auth_provider.dart';
+import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
 
 class ProfilePicWidget extends HookConsumerWidget {

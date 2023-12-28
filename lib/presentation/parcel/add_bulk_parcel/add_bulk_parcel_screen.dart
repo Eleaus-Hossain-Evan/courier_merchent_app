@@ -1,7 +1,9 @@
 import "dart:io" as io;
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:courier_merchent_app/application/home/home_provider.dart';
 import 'package:courier_merchent_app/domain/auth/model/area_model.dart';
+import 'package:courier_merchent_app/utils/utils.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:excel/excel.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
@@ -15,9 +17,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import 'package:courier_merchent_app/application/home/home_provider.dart';
-import 'package:courier_merchent_app/utils/utils.dart';
 
 import '../../../application/auth/auth_provider.dart';
 import '../../../application/global.dart';
@@ -84,8 +83,8 @@ class AddBulkParcelScreen extends HookConsumerWidget {
                           EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
                       child: Row(
                         children: [
-                          Logo(
-                            Logos.microsoft_excel,
+                          Brand(
+                            Brands.microsoft_excel,
                             size: 16.sp,
                           ),
                           gap8,
@@ -180,8 +179,8 @@ class AddBulkParcelScreen extends HookConsumerWidget {
                         EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
                     child: Row(
                       children: [
-                        Logo(
-                          Logos.microsoft_excel,
+                        Brand(
+                          Brands.microsoft_excel,
                           size: 16.sp,
                         ),
                         gap8,

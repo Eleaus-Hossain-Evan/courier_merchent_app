@@ -17,7 +17,6 @@ import '../../../../utils/utils.dart';
 import '../../../widgets/widgets.dart';
 import '../bank_detail/bank_details_screen.dart';
 import 'widgets/profile_section.dart';
-import '../../../widgets/warning_section.dart';
 
 enum PickUpStyle { perRequest, daily }
 
@@ -253,7 +252,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
                 ProfileSection(
                   title: AppStrings.defaultPayment,
                   leading: Icon(
-                    FontAwesome.money_bill_1_wave,
+                    FontAwesome.money_bill_1_wave_solid,
                     size: 18.sp,
                     color: ColorPalate.secondary,
                   ),
@@ -286,7 +285,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
                 ProfileSection(
                   title: AppStrings.pickupStyle,
                   leading: Icon(
-                    FontAwesome.location_pin_lock,
+                    FontAwesome.location_pin_lock_solid,
                     size: 18.sp,
                     color: ColorPalate.secondary,
                   ),

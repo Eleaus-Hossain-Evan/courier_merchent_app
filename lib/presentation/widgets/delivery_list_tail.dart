@@ -4,8 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import 'package:courier_merchent_app/presentation/widgets/k_inkwell.dart';
-
 import '../../domain/parcel/model/parcel_model.dart';
 import '../../utils/utils.dart';
 import '../parcel/add_single_parcel/add_single_parcel_screen.dart';
@@ -46,12 +44,12 @@ class DeliveryListTile extends StatelessWidget {
               children: [
                 "Tr. ID: "
                     .textSpan
-                    .caption(context)
+                    .bodySmall(context)
 
                     // .color(ColorPalate.black1000)
                     .make(),
                 parcel.serialId.textSpan
-                    .caption(context)
+                    .bodySmall(context)
                     .letterSpacing(.8)
                     .color(ColorPalate.black500)
                     .semiBold
@@ -150,7 +148,7 @@ class DeliveryListTile extends StatelessWidget {
                               extra: parcel);
                         },
                         icon: Icon(
-                          BoxIcons.bx_edit_alt,
+                          BoxIcons.bxs_edit_alt,
                           size: 18.sp,
                         ),
                       ),

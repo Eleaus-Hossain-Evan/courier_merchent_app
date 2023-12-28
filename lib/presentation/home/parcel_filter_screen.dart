@@ -68,8 +68,7 @@ class ParcelFilterScreen extends HookConsumerWidget {
               isVisible: ref
                   .watch(
                     fetchAllTypeParcelProvider(
-                      serialId: serialVal.value,
-                      customerPhone: phoneVal.value,
+                      value: phoneVal.value + serialVal.value,
                       startTime: startTimeVal.value,
                       endTime: endTimeVal.value,
                     ),
@@ -80,8 +79,7 @@ class ParcelFilterScreen extends HookConsumerWidget {
               color: ColorPalate.bg100,
               child: RefreshIndicator(
                 onRefresh: () => ref.refresh(fetchAllTypeParcelProvider(
-                  serialId: serialVal.value,
-                  customerPhone: phoneVal.value,
+                  value: phoneVal.value + serialVal.value,
                   startTime: startTimeVal.value,
                   endTime: endTimeVal.value,
                 ).future),
@@ -96,8 +94,7 @@ class ParcelFilterScreen extends HookConsumerWidget {
                       final parcelResponse = ref.watch(
                         fetchAllTypeParcelProvider(
                           page: page,
-                          serialId: serialVal.value,
-                          customerPhone: phoneVal.value,
+                          value: phoneVal.value + serialVal.value,
                           startTime: startTimeVal.value,
                           endTime: endTimeVal.value,
                         ),
@@ -208,8 +205,7 @@ class SearchFilterWidget extends HookConsumerWidget {
                         serialVal.value = text;
                         ref
                             .refresh(fetchAllTypeParcelProvider(
-                          serialId: serialVal.value,
-                          customerPhone: phoneVal.value,
+                          value: phoneVal.value + serialVal.value,
                           startTime: startTimeVal.value,
                           endTime: endTimeVal.value,
                         ).future)
@@ -239,8 +235,7 @@ class SearchFilterWidget extends HookConsumerWidget {
                         phoneVal.value = text;
                         ref
                             .refresh(fetchAllTypeParcelProvider(
-                          serialId: serialVal.value,
-                          customerPhone: phoneVal.value,
+                          value: phoneVal.value + serialVal.value,
                           startTime: startTimeVal.value,
                           endTime: endTimeVal.value,
                         ).future)
@@ -280,8 +275,7 @@ class SearchFilterWidget extends HookConsumerWidget {
                   endTimeVal.value = picked.end.toIso8601String();
                   ref
                       .refresh(fetchAllTypeParcelProvider(
-                    serialId: serialVal.value,
-                    customerPhone: phoneVal.value,
+                    value: phoneVal.value + serialVal.value,
                     startTime: startTimeVal.value,
                     endTime: endTimeVal.value,
                   ).future)

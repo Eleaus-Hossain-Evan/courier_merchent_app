@@ -27,7 +27,7 @@ class ParcelListScreen extends HookConsumerWidget {
         titleTextStyle: const TextStyle(color: ColorPalate.white),
         backgroundColor: context.colors.primary,
         bottom: TabBar(
-          padding: paddingH16,
+          // padding: paddingH16,
           labelStyle: TextStyle(
             fontWeight: FontWeight.w700,
             fontSize: 12.sp,

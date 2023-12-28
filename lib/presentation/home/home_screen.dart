@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:courier_merchent_app/application/parcel/parcel_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -6,8 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import 'package:courier_merchent_app/application/parcel/parcel_provider.dart';
 
 import '../../application/home/home_provider.dart';
 import '../../utils/utils.dart';
@@ -68,12 +67,7 @@ class HomeScreen extends HookConsumerWidget {
           width: 1.sw,
           child: SmartRefresher(
             controller: refreshController,
-            // enablePullUp: true,
-            // onRefresh: () => ref
-            //     .refresh(homeProvider.notifier)
-            //     .getRecentParcelList()
-            //     .then((value) =>
-            //         refreshController.refreshCompleted(resetFooterState: true)),
+
             onRefresh: () => ref
                 .refresh(recentParcelProvider.future)
                 .then((value) => refreshController.refreshCompleted()),

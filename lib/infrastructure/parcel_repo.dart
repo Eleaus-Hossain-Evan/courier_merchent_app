@@ -2,10 +2,10 @@ import 'package:courier_merchent_app/domain/parcel/create_parcel_body.dart';
 import 'package:courier_merchent_app/domain/parcel/fetch_all_parcel_response.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
 
-import '../domain/parcel/model/merchant_info_model.dart';
-import '../domain/parcel/parcel_response.dart';
 import '../domain/parcel/get_area_model_response.dart';
+import '../domain/parcel/model/merchant_info_model.dart';
 import '../domain/parcel/parcel_category_model_response.dart';
+import '../domain/parcel/parcel_response.dart';
 import '../domain/parcel/update_parcel_body.dart';
 import '../utils/utils.dart';
 
@@ -80,8 +80,7 @@ class ParcelRepo {
 
   Future<Either<CleanFailure, FetchAllParcelResponse>> fetchParcelList({
     ParcelRegularStatus status = ParcelRegularStatus.all,
-    String serialId = "",
-    String customerPhone = "",
+    String value = "",
     String startTime = "",
     String endTime = "",
     int page = 1,
@@ -90,10 +89,9 @@ class ParcelRepo {
     final data = await api.post(
       body: {
         "status": status.value,
-        "serialId": serialId,
-        "customerPhone": customerPhone,
         "startTime": startTime,
-        "endTime": endTime
+        "endTime": endTime,
+        "value": ""
       },
       fromData: (json) => FetchAllParcelResponse.fromMap(json),
       endPoint: "${APIRoute.FETCH_ALL_PARCEL}page=$page&limit=$limit",

@@ -88,10 +88,10 @@ class PaymentHistoryListTile extends StatelessWidget {
               Text.rich(
                 TextSpan(
                   children: [
-                    "Serial. ID :  ".textSpan.caption(context).make(),
+                    "Serial. ID :  ".textSpan.bodySmall(context).make(),
                     history.serialId.textSpan
-                        .caption(context)
                         .letterSpacing(.8)
+                        .bodySmall(context)
                         .color(ColorPalate.black500)
                         .semiBold
                         .make(),
@@ -120,12 +120,12 @@ class PaymentHistoryListTile extends StatelessWidget {
                       children: [
                         "Total Cash Collection :  "
                             .textSpan
-                            .caption(context)
+                            .bodySmall(context)
                             .make(),
                         history.totalCashCollection
                             .toString()
                             .textSpan
-                            .caption(context)
+                            .bodySmall(context)
                             .letterSpacing(.8)
                             .color(ColorPalate.black500)
                             .semiBold
@@ -139,12 +139,12 @@ class PaymentHistoryListTile extends StatelessWidget {
                       children: [
                         "Total Delivery Charge :  "
                             .textSpan
-                            .caption(context)
+                            .bodySmall(context)
                             .make(),
                         history.totalDeliverCharge
                             .toString()
                             .textSpan
-                            .caption(context)
+                            .bodySmall(context)
                             .letterSpacing(.8)
                             .color(ColorPalate.black500)
                             .semiBold
@@ -156,11 +156,11 @@ class PaymentHistoryListTile extends StatelessWidget {
                   Text.rich(
                     TextSpan(
                       children: [
-                        "Merchant Due :  ".textSpan.caption(context).make(),
+                        "Merchant Due :  ".textSpan.bodySmall(context).make(),
                         history.prevMerchantDue
                             .toString()
                             .textSpan
-                            .caption(context)
+                            .bodySmall(context)
                             .letterSpacing(.8)
                             .color(ColorPalate.black500)
                             .semiBold

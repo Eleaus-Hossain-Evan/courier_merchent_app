@@ -105,9 +105,9 @@ class DashboardProvider
     extends AutoDisposeAsyncNotifierProviderImpl<Dashboard, DashboardModel> {
   /// See also [Dashboard].
   DashboardProvider({
-    this.startTime = '',
-    this.endTime = '',
-  }) : super.internal(
+    String startTime = '',
+    String endTime = '',
+  }) : this._internal(
           () => Dashboard()
             ..startTime = startTime
             ..endTime = endTime,
@@ -119,10 +119,58 @@ class DashboardProvider
                   : _$dashboardHash,
           dependencies: DashboardFamily._dependencies,
           allTransitiveDependencies: DashboardFamily._allTransitiveDependencies,
+          startTime: startTime,
+          endTime: endTime,
         );
+
+  DashboardProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.startTime,
+    required this.endTime,
+  }) : super.internal();
 
   final String startTime;
   final String endTime;
+
+  @override
+  FutureOr<DashboardModel> runNotifierBuild(
+    covariant Dashboard notifier,
+  ) {
+    return notifier.build(
+      startTime: startTime,
+      endTime: endTime,
+    );
+  }
+
+  @override
+  Override overrideWith(Dashboard Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: DashboardProvider._internal(
+        () => create()
+          ..startTime = startTime
+          ..endTime = endTime,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        startTime: startTime,
+        endTime: endTime,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<Dashboard, DashboardModel>
+      createElement() {
+    return _DashboardProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -139,16 +187,25 @@ class DashboardProvider
 
     return _SystemHash.finish(hash);
   }
+}
+
+mixin DashboardRef on AutoDisposeAsyncNotifierProviderRef<DashboardModel> {
+  /// The parameter `startTime` of this provider.
+  String get startTime;
+
+  /// The parameter `endTime` of this provider.
+  String get endTime;
+}
+
+class _DashboardProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<Dashboard, DashboardModel>
+    with DashboardRef {
+  _DashboardProviderElement(super.provider);
 
   @override
-  FutureOr<DashboardModel> runNotifierBuild(
-    covariant Dashboard notifier,
-  ) {
-    return notifier.build(
-      startTime: startTime,
-      endTime: endTime,
-    );
-  }
+  String get startTime => (origin as DashboardProvider).startTime;
+  @override
+  String get endTime => (origin as DashboardProvider).endTime;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

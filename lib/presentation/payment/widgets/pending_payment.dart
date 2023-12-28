@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import '../../../application/payment/payment_provider.dart';
 import '../../../utils/utils.dart';

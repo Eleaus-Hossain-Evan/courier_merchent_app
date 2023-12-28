@@ -35,7 +35,7 @@ class ChargeScreen extends HookConsumerWidget {
                         ' contact with admin.'.textSpan.make(),
                       ])
                       .color(ColorPalate.warning)
-                      .subtitle2(context)
+                      .titleSmall(context)
                       .make(),
                 ),
               ),

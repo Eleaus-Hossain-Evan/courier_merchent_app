@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -49,8 +51,8 @@ class KUserAvatar extends HookConsumerWidget {
               backgroundImage: !isEmptyUrl
                   ? CachedNetworkImageProvider(
                       APIRoute.BASE_URL + url,
-                      errorListener: () =>
-                          const Icon(Icons.error_outline_outlined),
+                      errorListener: (error) =>
+                          log('Error loading image', error: error),
                     )
                   : null,
               child: isEmptyUrl ? icon ?? const Icon(Icons.person) : null,

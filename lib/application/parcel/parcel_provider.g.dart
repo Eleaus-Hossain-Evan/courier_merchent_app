@@ -44,9 +44,6 @@ class _SystemHash {
   }
 }
 
-typedef CreateBulkParcelRef
-    = AutoDisposeFutureProviderRef<FetchAllParcelResponse>;
-
 /// See also [createBulkParcel].
 @ProviderFor(createBulkParcel)
 const createBulkParcelProvider = CreateBulkParcelFamily();
@@ -98,11 +95,11 @@ class CreateBulkParcelProvider
     extends AutoDisposeFutureProvider<FetchAllParcelResponse> {
   /// See also [createBulkParcel].
   CreateBulkParcelProvider({
-    required this.merchant,
-    required this.data,
-  }) : super.internal(
+    required MerchantInfoModel merchant,
+    required String data,
+  }) : this._internal(
           (ref) => createBulkParcel(
-            ref,
+            ref as CreateBulkParcelRef,
             merchant: merchant,
             data: data,
           ),
@@ -115,10 +112,48 @@ class CreateBulkParcelProvider
           dependencies: CreateBulkParcelFamily._dependencies,
           allTransitiveDependencies:
               CreateBulkParcelFamily._allTransitiveDependencies,
+          merchant: merchant,
+          data: data,
         );
+
+  CreateBulkParcelProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.merchant,
+    required this.data,
+  }) : super.internal();
 
   final MerchantInfoModel merchant;
   final String data;
+
+  @override
+  Override overrideWith(
+    FutureOr<FetchAllParcelResponse> Function(CreateBulkParcelRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: CreateBulkParcelProvider._internal(
+        (ref) => create(ref as CreateBulkParcelRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        merchant: merchant,
+        data: data,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<FetchAllParcelResponse> createElement() {
+    return _CreateBulkParcelProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -137,13 +172,34 @@ class CreateBulkParcelProvider
   }
 }
 
+mixin CreateBulkParcelRef
+    on AutoDisposeFutureProviderRef<FetchAllParcelResponse> {
+  /// The parameter `merchant` of this provider.
+  MerchantInfoModel get merchant;
+
+  /// The parameter `data` of this provider.
+  String get data;
+}
+
+class _CreateBulkParcelProviderElement
+    extends AutoDisposeFutureProviderElement<FetchAllParcelResponse>
+    with CreateBulkParcelRef {
+  _CreateBulkParcelProviderElement(super.provider);
+
+  @override
+  MerchantInfoModel get merchant =>
+      (origin as CreateBulkParcelProvider).merchant;
+  @override
+  String get data => (origin as CreateBulkParcelProvider).data;
+}
+
 String _$singleParcelHash() => r'909b79e29e9fa9df6f13880aa7b9f62b610dc6bb';
 
 abstract class _$SingleParcel
     extends BuildlessAutoDisposeAsyncNotifier<ParcelModel> {
   late final String id;
 
-  Future<ParcelModel> build(
+  FutureOr<ParcelModel> build(
     String id,
   );
 }
@@ -195,8 +251,8 @@ class SingleParcelProvider
     extends AutoDisposeAsyncNotifierProviderImpl<SingleParcel, ParcelModel> {
   /// See also [SingleParcel].
   SingleParcelProvider(
-    this.id,
-  ) : super.internal(
+    String id,
+  ) : this._internal(
           () => SingleParcel()..id = id,
           from: singleParcelProvider,
           name: r'singleParcelProvider',
@@ -207,9 +263,51 @@ class SingleParcelProvider
           dependencies: SingleParcelFamily._dependencies,
           allTransitiveDependencies:
               SingleParcelFamily._allTransitiveDependencies,
+          id: id,
         );
 
+  SingleParcelProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
   final String id;
+
+  @override
+  FutureOr<ParcelModel> runNotifierBuild(
+    covariant SingleParcel notifier,
+  ) {
+    return notifier.build(
+      id,
+    );
+  }
+
+  @override
+  Override overrideWith(SingleParcel Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: SingleParcelProvider._internal(
+        () => create()..id = id,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<SingleParcel, ParcelModel>
+      createElement() {
+    return _SingleParcelProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -223,36 +321,39 @@ class SingleParcelProvider
 
     return _SystemHash.finish(hash);
   }
+}
+
+mixin SingleParcelRef on AutoDisposeAsyncNotifierProviderRef<ParcelModel> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _SingleParcelProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<SingleParcel, ParcelModel>
+    with SingleParcelRef {
+  _SingleParcelProviderElement(super.provider);
 
   @override
-  Future<ParcelModel> runNotifierBuild(
-    covariant SingleParcel notifier,
-  ) {
-    return notifier.build(
-      id,
-    );
-  }
+  String get id => (origin as SingleParcelProvider).id;
 }
 
 String _$fetchAllTypeParcelHash() =>
-    r'74778d98271bd8c736c712e1fa235f9ed0e7d478';
+    r'0e53266d2253900b21a2c8f550cb8a1517c29130';
 
 abstract class _$FetchAllTypeParcel
     extends BuildlessAutoDisposeAsyncNotifier<FetchAllParcelResponse> {
   late final ParcelRegularStatus type;
   late final int page;
   late final int limit;
-  late final String serialId;
-  late final String customerPhone;
+  late final String value;
   late final String startTime;
   late final String endTime;
 
-  Future<FetchAllParcelResponse> build({
+  FutureOr<FetchAllParcelResponse> build({
     ParcelRegularStatus type = ParcelRegularStatus.all,
     int page = 1,
     int limit = 10,
-    String serialId = "",
-    String customerPhone = "",
+    String value = "",
     String startTime = "",
     String endTime = "",
   });
@@ -273,8 +374,7 @@ class FetchAllTypeParcelFamily
     ParcelRegularStatus type = ParcelRegularStatus.all,
     int page = 1,
     int limit = 10,
-    String serialId = "",
-    String customerPhone = "",
+    String value = "",
     String startTime = "",
     String endTime = "",
   }) {
@@ -282,8 +382,7 @@ class FetchAllTypeParcelFamily
       type: type,
       page: page,
       limit: limit,
-      serialId: serialId,
-      customerPhone: customerPhone,
+      value: value,
       startTime: startTime,
       endTime: endTime,
     );
@@ -297,8 +396,7 @@ class FetchAllTypeParcelFamily
       type: provider.type,
       page: provider.page,
       limit: provider.limit,
-      serialId: provider.serialId,
-      customerPhone: provider.customerPhone,
+      value: provider.value,
       startTime: provider.startTime,
       endTime: provider.endTime,
     );
@@ -324,20 +422,18 @@ class FetchAllTypeParcelProvider extends AutoDisposeAsyncNotifierProviderImpl<
     FetchAllTypeParcel, FetchAllParcelResponse> {
   /// See also [FetchAllTypeParcel].
   FetchAllTypeParcelProvider({
-    this.type = ParcelRegularStatus.all,
-    this.page = 1,
-    this.limit = 10,
-    this.serialId = "",
-    this.customerPhone = "",
-    this.startTime = "",
-    this.endTime = "",
-  }) : super.internal(
+    ParcelRegularStatus type = ParcelRegularStatus.all,
+    int page = 1,
+    int limit = 10,
+    String value = "",
+    String startTime = "",
+    String endTime = "",
+  }) : this._internal(
           () => FetchAllTypeParcel()
             ..type = type
             ..page = page
             ..limit = limit
-            ..serialId = serialId
-            ..customerPhone = customerPhone
+            ..value = value
             ..startTime = startTime
             ..endTime = endTime,
           from: fetchAllTypeParcelProvider,
@@ -349,15 +445,82 @@ class FetchAllTypeParcelProvider extends AutoDisposeAsyncNotifierProviderImpl<
           dependencies: FetchAllTypeParcelFamily._dependencies,
           allTransitiveDependencies:
               FetchAllTypeParcelFamily._allTransitiveDependencies,
+          type: type,
+          page: page,
+          limit: limit,
+          value: value,
+          startTime: startTime,
+          endTime: endTime,
         );
+
+  FetchAllTypeParcelProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.type,
+    required this.page,
+    required this.limit,
+    required this.value,
+    required this.startTime,
+    required this.endTime,
+  }) : super.internal();
 
   final ParcelRegularStatus type;
   final int page;
   final int limit;
-  final String serialId;
-  final String customerPhone;
+  final String value;
   final String startTime;
   final String endTime;
+
+  @override
+  FutureOr<FetchAllParcelResponse> runNotifierBuild(
+    covariant FetchAllTypeParcel notifier,
+  ) {
+    return notifier.build(
+      type: type,
+      page: page,
+      limit: limit,
+      value: value,
+      startTime: startTime,
+      endTime: endTime,
+    );
+  }
+
+  @override
+  Override overrideWith(FetchAllTypeParcel Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: FetchAllTypeParcelProvider._internal(
+        () => create()
+          ..type = type
+          ..page = page
+          ..limit = limit
+          ..value = value
+          ..startTime = startTime
+          ..endTime = endTime,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        type: type,
+        page: page,
+        limit: limit,
+        value: value,
+        startTime: startTime,
+        endTime: endTime,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<FetchAllTypeParcel,
+      FetchAllParcelResponse> createElement() {
+    return _FetchAllTypeParcelProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -365,8 +528,7 @@ class FetchAllTypeParcelProvider extends AutoDisposeAsyncNotifierProviderImpl<
         other.type == type &&
         other.page == page &&
         other.limit == limit &&
-        other.serialId == serialId &&
-        other.customerPhone == customerPhone &&
+        other.value == value &&
         other.startTime == startTime &&
         other.endTime == endTime;
   }
@@ -377,28 +539,52 @@ class FetchAllTypeParcelProvider extends AutoDisposeAsyncNotifierProviderImpl<
     hash = _SystemHash.combine(hash, type.hashCode);
     hash = _SystemHash.combine(hash, page.hashCode);
     hash = _SystemHash.combine(hash, limit.hashCode);
-    hash = _SystemHash.combine(hash, serialId.hashCode);
-    hash = _SystemHash.combine(hash, customerPhone.hashCode);
+    hash = _SystemHash.combine(hash, value.hashCode);
     hash = _SystemHash.combine(hash, startTime.hashCode);
     hash = _SystemHash.combine(hash, endTime.hashCode);
 
     return _SystemHash.finish(hash);
   }
+}
+
+mixin FetchAllTypeParcelRef
+    on AutoDisposeAsyncNotifierProviderRef<FetchAllParcelResponse> {
+  /// The parameter `type` of this provider.
+  ParcelRegularStatus get type;
+
+  /// The parameter `page` of this provider.
+  int get page;
+
+  /// The parameter `limit` of this provider.
+  int get limit;
+
+  /// The parameter `value` of this provider.
+  String get value;
+
+  /// The parameter `startTime` of this provider.
+  String get startTime;
+
+  /// The parameter `endTime` of this provider.
+  String get endTime;
+}
+
+class _FetchAllTypeParcelProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<FetchAllTypeParcel,
+        FetchAllParcelResponse> with FetchAllTypeParcelRef {
+  _FetchAllTypeParcelProviderElement(super.provider);
 
   @override
-  Future<FetchAllParcelResponse> runNotifierBuild(
-    covariant FetchAllTypeParcel notifier,
-  ) {
-    return notifier.build(
-      type: type,
-      page: page,
-      limit: limit,
-      serialId: serialId,
-      customerPhone: customerPhone,
-      startTime: startTime,
-      endTime: endTime,
-    );
-  }
+  ParcelRegularStatus get type => (origin as FetchAllTypeParcelProvider).type;
+  @override
+  int get page => (origin as FetchAllTypeParcelProvider).page;
+  @override
+  int get limit => (origin as FetchAllTypeParcelProvider).limit;
+  @override
+  String get value => (origin as FetchAllTypeParcelProvider).value;
+  @override
+  String get startTime => (origin as FetchAllTypeParcelProvider).startTime;
+  @override
+  String get endTime => (origin as FetchAllTypeParcelProvider).endTime;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

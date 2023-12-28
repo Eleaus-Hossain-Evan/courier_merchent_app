@@ -176,15 +176,13 @@ class FetchAllTypeParcel extends _$FetchAllTypeParcel {
     ParcelRegularStatus type = ParcelRegularStatus.all,
     int page = 1,
     int limit = 10,
-    String serialId = "",
-    String customerPhone = "",
+    String value = "",
     String startTime = "",
     String endTime = "",
   }) async {
     final result = await ParcelRepo().fetchParcelList(
         status: type,
-        customerPhone: customerPhone,
-        serialId: serialId,
+        value: value,
         endTime: endTime,
         startTime: startTime,
         limit: limit,

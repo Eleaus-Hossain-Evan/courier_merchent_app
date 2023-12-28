@@ -63,10 +63,11 @@ class PaymentHistoryDetails extends HookConsumerWidget {
                               children: [
                                 "Serial. ID :  "
                                     .textSpan
-                                    .caption(context)
+                                    //caption(context)
+                                    .bodySmall(context)
                                     .make(),
                                 data.data.serialId.textSpan
-                                    .caption(context)
+                                    .bodySmall(context)
                                     .letterSpacing(.8)
                                     .color(ColorPalate.black500)
                                     .semiBold

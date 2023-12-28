@@ -72,7 +72,7 @@ class ProfileScreen extends HookConsumerWidget {
                   children: [
                     //?  --- Parcel Payment & History ---
                     ProfileOptionsItem(
-                      leading: FontAwesome.coins,
+                      leading: FontAwesome.coins_solid,
                       title: AppStrings.payment,
                       onTap: () => context.push(PaymentScreen.route),
                     ),
