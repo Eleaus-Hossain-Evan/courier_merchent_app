@@ -1,12 +1,11 @@
+import 'package:courier_merchent_app/domain/payment/model/payment_history_model.dart';
+import 'package:courier_merchent_app/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import 'package:courier_merchent_app/domain/payment/model/payment_history_model.dart';
-import 'package:courier_merchent_app/presentation/widgets/widgets.dart';
 
 import '../../../application/payment/payment_provider.dart';
 import '../../../utils/utils.dart';
@@ -16,7 +15,6 @@ class HistoryPayment extends HookConsumerWidget {
   const HistoryPayment({
     super.key,
   });
-
 
   @override
   Widget build(BuildContext context, ref) {
@@ -182,7 +180,7 @@ class PaymentHistoryListTile extends StatelessWidget {
                       .make(),
                   "Total Parcels"
                       .text
-                      .caption(context)
+                      .labelSmall(context)
                       .xs
                       .colorPrimary(context)
                       .make(),

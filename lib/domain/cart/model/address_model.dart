@@ -33,7 +33,7 @@ class AddressModel extends Equatable {
     String? city,
   }) {
     return AddressModel(
-      fullName: fullname ?? this.fullName,
+      fullName: fullname ?? fullName,
       phone: phone ?? this.phone,
       email: email ?? this.email,
       address: address ?? this.address,

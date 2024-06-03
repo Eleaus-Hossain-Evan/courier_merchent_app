@@ -114,7 +114,7 @@ class CreateParcelEndDrawer extends HookConsumerWidget {
                             onTap: () => context.push(MyShopScreen.route),
                             child: "Go to Shop"
                                 .text
-                                .caption(context)
+                                .labelSmall(context)
                                 .make()
                                 .p8()
                                 .box
@@ -131,7 +131,7 @@ class CreateParcelEndDrawer extends HookConsumerWidget {
                             gap12,
                             "No Shop added yet!"
                                 .text
-                                .caption(context)
+                                .labelSmall(context)
                                 .make()
                                 .p24(),
                             gap16,

@@ -27,7 +27,7 @@ class KChipStyledContainer extends StatelessWidget {
           padding: padding,
           margin: margin,
           decoration: ShapeDecoration(
-            color: backgroundColor ?? Theme.of(context).colorScheme.background,
+            color: backgroundColor ?? Theme.of(context).colorScheme.surface,
             shape: const StadiumBorder(),
             shadows: [
               BoxShadow(

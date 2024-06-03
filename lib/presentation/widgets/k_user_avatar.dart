@@ -47,7 +47,7 @@ class KUserAvatar extends HookConsumerWidget {
             child: CircleAvatar(
               radius: radius,
               backgroundColor:
-                  bgColor ?? Theme.of(context).colorScheme.background,
+                  bgColor ?? Theme.of(context).colorScheme.surface,
               backgroundImage: !isEmptyUrl
                   ? CachedNetworkImageProvider(
                       APIRoute.BASE_URL + url,

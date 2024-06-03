@@ -19,11 +19,11 @@ class KCircleButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        shape: MaterialStateProperty.all(const CircleBorder()),
-        backgroundColor: MaterialStateProperty.all(backgroundColor),
-        minimumSize: MaterialStateProperty.all(Size(size, size)),
-        maximumSize: MaterialStateProperty.all(Size(size, size)),
-        padding: MaterialStateProperty.all(EdgeInsets.zero),
+        shape: WidgetStateProperty.all(const CircleBorder()),
+        backgroundColor: WidgetStateProperty.all(backgroundColor),
+        minimumSize: WidgetStateProperty.all(Size(size, size)),
+        maximumSize: WidgetStateProperty.all(Size(size, size)),
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
       ),
       child: Center(
         child: child,

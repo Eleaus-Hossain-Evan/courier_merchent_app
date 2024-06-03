@@ -57,7 +57,7 @@ class NotificationScreen extends HookConsumerWidget {
               separator: SizedBox(height: 12.h),
               alternateWidget: "No Notification available"
                   .text
-                  .caption(context)
+                  .labelSmall(context)
                   .lg
                   .color(ColorPalate.black700)
                   .make(),

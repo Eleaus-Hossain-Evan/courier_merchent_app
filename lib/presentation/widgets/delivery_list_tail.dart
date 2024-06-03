@@ -89,7 +89,7 @@ class DeliveryListTile extends StatelessWidget {
                         size: 14.sp,
                       ),
                       gap4,
-                      parcel.customerInfo.phone.text.caption(context).make(),
+                      parcel.customerInfo.phone.text.labelSmall(context).make(),
                     ],
                   ),
                   gap6,
@@ -105,7 +105,7 @@ class DeliveryListTile extends StatelessWidget {
                           gap4,
                           "${parcel.regularPayment.cashCollection}${AppStrings.tkSymbol}"
                               .text
-                              .caption(context)
+                              .labelSmall(context)
                               .make(),
                         ],
                       ),
@@ -121,7 +121,7 @@ class DeliveryListTile extends StatelessWidget {
                               .text
                               // .caption(context)
 
-                              .caption(context)
+                              .labelSmall(context)
                               .make(),
                         ],
                       ),

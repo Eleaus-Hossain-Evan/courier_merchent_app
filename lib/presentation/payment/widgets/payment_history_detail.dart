@@ -1,11 +1,10 @@
+import 'package:courier_merchent_app/application/payment/payment_provider.dart';
+import 'package:courier_merchent_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easylogger/flutter_logger.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import 'package:courier_merchent_app/application/payment/payment_provider.dart';
-import 'package:courier_merchent_app/utils/utils.dart';
 
 import '../../widgets/widgets.dart';
 
@@ -106,7 +105,7 @@ class PaymentHistoryDetails extends HookConsumerWidget {
                       Row(
                         mainAxisAlignment: mainCenter,
                         children: [
-                          "Detail".text.xl.bodyText1(context).makeCentered(),
+                          "Detail".text.xl.bodyMedium(context).makeCentered(),
                         ],
                       )
                           .pSymmetric(v: 4.h)
@@ -120,7 +119,7 @@ class PaymentHistoryDetails extends HookConsumerWidget {
                       Row(
                         mainAxisAlignment: mainCenter,
                         children: [
-                          "Parcels".text.xl.bodyText1(context).makeCentered(),
+                          "Parcels".text.xl.bodyMedium(context).makeCentered(),
                         ],
                       )
                           .pSymmetric(v: 4.h)

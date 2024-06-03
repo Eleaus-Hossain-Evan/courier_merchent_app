@@ -37,7 +37,7 @@ class EventCard extends StatelessWidget {
           title
               .toDateString()
               .text
-              .caption(context)
+              .labelSmall(context)
               .semiBold
               .color(ColorPalate.black500)
               .make(),

@@ -9,11 +9,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'application/local_storage/storage_handler.dart';
-import 'application/global.dart';
-import 'route/go_router.dart';
-
 import '../../utils/utils.dart';
+import 'application/global.dart';
+import 'application/local_storage/storage_handler.dart';
+import 'route/go_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -75,7 +74,7 @@ class MyApp extends HookConsumerWidget {
       return null;
     }, []);
 
-    return ScreenUtilInit( 
+    return ScreenUtilInit(
       // designSize: const Size(375, 812),
       designSize: const Size(392, 781),
       builder: (context, child) {

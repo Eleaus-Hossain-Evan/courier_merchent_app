@@ -33,9 +33,9 @@ class KIconElevatedButton extends HookConsumerWidget {
         //     borderRadius: BorderRadius.circular(10.r),
         //   ),
         // ),
-        minimumSize: MaterialStateProperty.all(Size.fromHeight(55.h)),
-        backgroundColor: MaterialStateProperty.all(backgroundColor),
-        foregroundColor: MaterialStateProperty.all(foregroundColor),
+        minimumSize: WidgetStateProperty.all(Size.fromHeight(55.h)),
+        backgroundColor: WidgetStateProperty.all(backgroundColor),
+        foregroundColor: WidgetStateProperty.all(foregroundColor),
       ),
       onPressed: onPressed,
       child: (loading != null && loading!)

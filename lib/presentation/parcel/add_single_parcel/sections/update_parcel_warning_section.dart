@@ -46,7 +46,7 @@ class UpdateParcelWarningSection extends HookConsumerWidget {
                 'You can edit customer phone and cash collection only just for 1 time!'
                     .text
                     .color(ColorPalate.warning)
-                    .caption(context)
+                    .labelSmall(context)
                     .make()
                     .flexible(),
                 CloseButton(

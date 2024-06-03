@@ -1,3 +1,4 @@
+import 'package:courier_merchent_app/presentation/home/parcel_filter_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,8 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import 'package:courier_merchent_app/presentation/home/parcel_filter_screen.dart';
 
 import '../../../utils/utils.dart';
 import '../../widgets/widgets.dart';
@@ -63,7 +62,7 @@ class SearchDelivery extends HookConsumerWidget {
         gap12,
         "Please enter appropriate property from tracing parcel"
             .text
-            .caption(context)
+            .labelSmall(context)
             .make(),
         gap14,
         Row(

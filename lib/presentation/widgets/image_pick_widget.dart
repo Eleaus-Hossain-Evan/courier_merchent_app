@@ -91,7 +91,7 @@ class ImagePickWidget extends HookConsumerWidget {
                         child: CircleAvatar(
                           radius: 48.r,
                           backgroundColor:
-                              Theme.of(context).colorScheme.background,
+                              Theme.of(context).colorScheme.surface,
                           backgroundImage: imageFile.value != null
                               ? Image.file(imageFile.value!).image
                               : imagePath.isNotEmpty

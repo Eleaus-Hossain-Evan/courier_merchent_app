@@ -80,7 +80,7 @@ class MyShopScreen extends HookConsumerWidget {
                         visible: data.isNotEmpty,
                         replacement: "No Shop added yet!"
                             .text
-                            .caption(context)
+                            .labelSmall(context)
                             .make()
                             .p24(),
                         child: KListViewSeparated(

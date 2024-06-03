@@ -79,12 +79,12 @@ class MyTheme {
       dialogBackgroundSchemeColor: SchemeColor.background,
       buttonMinSize: Size.fromHeight(40.h),
       outlinedButtonRadius: 8.r,
-      outlinedButtonTextStyle: MaterialStateProperty.all(
+      outlinedButtonTextStyle: WidgetStateProperty.all(
         CustomTextStyle.textStyle16w600Black1000,
       ),
       outlinedButtonBorderWidth: 1.w,
       filledButtonRadius: 8.r,
-      filledButtonTextStyle: MaterialStateProperty.all(TextStyle(
+      filledButtonTextStyle: WidgetStateProperty.all(TextStyle(
         fontSize: 18.sp,
         fontWeight: FontWeight.w600,
         letterSpacing: .15,
@@ -92,7 +92,7 @@ class MyTheme {
       )),
       filledButtonSchemeColor: SchemeColor.primary,
       elevatedButtonRadius: 8.r,
-      elevatedButtonTextStyle: MaterialStateProperty.all(
+      elevatedButtonTextStyle: WidgetStateProperty.all(
         CustomTextStyle.textStyle16w600Black1000,
       ),
       elevatedButtonSchemeColor: SchemeColor.secondary,

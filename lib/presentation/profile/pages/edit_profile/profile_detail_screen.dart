@@ -115,7 +115,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
                       text: 'You can\'t change phone and email'
                           .text
                           .color(ColorPalate.warning)
-                          .subtitle2(context)
+                          .titleSmall(context)
                           .make()),
                 ),
                 //  Personal Info------------------
@@ -202,7 +202,7 @@ class ProfileDetailScreen extends HookConsumerWidget {
                         visible: state.user.address.isNotBlank,
                         replacement: "No address added yet..."
                             .text
-                            .caption(context)
+                            .labelSmall(context)
                             .make(),
                         child: state.user.address.text.lg.make().flexible(),
                       ),

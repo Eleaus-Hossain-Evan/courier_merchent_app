@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:courier_merchent_app/domain/parcel/model/parcel_model.dart';
-import 'package:courier_merchent_app/utils/constant/api_routes.dart';
 import 'package:courier_merchent_app/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pdf/pdf.dart';

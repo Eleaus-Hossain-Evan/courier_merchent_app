@@ -307,7 +307,7 @@ class OtherPaymentSection extends StatelessWidget {
           gap16,
           number.isNotBlank
               ? number.text.make()
-              : "not yet added!".text.caption(context).make(),
+              : "not yet added!".text.labelSmall(context).make(),
         ],
       ),
       child: ExpansionTile(

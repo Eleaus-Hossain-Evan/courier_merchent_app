@@ -49,7 +49,7 @@ class MerchantInfoSection extends StatelessWidget {
                 data: (data) => Visibility(
                   visible: selectedShop.value != null,
                   replacement: AppStrings.noShopSelected.text
-                      .caption(context)
+                      .labelSmall(context)
                       .red500
                       .make()
                       .p20(),

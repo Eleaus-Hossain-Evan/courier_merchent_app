@@ -1,14 +1,6 @@
 import 'dart:developer';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:velocity_x/velocity_x.dart';
-
 import 'package:courier_merchent_app/application/auth/auth_provider.dart';
 import 'package:courier_merchent_app/application/parcel/parcel_provider.dart';
 import 'package:courier_merchent_app/domain/parcel/model/parcel_model.dart';
@@ -17,6 +9,13 @@ import 'package:courier_merchent_app/domain/parcel/update_parcel_body.dart';
 import 'package:courier_merchent_app/domain/parcel/weight_model_response.dart';
 import 'package:courier_merchent_app/presentation/parcel/invoice_screen.dart';
 import 'package:courier_merchent_app/utils/utils.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../../application/global.dart';
 import '../../../application/shop/shop_provider.dart';
@@ -506,7 +505,7 @@ bool? showSuccessDialog(
             gap6,
             AppStrings.youCanTruckYourParcel("5YE339XX19NINTXI")
                 .text
-                .caption(context)
+                .labelSmall(context)
                 .center
                 .make(),
             gap12,
@@ -589,7 +588,7 @@ class OtherInfoItem extends StatelessWidget {
     return Row(
       mainAxisAlignment: mainSpaceBetween,
       children: [
-        title.text.caption(context).make().flexible(),
+        title.text.labelSmall(context).make().flexible(),
         "TK $amount".text.sm.semiBold.make(),
       ],
     );
